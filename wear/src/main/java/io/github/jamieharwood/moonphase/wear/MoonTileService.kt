@@ -39,6 +39,7 @@ class MoonTileService : TileService() {
             ).build()
 
         val layout = EdgeContentLayout.Builder(device)
+            .setResponsiveContentInsetEnabled(true)
             .setEdgeContent(
                 CircularProgressIndicator.Builder()
                     .setProgress(s.moonIlluminationPercent / 100f)

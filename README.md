@@ -34,7 +34,7 @@ Requires Android 8.0 (API 26) or later.
 
 ## Build and install
 
-You need the Android SDK (platform 35, build-tools 35), from Android Studio or the
+You need the Android SDK (platform 36, build-tools 36), from Android Studio or the
 command-line tools. The build compiles with a **JDK 21** Gradle toolchain. Gradle finds
 any installed JDK 21, including IntelliJ's `~/.jdks`, and downloads one automatically
 if none is found. Your default `java` can be just a runtime (for example Ubuntu's
@@ -58,9 +58,9 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 
 Or copy the APK to the phone and open it (allow *Install unknown apps* for your file manager when prompted).
 
-> The release build is signed with the local **debug** key so it installs straight away.
-> Before publishing to Google Play, create your own keystore and set a `signingConfig`
-> in `app/build.gradle.kts`.
+> Without a `keystore.properties` file the release build is signed with the local **debug** key
+> so it installs straight away. To publish on Google Play, see [PUBLISHING.md](PUBLISHING.md)
+> (upload key, app bundles, store listing, privacy policy and testing requirements).
 
 ## Project layout
 

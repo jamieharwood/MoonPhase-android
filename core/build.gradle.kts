@@ -6,7 +6,7 @@ plugins {
 // Shared by the phone (:app) and watch (:wear) apps: astronomy maths and live-data feeds.
 android {
     namespace = "io.github.jamieharwood.moonphase.core"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig { minSdk = 26 }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

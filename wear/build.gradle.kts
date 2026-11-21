@@ -1,29 +1,46 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+// Release signing: put your Play upload key in keystore.properties (see PUBLISHING.md).
+// Without that file, release builds fall back to the debug key so they still install locally.
+val keystoreProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
 // Wear OS app (Galaxy Watch 4 and newer, any Wear OS 3+ watch).
 // Same applicationId as the phone app so the two can share settings over the Data Layer.
 android {
     namespace = "io.github.jamieharwood.moonphase.wear"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.jamieharwood.moonphase"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 100001
         versionName = "1.0.0-wear"
     }
+    signingConfigs {
+        if (keystoreProps.containsKey("storeFile")) create("upload") {
+            storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))
+            storePassword = keystoreProps.getProperty("storePassword")
+            keyAlias = keystoreProps.getProperty("keyAlias")
+            keyPassword = keystoreProps.getProperty("keyPassword")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            // Debug key: installs straight away and matches the phone app's signature for the Data Layer.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("upload") ?: signingConfigs.getByName("debug")
         }
     }
     compileOptions {

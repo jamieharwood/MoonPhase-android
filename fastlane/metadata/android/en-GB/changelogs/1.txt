@@ -1,0 +1,1 @@
+First release: Moon phase, sun, aurora, ISS and space data on your phone, with a Wear OS app, Tile and complication.

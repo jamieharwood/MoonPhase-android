@@ -1,0 +1,37 @@
+MoonPhase shows tonight's Moon and what is happening in the sky above you, on your phone and your Wear OS watch. Everything astronomical is calculated on your device; live feeds add the aurora forecast and what is in orbit.
+
+MOON
+• Phase name, illumination and age, drawn as a moon with a live terminator
+• Days to the next full moon and the current Earth–Moon distance
+
+EARTH AND SUN
+• Sunrise, sunset and daylight hours for your location
+• Earth's orbital speed and axial tilt
+• Countdown to the solstices, perihelion and aphelion
+
+AURORA
+• NOAA planetary Kp index, highlighted during geomagnetic storms
+• Optional notification when a storm (Kp 5 or more) is under way
+
+SPACE
+• ISS, Tiangong and Hubble altitudes from live orbital data
+• Starlink and Kuiper satellite counts and the total number of tracked objects
+• Who is in space right now, by spacecraft
+• Distances to the planets with light travel time, and to Voyager 1 and 2, New Horizons, Hubble and James Webb
+
+HISTORY
+• Keeps a snapshot every 12 hours and charts any of 35 metrics over a week, a month, a year or all time
+• Export the data as CSV
+
+WEAR OS WATCH APP
+• Moon, sun, aurora, ISS and more, sized for a round screen
+• A Moon phase Tile with an illumination ring
+• A watch-face complication showing illumination, days to full moon or the phase name
+• Works on its own; the phone app sends it your location and units
+
+ALSO
+• Distances in AU, kilometres or miles
+• Material You colours
+• Optional push to an Awtrix LED clock on your home network
+
+No account, no ads, no tracking. Your location is typed in by you and never leaves your devices.
