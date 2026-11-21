@@ -33,8 +33,11 @@ Requires Android 8.0 (API 26) or later.
 
 ## Build and install
 
-You need JDK 17 or newer and the Android SDK (platform 35, build-tools 35).
-Android Studio provides both, or use the command-line tools:
+You need the Android SDK (platform 35, build-tools 35), from Android Studio or the
+command-line tools. The build compiles with a **JDK 21** Gradle toolchain. Gradle finds
+any installed JDK 21, including IntelliJ's `~/.jdks`, and downloads one automatically
+if none is found. Your default `java` can be just a runtime (for example Ubuntu's
+`openjdk-21-jre`).
 
 ```bash
 git clone https://github.com/jamieharwood/MoonPhase-android.git

@@ -35,6 +35,11 @@ android {
     testOptions { unitTests.isReturnDefaultValues = true }
 }
 
+kotlin {
+    // Compile with a full JDK 21 even when Gradle itself runs on a JRE.
+    jvmToolchain(21)
+}
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
