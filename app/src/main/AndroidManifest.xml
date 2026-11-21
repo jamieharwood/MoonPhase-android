@@ -22,5 +22,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Home-screen widgets (Jetpack Glance) -->
+        <receiver
+            android:name=".widget.MoonWidgetReceiver"
+            android:exported="true"
+            android:label="@string/moon_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/moon_widget_info" />
+        </receiver>
+        <receiver
+            android:name=".widget.SkyWidgetReceiver"
+            android:exported="true"
+            android:label="@string/sky_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/sky_widget_info" />
+        </receiver>
     </application>
 </manifest>

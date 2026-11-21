@@ -29,6 +29,16 @@ Other features:
   It saves history (at most one snapshot per 12-hour UTC window, as in the original),
   sends notifications for aurora storms (Kp ≥ 5) and the full moon tonight or tomorrow, and pushes to Awtrix if enabled.
 - **Settings**: location, history on/off and retention, notifications, Awtrix clock push.
+- **Home-screen widgets**: long-press the home screen → *Widgets* → *MoonPhase*:
+  - **Moon phase** (2×2): tonight's Moon, phase name, illumination and days to full moon.
+  - **Sky tonight** (4×2): the Moon with its phase, % lit and age, the next full moon,
+    sunrise–sunset in local time, aurora Kp (red during a storm) and, when taller, the ISS
+    altitude, people in space and the Moon's distance.
+
+  Both are resizable, open the app when tapped, redraw every hour, and update straight away
+  when the app or the background job refreshes.
+
+  ![Moon phase and Sky tonight widgets](docs/widgets.png)
 - Phones and tablets: cards reflow into columns on wide screens. Uses Material You colours on Android 12 and later.
 
 Requires Android 8.0 (API 26) or later.
@@ -80,6 +90,8 @@ app/src/main/java/io/github/jamieharwood/moonphase/       phone app
   ui/Dashboard.kt       the cards
   ui/Graphics.kt        Canvas-drawn moon and history chart
   ui/SettingsScreen.kt  settings
+  widget/Widgets.kt     home-screen widgets (Jetpack Glance)
+  widget/WidgetData.kt  widget data, moon bitmap, update-all
 wear/src/main/java/io/github/jamieharwood/moonphase/wear/  watch app
   WearActivity.kt       Compose for Wear OS screen
   MoonTileService.kt    Tile

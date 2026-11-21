@@ -22,6 +22,7 @@ import io.github.jamieharwood.moonphase.Astro
 import io.github.jamieharwood.moonphase.MainActivity
 import io.github.jamieharwood.moonphase.R
 import io.github.jamieharwood.moonphase.Snapshot
+import io.github.jamieharwood.moonphase.widget.WidgetData
 import java.util.concurrent.TimeUnit
 
 object Alerts {
@@ -79,6 +80,7 @@ class RefreshWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ct
             it.prune(settings.retentionDays)
         }
         Alerts.maybeNotify(applicationContext, s)
+        WidgetData.publish(applicationContext, s.live)
         if (settings.awtrixEnabled) Awtrix.pushAll(settings.awtrixHost, s)
         return Result.success()
     }

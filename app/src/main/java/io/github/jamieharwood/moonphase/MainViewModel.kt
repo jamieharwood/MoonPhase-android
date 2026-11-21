@@ -13,6 +13,7 @@ import io.github.jamieharwood.moonphase.data.Point
 import io.github.jamieharwood.moonphase.data.Settings
 import io.github.jamieharwood.moonphase.data.WearSync
 import io.github.jamieharwood.moonphase.data.toCsv
+import io.github.jamieharwood.moonphase.widget.WidgetData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -73,6 +74,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val live = LiveFetcher.fetch()
             val s = Astro.compute(latitude = settings.latitude, longitude = settings.longitude).copy(live = live)
             _state.update { it.copy(snapshot = s, refreshing = false) }
+            WidgetData.publish(getApplication(), live)
             if (settings.historyEnabled) withContext(Dispatchers.IO) {
                 history.save(s)
                 history.prune(settings.retentionDays)
@@ -93,6 +95,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(settings = s) }
         recomputeLocal()
         loadChart()
+        viewModelScope.launch { WidgetData.updateAll(getApplication()) } // location may have changed
     }
 
     fun selectMetric(i: Int) { _state.update { it.copy(metricIndex = i) }; loadChart() }
