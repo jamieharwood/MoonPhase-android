@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MoonPhase</string>
+    <string name="tile_label">Moon phase</string>
+    <string name="complication_label">Moon phase</string>
+</resources>

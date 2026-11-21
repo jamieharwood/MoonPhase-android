@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Crescent from the original MoonPhase favicon (64-unit viewBox), centred in the 66dp safe zone -->
+    <group android:translateX="22" android:translateY="22"
+        android:pivotX="32" android:pivotY="32" android:scaleX="1.05" android:scaleY="1.05">
+        <path android:fillColor="#F4E3A6"
+            android:pathData="M31.59,10.06 A23,23 0 1,0 54.77,43.38 A20.3,20.3 0 0,1 31.59,10.06 Z" />
+    </group>
+</vector>

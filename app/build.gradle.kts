@@ -43,6 +43,8 @@ kotlin {
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
+    implementation(project(":core"))
+    implementation("com.google.android.gms:play-services-wearable:19.0.0") // sends settings to the watch
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")

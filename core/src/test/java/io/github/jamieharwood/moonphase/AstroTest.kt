@@ -1,7 +1,6 @@
 package io.github.jamieharwood.moonphase
 
 import io.github.jamieharwood.moonphase.data.LiveFetcher
-import io.github.jamieharwood.moonphase.data.halfDayWindow
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -69,12 +68,5 @@ class AstroTest {
         assertEquals(mapOf("ISS ★" to 2, "Tiangong" to 1), p.crafts)
         val line2 = "2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.50125391563537"
         assertTrue(Astro.altitudeFromTleLine2(line2) in 400.0..440.0)
-    }
-
-    @Test fun historyWindow() {
-        val (a, b) = halfDayWindow(utc(2026, 11, 21, 5))
-        assertEquals(utc(2026, 11, 21).toEpochSecond(), a)
-        assertEquals(12 * 3600L, b - a)
-        assertEquals(utc(2026, 11, 21, 12).toEpochSecond(), halfDayWindow(utc(2026, 11, 21, 13)).first)
     }
 }

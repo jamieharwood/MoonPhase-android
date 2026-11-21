@@ -11,6 +11,7 @@ import io.github.jamieharwood.moonphase.data.LiveFetcher
 import io.github.jamieharwood.moonphase.data.METRICS
 import io.github.jamieharwood.moonphase.data.Point
 import io.github.jamieharwood.moonphase.data.Settings
+import io.github.jamieharwood.moonphase.data.WearSync
 import io.github.jamieharwood.moonphase.data.toCsv
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -45,6 +46,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val messages = _messages.asSharedFlow()
 
     init {
+        WearSync.push(app, _state.value.settings)
         refresh()
         viewModelScope.launch {
             while (true) {
@@ -87,6 +89,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun updateSettings(transform: (Settings) -> Settings) {
         val s = transform(_state.value.settings)
         s.save(getApplication())
+        WearSync.push(getApplication(), s)
         _state.update { it.copy(settings = s) }
         recomputeLocal()
         loadChart()

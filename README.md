@@ -3,7 +3,8 @@
 A native Android app (Kotlin + Jetpack Compose, Material 3) ported from the
 [MoonPhase](https://github.com/jamieharwood/MoonPhase) Spring Boot dashboard and its
 [Ubuntu desktop port](https://github.com/jamieharwood/MoonPhase-uBuntu).
-It shows the same astronomy data, computed on the phone.
+It shows the same astronomy data, computed on the device, and includes a **Wear OS watch app**
+(Samsung Galaxy Watch 4 or newer, or any Wear OS 3+ watch) with a Tile and a watch-face complication.
 
 ## Features
 
@@ -44,9 +45,9 @@ git clone https://github.com/jamieharwood/MoonPhase-android.git
 cd MoonPhase-android
 echo "sdk.dir=$HOME/Android/Sdk" > local.properties   # or set ANDROID_HOME
 
-./gradlew testDebugUnitTest     # JVM unit tests for the calculations and parsers
-./gradlew assembleDebug         # → app/build/outputs/apk/debug/app-debug.apk
-./gradlew assembleRelease       # → app/build/outputs/apk/release/app-release.apk (minified)
+./gradlew test                  # JVM unit tests for the calculations and parsers
+./gradlew :app:assembleRelease  # phone → app/build/outputs/apk/release/app-release.apk (minified)
+./gradlew :wear:assembleRelease # watch → wear/build/outputs/apk/release/wear-release.apk
 ```
 
 Install on a phone with USB debugging enabled:
@@ -64,11 +65,13 @@ Or copy the APK to the phone and open it (allow *Install unknown apps* for your 
 ## Project layout
 
 ```
-app/src/main/java/io/github/jamieharwood/moonphase/
+core/src/main/java/io/github/jamieharwood/moonphase/      shared by phone and watch
   Astro.kt              deterministic calculations (ported from MoonPhaseModule/*.java)
+  data/LiveFetcher.kt   NOAA Kp, TLE API, people-in-space feeds (cached; TLE requests one at a time)
+app/src/main/java/io/github/jamieharwood/moonphase/       phone app
   MainActivity.kt       Compose activity, toolbar, dialogs, theme
   MainViewModel.kt      state, refresh, history, CSV export
-  data/LiveFetcher.kt   NOAA Kp, TLE API, people-in-space feeds (cached; TLE requests one at a time)
+  data/WearSync.kt      sends location/units to the watch
   data/History.kt       SQLite history store (original SnapshotDocument field names), CSV, backfill
   data/Background.kt    notifications and the periodic WorkManager refresh
   data/Awtrix.kt        optional Awtrix clock push
@@ -76,8 +79,57 @@ app/src/main/java/io/github/jamieharwood/moonphase/
   ui/Dashboard.kt       the cards
   ui/Graphics.kt        Canvas-drawn moon and history chart
   ui/SettingsScreen.kt  settings
-app/src/test/…/AstroTest.kt  unit tests
+wear/src/main/java/io/github/jamieharwood/moonphase/wear/  watch app
+  WearActivity.kt       Compose for Wear OS screen
+  MoonTileService.kt    Tile
+  MoonComplicationService.kt  watch-face complication
+  WearSettings.kt       settings received from the phone
+core/src/test/…/AstroTest.kt, app/src/test/…/HistoryTest.kt  unit tests
 ```
+
+## ⌚ Wear OS watch app
+
+The `wear` module is a standalone watch app, installed separately from the phone app.
+
+- **App**: moon disc, phase, illumination and age, then scrollable cards for the next full moon,
+  sunrise/sunset and daylight, aurora Kp (red during a storm), ISS altitude and crew, people in
+  space by spacecraft, Moon distance, upcoming solstices and apsides, Voyager 1, and Earth's speed.
+  Tap **Refresh** at the bottom to reload the live data.
+- **Tile**: swipe left from the watch face and add *Moon phase*. It shows the phase, an
+  illumination ring and the days to full moon. Tap it to open the app.
+- **Complication**: long-press your watch face → *Customise* → choose a complication slot →
+  *MoonPhase*. Short-text slots show illumination % and days to full moon, ring slots show
+  illumination, and long-text slots show the phase name.
+- **Settings from the phone**: when the phone app is installed, its location and units are sent
+  to the watch over the Wear OS Data Layer. Open the phone app once to sync them. Without it,
+  the watch uses Greenwich and AU.
+
+The watch fetches live data over its own Wi-Fi/LTE, or through the phone over Bluetooth.
+
+### Install on a Galaxy Watch
+
+1. On the watch, open **Settings → About watch → Software information** and tap **Software version**
+   five times to enable Developer options.
+2. Open **Settings → Developer options**, turn on **ADB debugging** and **Wireless debugging**
+   (the watch and this computer must be on the same Wi-Fi network).
+3. In **Wireless debugging**, tap **Pair new device**, then on the computer run:
+
+   ```bash
+   adb pair <ip>:<pairing-port>      # enter the 6-digit code shown on the watch
+   adb connect <ip>:<port>           # the address shown on the Wireless debugging screen
+   ```
+
+4. Build and install the watch app (use `-s <ip>:<port>` if the phone is also connected):
+
+   ```bash
+   ./gradlew :wear:assembleRelease
+   adb -s <ip>:<port> install -r wear/build/outputs/apk/release/wear-release.apk
+   ```
+
+5. Turn **Wireless debugging** off again when you're done, because it drains the battery.
+
+The phone and watch APKs share the package name `io.github.jamieharwood.moonphase` and must be
+signed with the same key for settings sync to work. Building both on one machine takes care of this.
 
 ## Differences from the web app
 
