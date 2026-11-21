@@ -18,4 +18,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "MoonPhase"
-include(":app", ":core", ":wear")
+include(":app", ":core", ":wear", ":watchface")

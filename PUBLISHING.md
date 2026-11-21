@@ -102,3 +102,22 @@ Organisation accounts can skip this and go straight to production, but internal 
       the Play test track (both are re-signed by Google with the same key)
 
 `store-src/make_store_graphics.py` regenerates the icon and feature graphic.
+
+## The watch face (a separate Play app)
+
+Google Play requires a Watch Face Format watch face to be its **own app**, separate from the
+app that contains code. Create a second app in Play Console, *MoonPhase Mission watch face*:
+
+1. Build: `./gradlew :watchface:bundleRelease` →
+   `watchface/build/outputs/bundle/release/watchface-release.aab` (signed with the same upload key).
+2. Create app → Advanced settings → Form factors → add **Wear OS**, and upload the bundle to a
+   Wear OS testing track. The closed-testing rule for new personal accounts applies to this app too.
+3. Listing: screenshots in `watchface/store/` (active and always-on), and
+   `watchface/src/main/res/drawable-nodpi/preview.png` as a starting point for the icon.
+   Mention in the description that the astronomy complications come from the free MoonPhase app.
+4. Content rating, data safety ("no data collected") and privacy policy as for the main app.
+5. Don't use the SpaceX name or logo in the listing: Play rejects listings that use
+   another company's trademarks without permission.
+
+The watch app's astronomy complications ship in `wear-release.aab`. Upload a new version of
+it (bump `versionCode` in `wear/build.gradle.kts`) at the same time.

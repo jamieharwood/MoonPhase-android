@@ -4,7 +4,8 @@ A native Android app (Kotlin + Jetpack Compose, Material 3) ported from the
 [MoonPhase](https://github.com/jamieharwood/MoonPhase) Spring Boot dashboard and its
 [Ubuntu desktop port](https://github.com/jamieharwood/MoonPhase-uBuntu).
 It shows the same astronomy data, computed on the device, and includes a **Wear OS watch app**
-(Samsung Galaxy Watch 4 or newer, or any Wear OS 3+ watch) with a Tile and a watch-face complication.
+(Samsung Galaxy Watch 4 or newer, or any Wear OS 3+ watch) with a Tile and astronomy complications,
+and the **MoonPhase Mission watch face**.
 
 ## Features
 
@@ -82,8 +83,12 @@ app/src/main/java/io/github/jamieharwood/moonphase/       phone app
 wear/src/main/java/io/github/jamieharwood/moonphase/wear/  watch app
   WearActivity.kt       Compose for Wear OS screen
   MoonTileService.kt    Tile
-  MoonComplicationService.kt  watch-face complication
+  MoonComplicationService.kt  moon phase complication
+  AstroComplications.kt the other 12 astronomy complications
   WearSettings.kt       settings received from the phone
+watchface/                                                 MoonPhase Mission watch face (Watch Face Format, no code)
+  tools/generate.py     writes res/raw/watchface.xml, the 29 moon images, the dial and the preview
+  src/main/res/font/    Barlow Condensed (SIL Open Font License, see FONT-LICENSE-OFL.txt)
 core/src/test/…/AstroTest.kt, app/src/test/…/HistoryTest.kt  unit tests
 ```
 
@@ -97,9 +102,27 @@ The `wear` module is a standalone watch app, installed separately from the phone
   Tap **Refresh** at the bottom to reload the live data.
 - **Tile**: swipe left from the watch face and add *Moon phase*. It shows the phase, an
   illumination ring and the days to full moon. Tap it to open the app.
-- **Complication**: long-press your watch face → *Customise* → choose a complication slot →
-  *MoonPhase*. Short-text slots show illumination % and days to full moon, ring slots show
-  illumination, and long-text slots show the phase name.
+- **Complications**: long-press your watch face → *Customise* → choose a complication slot →
+  *MoonPhase*, then pick one of:
+
+  | Complication | Shows | Ring |
+  |---|---|---|
+  | Moon phase | illumination and days to full moon, or the phase name | illumination |
+  | Moon illumination | `93%` LIT | 0–100 % |
+  | Days to full moon | `3D` FULL | through the cycle |
+  | Moon age | `12D` AGE | 0–29.5 days |
+  | Moon distance | `384k` MOON KM | perigee → apogee |
+  | Next sunrise / sunset | `07:38` SUNRISE (local time) | |
+  | Daylight hours | `8.3H` DAYLIGHT | 0–24 h |
+  | Days to solstice | `30D` SOLSTICE | |
+  | Earth orbital speed | `30.28` KM/S | aphelion → perihelion |
+  | Voyager 1 distance | `169` VGR1 AU | |
+  | Aurora Kp index* | `2.7` KP | 0–9 |
+  | ISS altitude* | `418` ISS KM | |
+  | People in space* | `10` IN SPACE | |
+
+  \* needs the internet; shows "—" when the watch is offline. Distances follow the units set
+  on the phone.
 - **Settings from the phone**: when the phone app is installed, its location and units are sent
   to the watch over the Wear OS Data Layer. Open the phone app once to sync them. Without it,
   the watch uses Greenwich and AU.
@@ -130,6 +153,35 @@ The watch fetches live data over its own Wi-Fi/LTE, or through the phone over Bl
 
 The phone and watch APKs share the package name `io.github.jamieharwood.moonphase` and must be
 signed with the same key for settings sync to work. Building both on one machine takes care of this.
+
+## 🚀 MoonPhase Mission watch face
+
+![Watch face, active and always-on](watchface/store/screenshot-active.png)
+
+A black-and-white, mission-control style digital watch face, in the `watchface` module:
+
+- Large condensed digital time (12/24 h follows the watch), a seconds arc around the minute ring,
+  the date, and a UTC readout.
+- The Moon as it looks tonight (29 images, one per day of the cycle) and the phase name.
+- Five complication slots. By default they show Moon illumination, days to full moon, aurora Kp,
+  ISS altitude and the next sunrise/sunset from the MoonPhase watch app. When that app isn't
+  installed they fall back to battery, date, steps and sunrise/sunset. Tap and hold the watch face
+  → *Customise* to change any of them.
+- Always-on mode dims everything and hides the seconds arc.
+
+It uses Google's **Watch Face Format** (required for new watch faces on Play since January 2026),
+so it has no code and needs Wear OS 4 or later. It is a separate app
+(`io.github.jamieharwood.moonphase.watchface`), as Play requires. To change the design, edit
+`watchface/tools/generate.py` and run `python3 watchface/tools/generate.py` (needs Pillow).
+
+Install it on the watch (after pairing as above), then set it from the watch face picker, or:
+
+```bash
+./gradlew :watchface:assembleRelease
+adb -s <ip>:<port> install -r watchface/build/outputs/apk/release/watchface-release.apk
+adb -s <ip>:<port> shell am broadcast -a com.google.android.wearable.app.DEBUG_SURFACE \
+  --es operation set-watchface --es watchFaceId io.github.jamieharwood.moonphase.watchface
+```
 
 ## Differences from the web app
 

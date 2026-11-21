@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Images and fonts are referenced from res/raw/watchface.xml, which lint can't see. -->
+    <issue id="UnusedResources" severity="ignore" />
+</lint>

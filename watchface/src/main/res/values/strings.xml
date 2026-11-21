@@ -1,0 +1,8 @@
+<resources>
+    <string name="watch_face_name">MoonPhase Mission</string>
+    <string name="slot_left">Left</string>
+    <string name="slot_right">Right</string>
+    <string name="slot_bottom_left">Bottom left</string>
+    <string name="slot_bottom">Bottom</string>
+    <string name="slot_bottom_right">Bottom right</string>
+</resources>
