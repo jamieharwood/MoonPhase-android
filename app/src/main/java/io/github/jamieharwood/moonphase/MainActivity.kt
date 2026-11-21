@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.text.KeyboardOptions
 import io.github.jamieharwood.moonphase.data.Alerts
 import io.github.jamieharwood.moonphase.data.METRICS
@@ -112,7 +113,8 @@ fun App(vm: MainViewModel) {
         topBar = {
             TopAppBar(
                 title = {
-                    if (showSettings) Text("Settings") else Text("MoonPhase")
+                    // Never wrap the title: on narrow phones the actions take most of the bar.
+                    Text(if (showSettings) "Settings" else "MoonPhase", maxLines = 1, softWrap = false)
                 },
                 navigationIcon = {
                     if (showSettings) IconButton(onClick = { showSettings = false }) {
@@ -121,10 +123,12 @@ fun App(vm: MainViewModel) {
                 },
                 actions = {
                     if (!showSettings) {
+                        // Two short lines keep the action area narrow enough for small screens.
                         Text(
-                            "Updated " + state.snapshot.timestamp.withZoneSameInstant(ZoneId.systemDefault())
+                            "Updated\n" + state.snapshot.timestamp.withZoneSameInstant(ZoneId.systemDefault())
                                 .format(DateTimeFormatter.ofPattern("HH:mm")),
                             style = MaterialTheme.typography.labelSmall,
+                            textAlign = TextAlign.Center,
                         )
                         Box {
                             TextButton(onClick = { unitsMenu = true }) { Text(state.settings.units.name.lowercase()) }
