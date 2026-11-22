@@ -37,9 +37,13 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import io.github.jamieharwood.moonphase.Astro
+import io.github.jamieharwood.moonphase.Loc
+import io.github.jamieharwood.moonphase.R
 import io.github.jamieharwood.moonphase.MainActivity
 import io.github.jamieharwood.moonphase.Snapshot
+import io.github.jamieharwood.moonphase.SkyEvents
+import java.time.LocalDate
+import java.time.ZoneOffset
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -49,10 +53,10 @@ private val MUTED = ColorProvider(Color(0xFFB8C2D9))
 private val MOON = ColorProvider(Color(0xFFF4E3A6))
 private val STORM = ColorProvider(Color(0xFFFF8A80))
 
-private fun fullMoonText(s: Snapshot): String = when (val d = s.daysUntilFullMoon) {
-    0 -> "Full moon tonight"
-    1 -> "Full moon tomorrow"
-    else -> "Full moon in $d days"
+private fun fullMoonText(ctx: Context, s: Snapshot): String = when (val d = s.daysUntilFullMoon) {
+    0 -> ctx.getString(R.string.widget_full_tonight)
+    1 -> ctx.getString(R.string.widget_full_tomorrow)
+    else -> ctx.getString(R.string.widget_full_in, d)
 }
 
 @Composable
@@ -66,10 +70,11 @@ private fun WidgetFrame(content: @Composable () -> Unit) {
 
 @Composable
 private fun MoonImage(s: Snapshot, sizeDp: Int) {
-    val px = (sizeDp * LocalContext.current.resources.displayMetrics.density).roundToInt().coerceIn(48, 480)
+    val ctx = LocalContext.current
+    val px = (sizeDp * ctx.resources.displayMetrics.density).roundToInt().coerceIn(48, 480)
     Image(
         ImageProvider(WidgetData.moonBitmap(s.moonPhaseFraction, px)),
-        contentDescription = "${s.moonPhaseName}, ${s.moonIlluminationPercent}% illuminated",
+        contentDescription = ctx.getString(R.string.widget_moon_cd, Loc.phaseName(ctx, s.moonPhaseName), s.moonIlluminationPercent),
         modifier = GlanceModifier.size(sizeDp.dp),
     )
 }
@@ -97,6 +102,7 @@ class MoonWidget : GlanceAppWidget() {
 
     @Composable
     private fun MoonContent(s: Snapshot) {
+        val ctx = LocalContext.current
         val size = LocalSize.current
         val roomy = size.height >= 150.dp
         val textDp = if (roomy) 60 else 48 // two text lines + spacing, incl. descenders
@@ -106,10 +112,10 @@ class MoonWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically) {
                 MoonImage(s, moon)
                 Spacer(GlanceModifier.height(4.dp))
-                Line(s.moonPhaseName, if (roomy) 15.sp else 13.sp, WHITE, bold = true, center = true)
+                Line(Loc.phaseName(ctx, s.moonPhaseName), if (roomy) 15.sp else 13.sp, WHITE, bold = true, center = true)
                 Line(
-                    if (roomy) "${s.moonIlluminationPercent}% · ${fullMoonText(s).lowercase()}"
-                    else "${s.moonIlluminationPercent}% · full in ${s.daysUntilFullMoon}d",
+                    if (roomy) ctx.getString(R.string.widget_pct_full_in, s.moonIlluminationPercent, fullMoonText(ctx, s).lowercase())
+                    else ctx.getString(R.string.widget_pct_full_short, s.moonIlluminationPercent, s.daysUntilFullMoon),
                     if (roomy) 12.sp else 11.sp, MOON, center = true,
                 )
             }
@@ -130,35 +136,67 @@ class SkyWidget : GlanceAppWidget() {
 
     @Composable
     private fun SkyContent(s: Snapshot) {
+        val ctx = LocalContext.current
         val size = LocalSize.current
         val tall = size.height >= 160.dp
         val moon = min(size.height.value - 20, size.width.value * 0.42f).toInt().coerceAtLeast(48)
         val (rise, set) = WidgetData.localSunTimes(s)
         val l = s.live
-        val kp = if (l.kp < 0) "—" else "Kp %.1f · %s".format(l.kp, Astro.kpActivity(l.kp))
+        val kp = if (l.kp < 0) "—" else ctx.getString(R.string.widget_kp, l.kp, Loc.kpActivity(ctx, l.kp))
         val iss = buildString {
-            append(if (l.issAltitudeKm < 0) "ISS —" else "ISS %.0f km".format(l.issAltitudeKm))
-            if (l.peopleInSpace >= 0) append(" · ${l.peopleInSpace} in space")
+            append(if (l.issAltitudeKm < 0) "ISS —" else ctx.getString(R.string.widget_iss_alt, l.issAltitudeKm))
+            if (l.peopleInSpace >= 0) append(" · ").append(ctx.getString(R.string.widget_in_space, l.peopleInSpace))
         }
         WidgetFrame {
             Row(GlanceModifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
                 MoonImage(s, moon)
                 Spacer(GlanceModifier.width(12.dp))
                 Column(GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Line(s.moonPhaseName, if (tall) 18.sp else 16.sp, WHITE, bold = true)
-                    Line("${s.moonIlluminationPercent}% lit · ${s.moonAgeDays} days old", 12.sp, MOON)
+                    Line(Loc.phaseName(ctx, s.moonPhaseName), if (tall) 18.sp else 16.sp, WHITE, bold = true)
+                    Line(ctx.getString(R.string.widget_lit_age, s.moonIlluminationPercent, s.moonAgeDays), 12.sp, MOON)
                     Spacer(GlanceModifier.height(if (tall) 8.dp else 4.dp))
-                    Line("🌕 ${fullMoonText(s)}")
+                    Line("🌕 ${fullMoonText(ctx, s)}")
                     Line("☀️ $rise – $set")
                     Line("🌌 $kp", color = if (l.kp >= 5) STORM else MUTED)
                     if (tall) {
                         Line("🛰️ $iss")
-                        Line("🌙 %,.0f km away".format(s.moonDistanceKm))
+                        Line(ctx.getString(R.string.widget_moon_away, "%,.0f".format(s.moonDistanceKm)))
                     }
                 }
             }
         }
     }
+}
+
+/** Calendar widget: the next meteor shower peaks and eclipses with how far away each is. */
+class SkyEventsWidget : GlanceAppWidget() {
+    override val sizeMode = SizeMode.Exact
+
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        provideContent { EventsContent() }
+    }
+
+    @Composable
+    private fun EventsContent() {
+        val ctx = LocalContext.current
+        val size = LocalSize.current
+        val rows = ((size.height.value - 20 - 22) / 20).toInt().coerceIn(1, 6)
+        val today = LocalDate.now(ZoneOffset.UTC)
+        val events = SkyEvents.upcoming(today, rows)
+        WidgetFrame {
+            Column(GlanceModifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                Line(ctx.getString(R.string.widget_calendar_title), 14.sp, WHITE, bold = true)
+                Spacer(GlanceModifier.height(4.dp))
+                events.forEach { e ->
+                    Line("${e.icon} ${Loc.eventName(ctx, e)} · ${Loc.daysText(ctx, e.daysFrom(today))}", 12.sp, if (e.daysFrom(today) <= 7) MOON else MUTED)
+                }
+            }
+        }
+    }
+}
+
+class SkyEventsWidgetReceiver : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = SkyEventsWidget()
 }
 
 class MoonWidgetReceiver : GlanceAppWidgetReceiver() {

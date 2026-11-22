@@ -1,1 +1,1 @@
-First release: Moon phase, sun, aurora, ISS and space data on your phone, with a Wear OS app, Tile and complication.
+New: meteor shower and eclipse calendar, Sky calendar widget, dark red night mode, and Spanish, German, French and Portuguese translations.

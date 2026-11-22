@@ -21,8 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import io.github.jamieharwood.moonphase.R
 import io.github.jamieharwood.moonphase.data.Settings
 
 /** Edits a copy of the settings; the caller saves it when the screen is closed. */
@@ -38,33 +40,36 @@ fun SettingsScreen(initial: Settings, padding: PaddingValues, onChange: (Setting
         Modifier.fillMaxSize().padding(padding).padding(16.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Section("Location")
-        Text("Used for daylight, sunrise and sunset. Positive = North / East.",
+        Section(stringResource(R.string.set_section_location))
+        Text(stringResource(R.string.set_location_hint),
             style = MaterialTheme.typography.bodySmall)
         OutlinedTextField(lat, { v ->
             lat = v
             v.toDoubleOrNull()?.takeIf { it in -90.0..90.0 }?.let { update(s.copy(latitude = it)) }
-        }, label = { Text("Latitude") }, isError = lat.toDoubleOrNull()?.let { it !in -90.0..90.0 } ?: true,
+        }, label = { Text(stringResource(R.string.set_latitude)) }, isError = lat.toDoubleOrNull()?.let { it !in -90.0..90.0 } ?: true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), modifier = Modifier.fillMaxWidth())
         OutlinedTextField(lon, { v ->
             lon = v
             v.toDoubleOrNull()?.takeIf { it in -180.0..180.0 }?.let { update(s.copy(longitude = it)) }
-        }, label = { Text("Longitude") }, isError = lon.toDoubleOrNull()?.let { it !in -180.0..180.0 } ?: true,
+        }, label = { Text(stringResource(R.string.set_longitude)) }, isError = lon.toDoubleOrNull()?.let { it !in -180.0..180.0 } ?: true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), modifier = Modifier.fillMaxWidth())
 
-        Section("History")
-        Toggle("Store history on this device", s.historyEnabled) { update(s.copy(historyEnabled = it)) }
+        Section(stringResource(R.string.set_section_display))
+        Toggle(stringResource(R.string.set_night_mode), s.nightMode) { update(s.copy(nightMode = it)) }
+
+        Section(stringResource(R.string.set_section_history))
+        Toggle(stringResource(R.string.set_store_history), s.historyEnabled) { update(s.copy(historyEnabled = it)) }
         OutlinedTextField(keep, { v ->
             keep = v
             v.toIntOrNull()?.takeIf { it >= 0 }?.let { update(s.copy(retentionDays = it)) }
-        }, label = { Text("Retention days (0 = keep all)") },
+        }, label = { Text(stringResource(R.string.set_retention)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
 
-        Section("Integrations")
-        Toggle("Notifications (aurora storms, full moon)", s.notifications) { update(s.copy(notifications = it)) }
-        Toggle("Push to Awtrix clock", s.awtrixEnabled) { update(s.copy(awtrixEnabled = it)) }
+        Section(stringResource(R.string.set_section_integrations))
+        Toggle(stringResource(R.string.set_notifications), s.notifications) { update(s.copy(notifications = it)) }
+        Toggle(stringResource(R.string.set_awtrix), s.awtrixEnabled) { update(s.copy(awtrixEnabled = it)) }
         OutlinedTextField(s.awtrixHost, { update(s.copy(awtrixHost = it.trim())) },
-            label = { Text("Awtrix URL") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            label = { Text(stringResource(R.string.set_awtrix_url)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
     }
 }
 

@@ -1,0 +1,44 @@
+Orbitly zeigt den heutigen Mond und was am Himmel über dir passiert – auf deinem Handy und deiner Wear-OS-Uhr. Alle astronomischen Berechnungen laufen auf deinem Gerät; Live-Daten liefern die Polarlicht-Vorhersage und das, was im Orbit ist.
+
+MOND
+• Phasenname, Beleuchtung und Alter, als Mond mit Schattengrenze dargestellt
+• Tage bis zum nächsten Vollmond und aktuelle Entfernung Erde–Mond
+
+ERDE UND SONNE
+• Sonnenaufgang, Sonnenuntergang und Tageslänge für deinen Standort
+• Bahngeschwindigkeit und Achsneigung der Erde
+• Countdown zu Sonnenwenden, Perihel und Aphel
+
+HIMMELSKALENDER
+• Kommende Meteorströme mit Maximum und Mondlicht-Störung
+• Sonnen- und Mondfinsternisse bis 2030
+• Himmelskalender-Widget für den Startbildschirm
+
+POLARLICHT
+• NOAA-Kp-Index, hervorgehoben bei geomagnetischen Stürmen
+• Optionale Benachrichtigung bei einem Sturm (Kp 5 oder mehr)
+
+WELTRAUM
+• Höhen von ISS, Tiangong und Hubble aus Live-Bahndaten
+• Anzahl der Starlink- und Kuiper-Satelliten und aller verfolgten Objekte
+• Wer gerade im All ist, nach Raumfahrzeug
+• Entfernungen zu den Planeten mit Lichtlaufzeit sowie zu Voyager 1 und 2, New Horizons, Hubble und James Webb
+
+VERLAUF
+• Speichert alle 12 Stunden einen Schnappschuss und zeigt 35 Messwerte über eine Woche, einen Monat, ein Jahr oder die gesamte Zeit
+• Daten als CSV exportieren
+
+WEAR-OS-UHR-APP
+• Mond, Sonne, Polarlicht, ISS und mehr, für runde Displays gestaltet
+• Mondphasen-Kachel mit Beleuchtungsring
+• Zifferblatt-Komplikation mit Beleuchtung, Tagen bis Vollmond oder Phasenname
+• Funktioniert eigenständig; das Handy sendet Standort und Einheiten
+
+AUSSERDEM
+• Entfernungen in AE, Kilometern oder Meilen
+• Dunkelroter Nachtmodus, der das Nachtsehen schützt
+• Verfügbar auf Englisch, Spanisch, Deutsch, Französisch und Portugiesisch
+• Material-You-Farben
+• Optionale Übertragung an eine Awtrix-LED-Uhr in deinem Heimnetz
+
+Kein Konto, keine Werbung, kein Tracking. Deinen Standort gibst du selbst ein, und er verlässt nie deine Geräte.

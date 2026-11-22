@@ -9,6 +9,11 @@ EARTH AND SUN
 • Earth's orbital speed and axial tilt
 • Countdown to the solstices, perihelion and aphelion
 
+SKY CALENDAR
+• Upcoming meteor showers with peak dates and Moon interference
+• Solar and lunar eclipses to 2030
+• A Sky calendar home-screen widget
+
 AURORA
 • NOAA planetary Kp index, highlighted during geomagnetic storms
 • Optional notification when a storm (Kp 5 or more) is under way
@@ -31,6 +36,8 @@ WEAR OS WATCH APP
 
 ALSO
 • Distances in AU, kilometres or miles
+• Dark red night mode that protects your night vision
+• Available in English, Spanish, German, French and Portuguese
 • Material You colours
 • Optional push to an Awtrix LED clock on your home network
 

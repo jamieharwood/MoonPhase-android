@@ -33,7 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import io.github.jamieharwood.moonphase.Astro
+import io.github.jamieharwood.moonphase.Loc
+import io.github.jamieharwood.moonphase.R
+import io.github.jamieharwood.moonphase.SkyEvents
 import io.github.jamieharwood.moonphase.RANGES
 import io.github.jamieharwood.moonphase.Snapshot
 import io.github.jamieharwood.moonphase.UiState
@@ -82,6 +87,7 @@ fun Dashboard(
         item { ProbesCard(s, u) }
         item { EarthCard(s) }
         item { EventsCard(s) }
+        item { SkyCalendarCard(s) }
         item { LeoCard(s, u, state.refreshing) }
         item { PeopleCard(s, state.refreshing) }
         if (state.settings.historyEnabled) {
@@ -124,10 +130,10 @@ private fun KV(key: String, value: String, extra: String? = null, header: Boolea
 
 @Composable
 private fun MoonCard(s: Snapshot, u: Units, ascii: Boolean, onToggle: () -> Unit) {
-    DashCard("🌙 Moon Phase", action = {
+    DashCard(stringResource(R.string.card_moon), action = {
         FilterChip(selected = ascii, onClick = onToggle, label = { Text("ASCII") })
     }) {
-        Text(s.moonPhaseName, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold,
+        Text(Loc.phaseName(LocalContext.current, s.moonPhaseName), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             if (ascii) {
@@ -138,10 +144,14 @@ private fun MoonCard(s: Snapshot, u: Units, ascii: Boolean, onToggle: () -> Unit
             }
         }
         Row(Modifier.fillMaxWidth()) {
-            Stat("${s.moonIlluminationPercent}%", "Illumination")
-            Stat("${s.moonAgeDays} d", "Age")
-            Stat(if (s.daysUntilFullMoon == 0) "Tonight" else "${s.daysUntilFullMoon} d", "Full Moon In")
-            Stat(distKm(s.moonDistanceKm, u), "Distance")
+            Stat("${s.moonIlluminationPercent}%", stringResource(R.string.stat_illumination))
+            Stat(stringResource(R.string.days_short, s.moonAgeDays), stringResource(R.string.stat_age))
+            Stat(
+                if (s.daysUntilFullMoon == 0) stringResource(R.string.stat_tonight)
+                else stringResource(R.string.days_short, s.daysUntilFullMoon),
+                stringResource(R.string.stat_full_moon_in),
+            )
+            Stat(distKm(s.moonDistanceKm, u), stringResource(R.string.stat_distance))
         }
     }
 }
@@ -155,75 +165,90 @@ private fun androidx.compose.foundation.layout.RowScope.Stat(value: String, labe
 }
 
 @Composable
-private fun SolarCard(s: Snapshot, u: Units) = DashCard("☀️ Solar System") {
-    KV("Planet", "From Sun", "Light", header = true)
-    s.heliocentricAu.forEach { (p, au) -> KV(p, distAu(au, u), s.lightTimes[p]) }
+private fun SolarCard(s: Snapshot, u: Units) = DashCard(stringResource(R.string.card_solar)) {
+    val ctx = LocalContext.current
+    KV(stringResource(R.string.col_planet), stringResource(R.string.col_from_sun), stringResource(R.string.col_light), header = true)
+    s.heliocentricAu.forEach { (p, au) -> KV(Labels.planet(ctx, p), distAu(au, u), s.lightTimes[p]) }
     Spacer(Modifier.height(4.dp))
-    KV("From Earth", "", header = true)
-    KV("Mars", distAu(s.marsDistanceAu, u))
-    KV("Jupiter", distAu(s.jupiterDistanceAu, u))
-    KV("Saturn", distAu(s.saturnDistanceAu, u))
+    KV(stringResource(R.string.from_earth), "", header = true)
+    KV(stringResource(R.string.planet_mars), distAu(s.marsDistanceAu, u))
+    KV(stringResource(R.string.planet_jupiter), distAu(s.jupiterDistanceAu, u))
+    KV(stringResource(R.string.planet_saturn), distAu(s.saturnDistanceAu, u))
 }
 
 @Composable
-private fun ProbesCard(s: Snapshot, u: Units) = DashCard("🚀 Deep Space Probes") {
+private fun ProbesCard(s: Snapshot, u: Units) = DashCard(stringResource(R.string.card_probes)) {
     val kmU = if (u == Units.AU) Units.KM else u
-    KV("Hubble (altitude)", distKm(s.live.hubbleAltitudeKm, kmU))
+    KV(stringResource(R.string.probe_hubble_alt), distKm(s.live.hubbleAltitudeKm, kmU))
     KV("James Webb", distKm(s.jamesWebbDistanceKm, u))
     KV("Voyager 1", distAu(s.voyager1DistanceAu, u))
     KV("Voyager 2", distAu(s.voyager2DistanceAu, u))
     KV("New Horizons", distAu(s.newHorizonsDistanceAu, u))
     Spacer(Modifier.height(4.dp))
-    KV("Light time from Sun", "", header = true)
+    KV(stringResource(R.string.light_time_from_sun), "", header = true)
     KV("Voyager 1", s.lightTimes["Voyager 1"] ?: "")
     KV("Voyager 2", s.lightTimes["Voyager 2"] ?: "")
 }
 
 @Composable
-private fun EarthCard(s: Snapshot) = DashCard("🌍 Earth") {
+private fun EarthCard(s: Snapshot) = DashCard(stringResource(R.string.card_earth)) {
     val kp = s.live.kp
-    KV("Orbital Speed", "%.2f km/s".format(s.earthSpeedKmPerSec))
-    KV("Speed (km/h)", "%,.0f km/h".format(s.earthSpeedKmPerHour))
-    KV("Daylight Hours", "%.2f h".format(s.daylightHours))
-    KV("Sunrise (UTC~)", s.sunriseTime)
-    KV("Sunset (UTC~)", s.sunsetTime)
-    KV("Axial Tilt", "%.3f°".format(s.earthAxialTiltDegrees))
-    KV("Aurora Kp Index", if (kp < 0) "—" else "%.2f (%s)".format(kp, Astro.kpActivity(kp)), highlight = kp >= 5)
-    KV("Location", "%.4f°, %.4f°".format(s.latitude, s.longitude))
+    val ctx = LocalContext.current
+    KV(stringResource(R.string.earth_orbital_speed), "%.2f km/s".format(s.earthSpeedKmPerSec))
+    KV(stringResource(R.string.earth_speed_kmh), "%,.0f km/h".format(s.earthSpeedKmPerHour))
+    KV(stringResource(R.string.earth_daylight), "%.2f h".format(s.daylightHours))
+    KV(stringResource(R.string.earth_sunrise), s.sunriseTime)
+    KV(stringResource(R.string.earth_sunset), s.sunsetTime)
+    KV(stringResource(R.string.earth_axial_tilt), "%.3f°".format(s.earthAxialTiltDegrees))
+    KV(stringResource(R.string.earth_aurora_kp), if (kp < 0) "—" else "%.2f (%s)".format(kp, Loc.kpActivity(ctx, kp)), highlight = kp >= 5)
+    KV(stringResource(R.string.earth_location), "%.4f°, %.4f°".format(s.latitude, s.longitude))
 }
 
 @Composable
-private fun EventsCard(s: Snapshot) = DashCard("📅 Upcoming Events") {
+private fun EventsCard(s: Snapshot) = DashCard(stringResource(R.string.card_events)) {
+    val ctx = LocalContext.current
     listOf(
-        "Full Moon" to s.daysUntilFullMoon.toLong(),
-        "Summer Solstice" to s.daysUntilSummerSolstice,
-        "Winter Solstice" to s.daysUntilWinterSolstice,
-        "Perihelion" to s.daysUntilPerihelion,
-        "Aphelion" to s.daysUntilAphelion,
+        R.string.ev_full_moon to s.daysUntilFullMoon.toLong(),
+        R.string.ev_summer_solstice to s.daysUntilSummerSolstice,
+        R.string.ev_winter_solstice to s.daysUntilWinterSolstice,
+        R.string.ev_perihelion to s.daysUntilPerihelion,
+        R.string.ev_aphelion to s.daysUntilAphelion,
     ).sortedBy { it.second }.forEach { (n, d) ->
-        KV(n, if (d == 0L) "today" else "$d day${if (d == 1L) "" else "s"}")
+        KV(stringResource(n), Loc.daysCount(ctx, d))
     }
 }
 
 @Composable
-private fun LeoCard(s: Snapshot, u: Units, loading: Boolean) = DashCard("🛰️ LEO (Low Earth Orbit)") {
-    val kmU = if (u == Units.AU) Units.KM else u
-    val l = s.live
-    KV("ISS Altitude", distKm(l.issAltitudeKm, kmU))
-    KV("ISS Crew", num(l.issCrew))
-    KV("Tiangong Altitude", distKm(l.tiangongAltitudeKm, kmU))
-    KV("Hubble Altitude", distKm(l.hubbleAltitudeKm, kmU))
-    KV("Starlink Satellites", num(l.starlink))
-    KV("Amazon Kuiper", num(l.kuiper))
-    KV("Total in Orbit", num(l.totalInOrbit))
-    if (loading) Text("Fetching live data…", style = MaterialTheme.typography.labelSmall)
+private fun SkyCalendarCard(s: Snapshot) = DashCard(stringResource(R.string.card_sky_calendar)) {
+    val ctx = LocalContext.current
+    val today = s.timestamp.toLocalDate()
+    SkyEvents.upcoming(today, 8).forEach { e ->
+        Column(Modifier.fillMaxWidth().padding(bottom = 4.dp)) {
+            KV("${e.icon} ${Loc.eventName(ctx, e)}", "${e.date.format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy"))} · ${Loc.daysText(ctx, e.daysFrom(today))}")
+            Text(Loc.eventDetail(ctx, e), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
 }
 
 @Composable
-private fun PeopleCard(s: Snapshot, loading: Boolean) = DashCard("👨‍🚀 People in Space") {
-    KV("Spacecraft", "Total: ${num(s.live.peopleInSpace)}", header = true)
+private fun LeoCard(s: Snapshot, u: Units, loading: Boolean) = DashCard(stringResource(R.string.card_leo)) {
+    val kmU = if (u == Units.AU) Units.KM else u
+    val l = s.live
+    KV(stringResource(R.string.leo_iss_altitude), distKm(l.issAltitudeKm, kmU))
+    KV(stringResource(R.string.leo_iss_crew), num(l.issCrew))
+    KV(stringResource(R.string.leo_tiangong_altitude), distKm(l.tiangongAltitudeKm, kmU))
+    KV(stringResource(R.string.leo_hubble_altitude), distKm(l.hubbleAltitudeKm, kmU))
+    KV(stringResource(R.string.leo_starlink), num(l.starlink))
+    KV(stringResource(R.string.leo_kuiper), num(l.kuiper))
+    KV(stringResource(R.string.leo_total), num(l.totalInOrbit))
+    if (loading) Text(stringResource(R.string.fetching_live), style = MaterialTheme.typography.labelSmall)
+}
+
+@Composable
+private fun PeopleCard(s: Snapshot, loading: Boolean) = DashCard(stringResource(R.string.card_people)) {
+    KV(stringResource(R.string.people_spacecraft), stringResource(R.string.people_total, num(s.live.peopleInSpace)), header = true)
     if (s.live.crafts.isEmpty()) {
-        Text(if (loading) "Waiting for live data…" else "Unavailable", style = MaterialTheme.typography.bodyMedium)
+        Text(stringResource(if (loading) R.string.waiting_live else R.string.unavailable), style = MaterialTheme.typography.bodyMedium)
     } else {
         s.live.crafts.forEach { (c, n) -> KV(c, n.toString()) }
     }
@@ -231,13 +256,17 @@ private fun PeopleCard(s: Snapshot, loading: Boolean) = DashCard("👨‍🚀 Pe
 
 @Composable
 private fun HistoryCard(state: UiState, onMetric: (Int) -> Unit, onRange: (Int) -> Unit, onExport: () -> Unit) =
-    DashCard("📊 Historical Data", action = { TextButton(onClick = onExport) { Text("↓ CSV") } }) {
+    DashCard(stringResource(R.string.card_history), action = { TextButton(onClick = onExport) { Text("↓ CSV") } }) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Picker(METRICS.map { "${it.group} · ${it.label}" }, state.metricIndex, onMetric, Modifier.weight(1f))
-            Picker(RANGES.map { it.second }, state.rangeIndex, onRange)
+            val ctx = LocalContext.current
+            Picker(METRICS.map { Labels.metric(ctx, it) }, state.metricIndex, onMetric, Modifier.weight(1f))
+            Picker(
+                RANGES.map { r -> r.first?.let { d -> ctx.getString(R.string.range_days, d) } ?: ctx.getString(R.string.range_all) },
+                state.rangeIndex, onRange,
+            )
         }
-        HistoryChart(state.points)
-        Text("${state.points.size} points shown · ${state.stored} snapshots stored on this device",
+        HistoryChart(state.points, emptyText = stringResource(R.string.history_no_data))
+        Text(stringResource(R.string.history_points, state.points.size, state.stored),
             style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 

@@ -46,6 +46,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 4)
     val messages = _messages.asSharedFlow()
 
+    private fun str(id: Int, vararg args: Any) = getApplication<Application>().getString(id, *args)
+
     init {
         WearSync.push(app, _state.value.settings)
         refresh()
@@ -64,7 +66,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun refresh(force: Boolean = false) {
         if (_state.value.refreshing) {
-            _messages.tryEmit("A refresh is already running")
+            _messages.tryEmit(str(R.string.msg_refresh_running))
             return
         }
         _state.update { it.copy(refreshing = true) }
@@ -83,7 +85,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             Alerts.maybeNotify(getApplication(), s)
             if (settings.awtrixEnabled) {
                 val n = Awtrix.pushAll(settings.awtrixHost, s)
-                _messages.tryEmit(if (n > 0) "Pushed $n metrics to Awtrix" else "Awtrix device unreachable")
+                _messages.tryEmit(if (n > 0) str(R.string.msg_awtrix_pushed, n) else str(R.string.msg_awtrix_unreachable))
             }
         }
     }
@@ -114,13 +116,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun populate(days: Int) = viewModelScope.launch {
         val s = _state.value.settings
         val n = withContext(Dispatchers.IO) { history.backfill(days, s.latitude, s.longitude) }
-        _messages.tryEmit("Added $n historical snapshots")
+        _messages.tryEmit(str(R.string.msg_added_snapshots, n))
         loadChart()
     }
 
     fun resetHistory() = viewModelScope.launch {
         withContext(Dispatchers.IO) { history.clear() }
-        _messages.tryEmit("History cleared")
+        _messages.tryEmit(str(R.string.msg_history_cleared))
         loadChart()
     }
 
@@ -131,7 +133,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val csv = toCsv(key, history.query(key, RANGES[st.rangeIndex].first))
             getApplication<Application>().contentResolver.openOutputStream(uri)?.use { it.write(csv.toByteArray()) }
         }
-        _messages.tryEmit("CSV exported")
+        _messages.tryEmit(str(R.string.msg_csv_exported))
     }
 
     override fun onCleared() {
