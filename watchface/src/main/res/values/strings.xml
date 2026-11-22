@@ -1,5 +1,5 @@
 <resources>
-    <string name="watch_face_name">MoonPhase Mission</string>
+    <string name="watch_face_name">Orbitly Mission</string>
     <string name="slot_left">Left</string>
     <string name="slot_right">Right</string>
     <string name="slot_bottom_left">Bottom left</string>

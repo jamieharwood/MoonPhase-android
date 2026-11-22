@@ -1,8 +1,8 @@
-# MoonPhase privacy policy
+# Orbitly privacy policy
 
 *Last updated: 21 November 2026*
 
-MoonPhase (the Android phone app and the Wear OS watch app, package
+Orbitly (the Android phone app and the Wear OS watch app, package
 `io.github.jamieharwood.moonphase`) is an open-source project. This policy explains what
 the app does with information. In short: **it does not collect, sell or share any personal data,
 and it has no accounts, ads or analytics.**
@@ -34,7 +34,7 @@ you enter, which is normally a device on your own home network.
 
 ## Phone ↔ watch
 
-The phone app sends your location and unit choice to the MoonPhase watch app using Google Play
+The phone app sends your location and unit choice to the Orbitly watch app using Google Play
 services' Wearable Data Layer, so the watch can calculate sunrise and sunset for the same place.
 This data goes only to your own paired watch.
 

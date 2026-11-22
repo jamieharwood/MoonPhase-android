@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoonPhase</string>
+    <string name="app_name">Orbitly</string>
     <string name="moon_widget_name">Moon phase</string>
     <string name="moon_widget_description">Tonight\'s Moon, illumination and days to full moon</string>
     <string name="sky_widget_name">Sky tonight</string>

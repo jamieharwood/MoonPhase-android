@@ -1,4 +1,4 @@
-MoonPhase shows tonight's Moon and what is happening in the sky above you, on your phone and your Wear OS watch. Everything astronomical is calculated on your device; live feeds add the aurora forecast and what is in orbit.
+Orbitly shows tonight's Moon and what is happening in the sky above you, on your phone and your Wear OS watch. Everything astronomical is calculated on your device; live feeds add the aurora forecast and what is in orbit.
 
 MOON
 • Phase name, illumination and age, drawn as a moon with a live terminator

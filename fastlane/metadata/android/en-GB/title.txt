@@ -1,1 +1,1 @@
-MoonPhase: Moon & Sky Tracker
+Orbitly: Moon, Sky & Space

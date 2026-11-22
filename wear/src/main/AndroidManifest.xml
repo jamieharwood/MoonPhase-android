@@ -55,7 +55,7 @@
                 android:value="1800" />
         </service>
 
-        <!-- Astronomy complications (used by the MoonPhase watch face; any watch face can pick them). -->
+        <!-- Astronomy complications (used by the Orbitly watch face; any watch face can pick them). -->
         <service
             android:name=".IlluminationComplicationService"
             android:exported="true"

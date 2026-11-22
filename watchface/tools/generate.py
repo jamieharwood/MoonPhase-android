@@ -1,4 +1,4 @@
-"""Generates the MoonPhase Mission watch face (Watch Face Format v1).
+"""Generates the Orbitly Mission watch face (Watch Face Format v1).
 
 Run from the repo root:   python3 watchface/tools/generate.py
 
@@ -9,7 +9,7 @@ Writes:
   watchface/src/main/res/drawable-nodpi/preview.png picker preview (also the app icon)
 
 Design: black, white and greys only, thin lines, condensed upper-case type, a mission-control
-style clock with a UTC readout. Five complication slots default to the MoonPhase watch app's
+style clock with a UTC readout. Five complication slots default to the Orbitly watch app's
 astronomy data sources and fall back to system ones when that app isn't installed.
 """
 import math
