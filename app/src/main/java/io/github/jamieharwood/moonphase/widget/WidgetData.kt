@@ -62,6 +62,7 @@ object WidgetData {
         for ((receiver, widget) in listOf(
             MoonWidgetReceiver::class.java to MoonWidget(),
             SkyWidgetReceiver::class.java to SkyWidget(),
+            SkyEventsWidgetReceiver::class.java to SkyEventsWidget(),
         )) {
             for (id in awm.getAppWidgetIds(ComponentName(ctx, receiver))) {
                 runCatching { widget.update(ctx, glance.getGlanceIdBy(id)) }

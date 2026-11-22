@@ -39,6 +39,34 @@ import kotlin.random.Random
 
 private const val TAU = 2 * PI
 
+/** True when the red night-vision theme is active. */
+val LocalNightMode = androidx.compose.runtime.staticCompositionLocalOf { false }
+
+/** Red-on-black palette for stargazing: no blue or green light, so dark-adapted eyes keep their sensitivity. */
+val NightColorScheme = androidx.compose.material3.darkColorScheme(
+    primary = Color(0xFFFF5252), onPrimary = Color(0xFF200000),
+    secondary = Color(0xFFD84343), onSecondary = Color(0xFF200000),
+    tertiary = Color(0xFFB83030),
+    background = Color(0xFF000000), onBackground = Color(0xFFE04040),
+    surface = Color(0xFF000000), onSurface = Color(0xFFE04040),
+    surfaceVariant = Color(0xFF2A0505), onSurfaceVariant = Color(0xFFB03030),
+    surfaceContainerLowest = Color(0xFF000000), surfaceContainerLow = Color(0xFF140000),
+    surfaceContainer = Color(0xFF1A0000), surfaceContainerHigh = Color(0xFF220303),
+    surfaceContainerHighest = Color(0xFF2A0505),
+    outline = Color(0xFF7F1D1D), outlineVariant = Color(0xFF450A0A),
+    error = Color(0xFFFF8A80), onError = Color(0xFF200000),
+    primaryContainer = Color(0xFF4A0A0A), onPrimaryContainer = Color(0xFFFF8A80),
+    secondaryContainer = Color(0xFF3A0808), onSecondaryContainer = Color(0xFFE04040),
+)
+
+/** Maps any colour to a dim red of the same brightness when night mode is on. */
+@Composable
+private fun nightTone(c: Color): Color {
+    if (!LocalNightMode.current) return c
+    val l = (0.2126f * c.red + 0.7152f * c.green + 0.0722f * c.blue).coerceIn(0f, 1f)
+    return Color(red = 0.15f + 0.65f * l, green = 0f, blue = 0f, alpha = c.alpha)
+}
+
 /** Moon disc with craters, a terminator matching [phase] (0 new … 0.5 full) and twinkling stars. */
 @Composable
 fun MoonGraphic(phase: Double, size: Dp = 200.dp) {
@@ -55,16 +83,22 @@ fun MoonGraphic(phase: Double, size: Dp = 200.dp) {
     val t by rememberInfiniteTransition(label = "twinkle").animateFloat(
         0f, TAU.toFloat() * 10, infiniteRepeatable(tween(60_000, easing = LinearEasing), RepeatMode.Restart), label = "t",
     )
+    val sky = nightTone(Color(0xFF050A1A))
+    val starColor = nightTone(Color(1f, 1f, 0.95f))
+    val disc = nightTone(Color(0xFFEDE6CC))
+    val crater = nightTone(Color(0x8C9E998C))
+    val shadow = nightTone(Color(0xE0080D1A))
+    val rim = nightTone(Color(0x26FFF7D9))
     Canvas(Modifier.size(size).clip(RoundedCornerShape(16.dp))) {
-        drawRect(Color(0xFF050A1A))
+        drawRect(sky)
         for (s in stars) {
             val a = 0.35f + 0.65f * (0.5f + 0.5f * sin(t * 1.7f + s[3]))
-            drawCircle(Color(1f, 1f, 0.95f, a), s[2], Offset(s[0] * this.size.width, s[1] * this.size.height))
+            drawCircle(starColor.copy(alpha = a), s[2], Offset(s[0] * this.size.width, s[1] * this.size.height))
         }
         val c = center
         val r = this.size.minDimension * 0.36f
-        drawCircle(Color(0xFFEDE6CC), r, c)
-        for (k in craters) drawCircle(Color(0x8C9E998C), k[2] * r, Offset(c.x + k[0] * r, c.y + k[1] * r))
+        drawCircle(disc, r, c)
+        for (k in craters) drawCircle(crater, k[2] * r, Offset(c.x + k[0] * r, c.y + k[1] * r))
 
         // Shadow = disc minus lit region, using even-odd fill.
         val tx = cos(TAU * phase).toFloat()
@@ -84,8 +118,8 @@ fun MoonGraphic(phase: Double, size: Dp = 200.dp) {
             }
             close()
         }
-        drawPath(path, Color(0xE0080D1A))
-        drawCircle(Color(0x26FFF7D9), r + 2f, c, style = Stroke(3f))
+        drawPath(path, shadow)
+        drawCircle(rim, r + 2f, c, style = Stroke(3f))
     }
 }
 

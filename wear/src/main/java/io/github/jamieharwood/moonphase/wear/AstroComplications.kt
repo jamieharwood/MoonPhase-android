@@ -13,6 +13,7 @@ import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
 import io.github.jamieharwood.moonphase.Astro
+import io.github.jamieharwood.moonphase.Loc
 import io.github.jamieharwood.moonphase.Snapshot
 import io.github.jamieharwood.moonphase.data.LiveFetcher
 import kotlinx.coroutines.withTimeoutOrNull
@@ -117,8 +118,8 @@ abstract class AstroComplicationService : SuspendingComplicationDataSourceServic
 
 class IlluminationComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings) = AstroValue(
-        "${s.moonIlluminationPercent}%", "LIT",
-        "Moon ${s.moonIlluminationPercent}% illuminated",
+        "${s.moonIlluminationPercent}%", getString(R.string.ac_lit),
+        getString(R.string.ac_illum_desc, s.moonIlluminationPercent),
         Triple(s.moonIlluminationPercent.toFloat(), 0f, 100f),
     )
 }
@@ -127,8 +128,10 @@ class FullMoonComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings): AstroValue {
         val d = s.daysUntilFullMoon
         return AstroValue(
-            if (d == 0) "TODAY" else "${d}D", "FULL",
-            if (d == 0) "Full moon tonight" else "Full moon in $d days",
+            if (d == 0) getString(R.string.ac_today) else getString(R.string.ac_days, d),
+            getString(R.string.ac_full),
+            if (d == 0) getString(R.string.full_moon_tonight)
+            else getString(R.string.full_moon_when, Loc.daysText(this, d.toLong())),
             Triple((29.5f - d).coerceAtLeast(0f), 0f, 29.5f),
         )
     }
@@ -136,7 +139,8 @@ class FullMoonComplicationService : AstroComplicationService() {
 
 class MoonAgeComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings) = AstroValue(
-        "${s.moonAgeDays}D", "AGE", "Moon is ${s.moonAgeDays} days old",
+        getString(R.string.ac_days, s.moonAgeDays), getString(R.string.ac_age),
+        resources.getQuantityString(R.plurals.moon_age_desc, s.moonAgeDays, s.moonAgeDays),
         Triple(s.moonAgeDays.toFloat(), 0f, 29.5f),
     )
 }
@@ -146,7 +150,9 @@ class MoonDistanceComplicationService : AstroComplicationService() {
         val km = s.moonDistanceKm
         val (t, unit) = if (settings.units == "MI") compact(km / Astro.KM_PER_MILE) to "MI" else compact(km) to "KM"
         // Perigee ~356,500 km, apogee ~406,700 km.
-        return AstroValue(t, "MOON $unit", "Moon is %,.0f km away".format(km), Triple(km.toFloat(), 356_500f, 406_700f))
+        return AstroValue(
+            t, getString(R.string.ac_moon_unit, unit), getString(R.string.moon_away_desc, km),
+            Triple(km.toFloat(), 356_500f, 406_700f))
     }
 }
 
@@ -159,15 +165,16 @@ class SunComplicationService : AstroComplicationService() {
         // Show the next event: sunset while the sun is up, otherwise sunrise.
         val up = now >= rise && now < set
         return AstroValue(
-            if (up) set else rise, if (up) "SUNSET" else "SUNRISE",
-            "Sunrise $rise, sunset $set",
+            if (up) set else rise, getString(if (up) R.string.ac_sunset else R.string.ac_sunrise),
+            getString(R.string.sun_desc, rise, set),
         )
     }
 }
 
 class DaylightComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings) = AstroValue(
-        "%.1fH".format(s.daylightHours), "DAYLIGHT", "%.1f hours of daylight".format(s.daylightHours),
+        getString(R.string.ac_hours, s.daylightHours), getString(R.string.ac_daylight),
+        getString(R.string.daylight_desc, s.daylightHours),
         Triple(s.daylightHours.toFloat(), 0f, 24f),
     )
 }
@@ -176,15 +183,18 @@ class SolsticeComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings): AstroValue {
         val winter = s.daysUntilWinterSolstice <= s.daysUntilSummerSolstice
         val d = if (winter) s.daysUntilWinterSolstice else s.daysUntilSummerSolstice
-        val name = if (winter) "Winter" else "Summer"
-        return AstroValue("${d}D", "SOLSTICE", "$name solstice in $d days")
+        val desc = getString(
+            if (winter) R.string.winter_solstice_desc else R.string.summer_solstice_desc,
+            Loc.daysText(this, d),
+        )
+        return AstroValue(getString(R.string.ac_days, d.toInt()), getString(R.string.ac_solstice), desc)
     }
 }
 
 class EarthSpeedComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings) = AstroValue(
         "%.2f".format(s.earthSpeedKmPerSec), "KM/S",
-        "Earth orbits the Sun at %.2f km/s".format(s.earthSpeedKmPerSec),
+        getString(R.string.earth_speed_desc, s.earthSpeedKmPerSec),
         // Aphelion ~29.29 km/s, perihelion ~30.29 km/s.
         Triple(s.earthSpeedKmPerSec.toFloat(), 29.29f, 30.29f),
     )
@@ -193,7 +203,7 @@ class EarthSpeedComplicationService : AstroComplicationService() {
 class VoyagerComplicationService : AstroComplicationService() {
     override fun value(s: Snapshot, settings: WearSettings): AstroValue {
         val (t, unit) = distance(s.voyager1DistanceAu, settings.units)
-        return AstroValue(t, "VGR1 $unit", "Voyager 1 is %.2f AU from Earth".format(s.voyager1DistanceAu))
+        return AstroValue(t, "VGR1 $unit", getString(R.string.voyager_desc, s.voyager1DistanceAu))
     }
 }
 
@@ -201,9 +211,9 @@ class AuroraComplicationService : AstroComplicationService() {
     override val needsLive = true
     override fun value(s: Snapshot, settings: WearSettings): AstroValue {
         val kp = s.live.kp
-        return if (kp < 0) AstroValue(DASH, "KP", "Aurora Kp unavailable", Triple(0f, 0f, 9f))
+        return if (kp < 0) AstroValue(DASH, "KP", getString(R.string.aurora_unavailable), Triple(0f, 0f, 9f))
         else AstroValue(
-            "%.1f".format(kp), "KP", "Aurora Kp %.1f, %s".format(kp, Astro.kpActivity(kp)),
+            "%.1f".format(kp), "KP", getString(R.string.aurora_desc, kp, Loc.kpActivity(this, kp)),
             Triple(kp.toFloat(), 0f, 9f),
         )
     }
@@ -213,10 +223,10 @@ class IssComplicationService : AstroComplicationService() {
     override val needsLive = true
     override fun value(s: Snapshot, settings: WearSettings): AstroValue {
         val km = s.live.issAltitudeKm
-        if (km < 0) return AstroValue(DASH, "ISS", "ISS altitude unavailable")
+        if (km < 0) return AstroValue(DASH, "ISS", getString(R.string.iss_unavailable))
         val mi = settings.units == "MI"
         val v = if (mi) km / Astro.KM_PER_MILE else km
-        return AstroValue("%.0f".format(v), if (mi) "ISS MI" else "ISS KM", "ISS is %.0f km up".format(km))
+        return AstroValue("%.0f".format(v), if (mi) "ISS MI" else "ISS KM", getString(R.string.iss_desc, km))
     }
 }
 
@@ -224,7 +234,7 @@ class CrewComplicationService : AstroComplicationService() {
     override val needsLive = true
     override fun value(s: Snapshot, settings: WearSettings): AstroValue {
         val n = s.live.peopleInSpace
-        return if (n < 0) AstroValue(DASH, "IN SPACE", "People in space unavailable")
-        else AstroValue("$n", "IN SPACE", "$n people in space")
+        return if (n < 0) AstroValue(DASH, getString(R.string.ac_in_space), getString(R.string.crew_unavailable))
+        else AstroValue("$n", getString(R.string.ac_in_space), resources.getQuantityString(R.plurals.crew_desc, n, n))
     }
 }

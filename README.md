@@ -16,6 +16,7 @@ and the **Orbitly Mission watch face**.
 | 🚀 **Deep Space Probes** | Hubble, James Webb, Voyager 1 & 2, New Horizons, light time to the Voyagers |
 | 🌍 **Earth** | Orbital speed, daylight hours, sunrise/sunset (UTC), axial tilt, NOAA aurora Kp index (shown in red during a storm) |
 | 📅 **Upcoming Events** | Full moon, solstices, perihelion and aphelion, sorted by days remaining |
+| 🌠 **Meteor Showers & Eclipses** | Next meteor shower peaks (with Moon interference) and solar/lunar eclipses to 2030 |
 | 🛰️ **LEO** | ISS / Tiangong / Hubble altitudes from live TLEs, Starlink and Kuiper counts, total objects in orbit, ISS crew |
 | 👨‍🚀 **People in Space** | Number of people on each spacecraft (★ = docked to ISS) |
 | 📊 **Historical Data** | Chart of any of the 35 stored metrics over 7 days to all time, CSV export, *Populate past* backfill, reset |
@@ -28,14 +29,17 @@ Other features:
 - **Background refresh**: a WorkManager job runs about every 6 hours when online.
   It saves history (at most one snapshot per 12-hour UTC window, as in the original),
   sends notifications for aurora storms (Kp ≥ 5) and the full moon tonight or tomorrow, and pushes to Awtrix if enabled.
-- **Settings**: location, history on/off and retention, notifications, Awtrix clock push.
+- **Settings**: location, dark red night mode (also in the menu), history on/off and retention, notifications, Awtrix clock push.
+- **Languages**: English, Spanish, German, French and Portuguese, following the system language (Android 13+ per-app language setting too).
 - **Home-screen widgets**: long-press the home screen → *Widgets* → *Orbitly*:
   - **Moon phase** (2×2): tonight's Moon, phase name, illumination and days to full moon.
   - **Sky tonight** (4×2): the Moon with its phase, % lit and age, the next full moon,
     sunrise–sunset in local time, aurora Kp (red during a storm) and, when taller, the ISS
     altitude, people in space and the Moon's distance.
 
-  Both are resizable, open the app when tapped, redraw every hour, and update straight away
+  - **Sky calendar**: the next meteor showers and eclipses with a day countdown.
+
+  All are resizable, open the app when tapped, redraw every hour, and update straight away
   when the app or the background job refreshes.
 
   ![Moon phase and Sky tonight widgets](docs/widgets.png)

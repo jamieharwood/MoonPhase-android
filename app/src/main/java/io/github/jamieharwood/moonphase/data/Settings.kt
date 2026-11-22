@@ -10,6 +10,7 @@ data class Settings(
     val longitude: Double = Astro.DEFAULT_LONGITUDE,
     val units: Units = Units.AU,
     val asciiMoon: Boolean = false,
+    val nightMode: Boolean = false,
     val historyEnabled: Boolean = true,
     val retentionDays: Int = 0,
     val notifications: Boolean = true,
@@ -27,6 +28,7 @@ data class Settings(
                 longitude = Astro.validLon(p.getFloat("longitude", d.longitude.toFloat()).toDouble()),
                 units = runCatching { Units.valueOf(p.getString("units", d.units.name)!!) }.getOrDefault(Units.AU),
                 asciiMoon = p.getBoolean("asciiMoon", d.asciiMoon),
+                nightMode = p.getBoolean("nightMode", d.nightMode),
                 historyEnabled = p.getBoolean("historyEnabled", d.historyEnabled),
                 retentionDays = p.getInt("retentionDays", d.retentionDays),
                 notifications = p.getBoolean("notifications", d.notifications),
@@ -42,6 +44,7 @@ data class Settings(
             .putFloat("longitude", longitude.toFloat())
             .putString("units", units.name)
             .putBoolean("asciiMoon", asciiMoon)
+            .putBoolean("nightMode", nightMode)
             .putBoolean("historyEnabled", historyEnabled)
             .putInt("retentionDays", retentionDays)
             .putBoolean("notifications", notifications)

@@ -60,7 +60,7 @@
             android:name=".IlluminationComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Moon illumination"
+            android:label="@string/lbl_illumination"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -72,7 +72,7 @@
             android:name=".FullMoonComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Days to full moon"
+            android:label="@string/lbl_full_moon"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -84,7 +84,7 @@
             android:name=".MoonAgeComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Moon age"
+            android:label="@string/lbl_moon_age"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -96,7 +96,7 @@
             android:name=".MoonDistanceComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Moon distance"
+            android:label="@string/lbl_moon_distance"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -108,7 +108,7 @@
             android:name=".SunComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Next sunrise / sunset"
+            android:label="@string/lbl_sun"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -120,7 +120,7 @@
             android:name=".DaylightComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Daylight hours"
+            android:label="@string/lbl_daylight"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -132,7 +132,7 @@
             android:name=".SolsticeComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Days to solstice"
+            android:label="@string/lbl_solstice"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -144,7 +144,7 @@
             android:name=".EarthSpeedComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Earth orbital speed"
+            android:label="@string/lbl_earth_speed"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -156,7 +156,7 @@
             android:name=".VoyagerComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Voyager 1 distance"
+            android:label="@string/lbl_voyager"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -168,7 +168,7 @@
             android:name=".AuroraComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="Aurora Kp index"
+            android:label="@string/lbl_aurora"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -180,7 +180,7 @@
             android:name=".IssComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="ISS altitude"
+            android:label="@string/lbl_iss"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
@@ -192,7 +192,7 @@
             android:name=".CrewComplicationService"
             android:exported="true"
             android:icon="@drawable/ic_moon"
-            android:label="People in space"
+            android:label="@string/lbl_crew"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
