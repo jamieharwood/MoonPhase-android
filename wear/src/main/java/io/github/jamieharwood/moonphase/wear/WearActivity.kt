@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.TitleCard
 import io.github.jamieharwood.moonphase.Astro
+import io.github.jamieharwood.moonphase.Loc
 import io.github.jamieharwood.moonphase.Snapshot
 import io.github.jamieharwood.moonphase.data.LiveFetcher
 import kotlinx.coroutines.delay
@@ -91,55 +93,59 @@ fun WearApp() {
         ScalingLazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
             item { MoonDisc(snapshot.moonPhaseFraction, Modifier.size(96.dp)) }
             item {
-                Text(snapshot.moonPhaseName, style = MaterialTheme.typography.title3,
+                Text(Loc.phaseName(ctx, snapshot.moonPhaseName), style = MaterialTheme.typography.title3,
                     fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             }
             item {
-                Text("${snapshot.moonIlluminationPercent}% lit · ${snapshot.moonAgeDays} days old",
+                Text(ctx.resources.getQuantityString(R.plurals.lit_age, snapshot.moonAgeDays,
+                    snapshot.moonIlluminationPercent, snapshot.moonAgeDays),
                     style = MaterialTheme.typography.caption2, textAlign = TextAlign.Center)
             }
             item {
                 val d = snapshot.daysUntilFullMoon
-                InfoCard("🌕 Full moon", if (d == 0) "Tonight" else "In $d day${if (d == 1) "" else "s"}")
+                InfoCard(stringResource(R.string.card_full_moon),
+                    if (d == 0) stringResource(R.string.tonight) else Loc.daysText(ctx, d.toLong()))
             }
             item { SunCard(snapshot, settings) }
             item {
                 val kp = snapshot.live.kp
-                InfoCard("🌌 Aurora", if (kp < 0) "—" else "Kp %.1f · %s".format(kp, Astro.kpActivity(kp)),
+                InfoCard(stringResource(R.string.card_aurora),
+                    if (kp < 0) "—" else "Kp %.1f · %s".format(kp, Loc.kpActivity(ctx, kp)),
                     highlight = kp >= 5)
             }
             item {
                 val l = snapshot.live
-                InfoCard("🛰️ ISS",
-                    (if (l.issAltitudeKm < 0) "—" else "%,.0f km up".format(l.issAltitudeKm)) +
-                        (if (l.issCrew < 0) "" else " · ${l.issCrew} crew"))
+                InfoCard(stringResource(R.string.card_iss),
+                    (if (l.issAltitudeKm < 0) "—" else ctx.getString(R.string.iss_km_up, l.issAltitudeKm)) +
+                        (if (l.issCrew < 0) "" else " · " + ctx.getString(R.string.iss_crew, l.issCrew)))
             }
             item {
                 val n = snapshot.live.peopleInSpace
-                InfoCard("👨‍🚀 People in space", if (n < 0) "—" else n.toString(),
+                InfoCard(stringResource(R.string.card_people), if (n < 0) "—" else n.toString(),
                     snapshot.live.crafts.entries.joinToString("\n") { "${it.key}: ${it.value}" }.ifEmpty { null })
             }
-            item { InfoCard("🌙 Moon distance", dist(snapshot.moonDistanceKm / Astro.KM_PER_AU, settings.units, km = true)) }
+            item { InfoCard(stringResource(R.string.card_moon_distance), dist(snapshot.moonDistanceKm / Astro.KM_PER_AU, settings.units, km = true)) }
             item { EventsCard(snapshot) }
             item {
-                InfoCard("🚀 Voyager 1", dist(snapshot.voyager1DistanceAu, settings.units),
-                    "Light from Sun: ${snapshot.lightTimes["Voyager 1"]}")
+                InfoCard(stringResource(R.string.card_voyager), dist(snapshot.voyager1DistanceAu, settings.units),
+                    stringResource(R.string.light_from_sun, snapshot.lightTimes["Voyager 1"] ?: "—"))
             }
             item {
-                InfoCard("☀️ Earth", "%.2f km/s".format(snapshot.earthSpeedKmPerSec),
-                    "Sun: ${dist(snapshot.heliocentricAu.getValue("Earth"), settings.units)}\n" +
-                        "Tilt %.3f°".format(snapshot.earthAxialTiltDegrees))
+                InfoCard(stringResource(R.string.card_earth), "%.2f km/s".format(snapshot.earthSpeedKmPerSec),
+                    stringResource(R.string.earth_sun_distance,
+                        dist(snapshot.heliocentricAu.getValue("Earth"), settings.units)) + "\n" +
+                        stringResource(R.string.earth_tilt, snapshot.earthAxialTiltDegrees))
             }
             item {
                 CompactChip(
                     onClick = { refresh(true) },
-                    label = { Text(if (loading) "Updating…" else "Refresh") },
+                    label = { Text(stringResource(if (loading) R.string.updating else R.string.refresh)) },
                     colors = ChipDefaults.secondaryChipColors(),
                 )
             }
             item {
                 Text(
-                    if (settings.fromPhone) "Location from phone" else "Greenwich · open phone app to sync",
+                    stringResource(if (settings.fromPhone) R.string.location_phone else R.string.location_default),
                     style = MaterialTheme.typography.caption3, textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
@@ -168,25 +174,25 @@ private fun InfoCard(title: String, value: String, detail: String? = null, highl
 
 @Composable
 private fun SunCard(s: Snapshot, settings: WearSettings) = InfoCard(
-    "🌅 Sun (UTC)",
+    stringResource(R.string.card_sun),
     "${s.sunriseTime} – ${s.sunsetTime}",
-    "%.1f h daylight\n%.2f°, %.2f°".format(s.daylightHours, settings.latitude, settings.longitude),
+    stringResource(R.string.daylight_detail, s.daylightHours) + "\n%.2f°, %.2f°".format(settings.latitude, settings.longitude),
 )
 
 @Composable
 private fun EventsCard(s: Snapshot) {
     val events = listOf(
-        "Winter solstice" to s.daysUntilWinterSolstice,
-        "Summer solstice" to s.daysUntilSummerSolstice,
-        "Perihelion" to s.daysUntilPerihelion,
-        "Aphelion" to s.daysUntilAphelion,
+        stringResource(R.string.event_winter_solstice) to s.daysUntilWinterSolstice,
+        stringResource(R.string.event_summer_solstice) to s.daysUntilSummerSolstice,
+        stringResource(R.string.event_perihelion) to s.daysUntilPerihelion,
+        stringResource(R.string.event_aphelion) to s.daysUntilAphelion,
     ).sortedBy { it.second }
-    TitleCard(onClick = {}, title = { Text("📅 Upcoming") }, modifier = Modifier.fillMaxWidth()) {
+    TitleCard(onClick = {}, title = { Text(stringResource(R.string.card_upcoming)) }, modifier = Modifier.fillMaxWidth()) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             events.forEach { (name, d) ->
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(name, style = MaterialTheme.typography.caption2, modifier = Modifier.weight(1f))
-                    Text("$d d", style = MaterialTheme.typography.caption1, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.days_short, d.toInt()), style = MaterialTheme.typography.caption1, fontWeight = FontWeight.Bold)
                 }
             }
         }

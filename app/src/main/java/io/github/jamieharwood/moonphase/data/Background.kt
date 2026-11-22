@@ -31,8 +31,8 @@ object Alerts {
 
     fun ensureChannel(ctx: Context) {
         if (Build.VERSION.SDK_INT >= 26) {
-            val ch = NotificationChannel(CHANNEL, "Sky alerts", NotificationManager.IMPORTANCE_DEFAULT)
-            ch.description = "Aurora storms and full moon"
+            val ch = NotificationChannel(CHANNEL, ctx.getString(R.string.notif_channel_name), NotificationManager.IMPORTANCE_DEFAULT)
+            ch.description = ctx.getString(R.string.notif_channel_desc)
             ctx.getSystemService(NotificationManager::class.java).createNotificationChannel(ch)
         }
     }
@@ -45,10 +45,12 @@ object Alerts {
         ) return
         ensureChannel(ctx)
         val alerts = buildList {
-            if (s.live.kp >= 5) add(Triple(1, "🌌 Aurora Alert — Geomagnetic Storm!",
-                "Kp %.1f: visible aurora may be possible at mid-latitudes.".format(s.live.kp)))
-            if (s.daysUntilFullMoon == 0) add(Triple(2, "🌕 Full Moon Tonight!", "${s.moonIlluminationPercent}% illuminated."))
-            else if (s.daysUntilFullMoon == 1) add(Triple(3, "🌔 Full Moon Tomorrow", "${s.moonIlluminationPercent}% illuminated tonight."))
+            if (s.live.kp >= 5) add(Triple(1, ctx.getString(R.string.notif_aurora_title),
+                ctx.getString(R.string.notif_aurora_body, s.live.kp)))
+            if (s.daysUntilFullMoon == 0) add(Triple(2, ctx.getString(R.string.notif_full_tonight_title),
+                ctx.getString(R.string.notif_full_tonight_body, s.moonIlluminationPercent)))
+            else if (s.daysUntilFullMoon == 1) add(Triple(3, ctx.getString(R.string.notif_full_tomorrow_title),
+                ctx.getString(R.string.notif_full_tomorrow_body, s.moonIlluminationPercent)))
         }
         val prefs = ctx.getSharedPreferences("alerts", Context.MODE_PRIVATE)
         val open = PendingIntent.getActivity(ctx, 0, Intent(ctx, MainActivity::class.java),

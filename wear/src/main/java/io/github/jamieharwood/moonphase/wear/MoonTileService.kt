@@ -16,6 +16,7 @@ import androidx.wear.tiles.TileService
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import io.github.jamieharwood.moonphase.Astro
+import io.github.jamieharwood.moonphase.Loc
 
 /** Tile: phase name, illumination ring and days to the next full moon. Tap to open the app. */
 class MoonTileService : TileService() {
@@ -47,16 +48,17 @@ class MoonTileService : TileService() {
                     .build(),
             )
             .setPrimaryLabelTextContent(
-                Text.Builder(this, "${s.moonIlluminationPercent}% lit")
+                Text.Builder(this, getString(R.string.lit_percent, s.moonIlluminationPercent))
                     .setTypography(Typography.TYPOGRAPHY_CAPTION1).setColor(moonColor).build(),
             )
             .setContent(
-                Text.Builder(this, s.moonPhaseName)
+                Text.Builder(this, Loc.phaseName(this, s.moonPhaseName))
                     .setTypography(Typography.TYPOGRAPHY_TITLE2).setColor(argb(0xFFFFFFFF.toInt()))
                     .setMaxLines(2).build(),
             )
             .setSecondaryLabelTextContent(
-                Text.Builder(this, if (d == 0) "Full moon tonight" else "Full moon in $d d")
+                Text.Builder(this, if (d == 0) getString(R.string.full_moon_tonight)
+                    else getString(R.string.full_moon_when, Loc.daysText(this, d.toLong())))
                     .setTypography(Typography.TYPOGRAPHY_CAPTION1).setColor(argb(0xFFBBBBBB.toInt())).build(),
             )
             .build()

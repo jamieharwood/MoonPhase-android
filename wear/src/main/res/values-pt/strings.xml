@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Orbitly</string>
+    <string name="tile_label">Fase da Lua</string>
+    <string name="complication_label">Fase da Lua</string>
+
+    <string name="lbl_illumination">Iluminação da Lua</string>
+    <string name="lbl_full_moon">Dias até a lua cheia</string>
+    <string name="lbl_moon_age">Idade da Lua</string>
+    <string name="lbl_moon_distance">Distância da Lua</string>
+    <string name="lbl_sun">Próximo nascer / pôr do sol</string>
+    <string name="lbl_daylight">Horas de luz do dia</string>
+    <string name="lbl_solstice">Dias até o solstício</string>
+    <string name="lbl_earth_speed">Velocidade orbital da Terra</string>
+    <string name="lbl_voyager">Distância da Voyager 1</string>
+    <string name="lbl_aurora">Índice Kp de auroras</string>
+    <string name="lbl_iss">Altitude da ISS</string>
+    <string name="lbl_crew">Pessoas no espaço</string>
+
+    <string name="lit_percent">%1$d%% iluminada</string>
+    <plurals name="lit_age">
+        <item quantity="one">%1$d%% iluminada · %2$d dia</item>
+        <item quantity="other">%1$d%% iluminada · %2$d dias</item>
+    </plurals>
+    <string name="card_full_moon">🌕 Lua cheia</string>
+    <string name="tonight">Hoje à noite</string>
+    <string name="card_sun">🌅 Sol (UTC)</string>
+    <string name="daylight_detail">%1$.1f h de luz do dia</string>
+    <string name="card_aurora">🌌 Aurora</string>
+    <string name="card_iss">🛰️ ISS</string>
+    <string name="iss_km_up">%1$,.0f km de altitude</string>
+    <string name="iss_crew">%1$d tripulantes</string>
+    <string name="card_people">👨‍🚀 Pessoas no espaço</string>
+    <string name="card_moon_distance">🌙 Distância da Lua</string>
+    <string name="card_upcoming">📅 Próximos</string>
+    <string name="event_winter_solstice">Solstício de inverno</string>
+    <string name="event_summer_solstice">Solstício de verão</string>
+    <string name="event_perihelion">Periélio</string>
+    <string name="event_aphelion">Afélio</string>
+    <string name="days_short">%1$d d</string>
+    <string name="card_voyager">🚀 Voyager 1</string>
+    <string name="light_from_sun">Luz do Sol: %1$s</string>
+    <string name="card_earth">☀️ Terra</string>
+    <string name="earth_sun_distance">Sol: %1$s</string>
+    <string name="earth_tilt">Inclinação %1$.3f°</string>
+    <string name="updating">Atualizando…</string>
+    <string name="refresh">Atualizar</string>
+    <string name="location_phone">Localização do celular</string>
+    <string name="location_default">Greenwich · abra o app do celular para sincronizar</string>
+
+    <string name="full_moon_tonight">Lua cheia hoje à noite</string>
+    <string name="full_moon_when">Lua cheia %1$s</string>
+    <string name="moon_comp_desc">%1$s, %2$d%% iluminada, lua cheia %3$s</string>
+    <string name="moon_comp_full">Cheia</string>
+    <string name="days_compact">%1$dd</string>
+    <string name="moon_comp_long_title">%1$d%% · cheia em %2$s</string>
+
+    <string name="ac_lit">ILUM</string>
+    <string name="ac_illum_desc">Lua %1$d%% iluminada</string>
+    <string name="ac_today">HOJE</string>
+    <string name="ac_days">%1$dD</string>
+    <string name="ac_full">CHEIA</string>
+    <string name="ac_age">IDADE</string>
+    <plurals name="moon_age_desc">
+        <item quantity="one">A Lua tem %1$d dia</item>
+        <item quantity="other">A Lua tem %1$d dias</item>
+    </plurals>
+    <string name="ac_moon_unit">LUA %1$s</string>
+    <string name="moon_away_desc">A Lua está a %1$,.0f km</string>
+    <string name="ac_sunset">PÔR SOL</string>
+    <string name="ac_sunrise">NASCER</string>
+    <string name="sun_desc">Nascer do sol %1$s, pôr do sol %2$s</string>
+    <string name="ac_hours">%1$.1fH</string>
+    <string name="ac_daylight">LUZ DIA</string>
+    <string name="daylight_desc">%1$.1f horas de luz do dia</string>
+    <string name="ac_solstice">SOLSTÍCIO</string>
+    <string name="winter_solstice_desc">Solstício de inverno %1$s</string>
+    <string name="summer_solstice_desc">Solstício de verão %1$s</string>
+    <string name="earth_speed_desc">A Terra orbita o Sol a %1$.2f km/s</string>
+    <string name="voyager_desc">A Voyager 1 está a %1$.2f AU da Terra</string>
+    <string name="aurora_unavailable">Kp de auroras indisponível</string>
+    <string name="aurora_desc">Kp de auroras %1$.1f, %2$s</string>
+    <string name="iss_unavailable">Altitude da ISS indisponível</string>
+    <string name="iss_desc">A ISS está a %1$.0f km de altitude</string>
+    <string name="ac_in_space">NO ESPAÇO</string>
+    <string name="crew_unavailable">Pessoas no espaço indisponível</string>
+    <plurals name="crew_desc">
+        <item quantity="one">%1$d pessoa no espaço</item>
+        <item quantity="other">%1$d pessoas no espaço</item>
+    </plurals>
+</resources>

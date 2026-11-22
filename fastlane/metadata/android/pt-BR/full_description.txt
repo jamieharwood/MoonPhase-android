@@ -1,0 +1,44 @@
+O Orbitly mostra a Lua desta noite e o que acontece no céu acima de você, no celular e no relógio Wear OS. Todos os cálculos astronômicos são feitos no seu dispositivo; dados ao vivo trazem a previsão de auroras e o que está em órbita.
+
+LUA
+• Nome da fase, iluminação e idade, com uma Lua desenhada e seu terminador
+• Dias até a próxima lua cheia e distância atual Terra–Lua
+
+TERRA E SOL
+• Nascer e pôr do sol e horas de luz para a sua localização
+• Velocidade orbital e inclinação axial da Terra
+• Contagem regressiva para solstícios, periélio e afélio
+
+CALENDÁRIO DO CÉU
+• Próximas chuvas de meteoros com data do pico e interferência da Lua
+• Eclipses solares e lunares até 2030
+• Widget de calendário do céu para a tela inicial
+
+AURORA
+• Índice Kp planetário da NOAA, destacado durante tempestades geomagnéticas
+• Notificação opcional quando há uma tempestade (Kp 5 ou mais)
+
+ESPAÇO
+• Altitudes da ISS, Tiangong e Hubble com dados orbitais ao vivo
+• Quantidade de satélites Starlink e Kuiper e total de objetos rastreados
+• Quem está no espaço agora, por nave
+• Distâncias até os planetas com tempo-luz, e até Voyager 1 e 2, New Horizons, Hubble e James Webb
+
+HISTÓRICO
+• Guarda um registro a cada 12 horas e mostra 35 métricas por uma semana, um mês, um ano ou todo o período
+• Exporte os dados em CSV
+
+APP PARA WEAR OS
+• Lua, sol, aurora, ISS e mais, feitos para telas redondas
+• Tile de fase lunar com anel de iluminação
+• Complicação de mostrador com iluminação, dias até a lua cheia ou nome da fase
+• Funciona sozinho; o celular envia sua localização e unidades
+
+TAMBÉM
+• Distâncias em UA, quilômetros ou milhas
+• Modo noturno vermelho-escuro que protege a visão noturna
+• Disponível em inglês, espanhol, alemão, francês e português
+• Cores Material You
+• Envio opcional para um relógio LED Awtrix da sua rede doméstica
+
+Sem conta, sem anúncios, sem rastreamento. Você digita sua localização e ela nunca sai dos seus dispositivos.

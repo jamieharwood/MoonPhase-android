@@ -1,0 +1,44 @@
+Orbitly affiche la Lune de ce soir et ce qui se passe dans le ciel au-dessus de vous, sur votre téléphone et votre montre Wear OS. Tous les calculs astronomiques sont faits sur votre appareil ; les données en direct ajoutent les prévisions d'aurores et ce qui est en orbite.
+
+LUNE
+• Nom de la phase, illumination et âge, avec une Lune dessinée et son terminateur
+• Jours avant la prochaine pleine Lune et distance Terre–Lune actuelle
+
+TERRE ET SOLEIL
+• Lever, coucher du soleil et durée du jour selon votre position
+• Vitesse orbitale et inclinaison axiale de la Terre
+• Compte à rebours des solstices, du périhélie et de l'aphélie
+
+CALENDRIER DU CIEL
+• Prochaines pluies d'étoiles filantes avec date du maximum et gêne due à la Lune
+• Éclipses solaires et lunaires jusqu'en 2030
+• Widget calendrier du ciel pour l'écran d'accueil
+
+AURORE
+• Indice Kp planétaire de la NOAA, mis en évidence lors des tempêtes géomagnétiques
+• Notification facultative en cas de tempête (Kp 5 ou plus)
+
+ESPACE
+• Altitudes de l'ISS, de Tiangong et de Hubble à partir de données orbitales en direct
+• Nombre de satellites Starlink et Kuiper et total des objets suivis
+• Qui est dans l'espace en ce moment, par vaisseau
+• Distances aux planètes avec temps-lumière, et à Voyager 1 et 2, New Horizons, Hubble et James Webb
+
+HISTORIQUE
+• Enregistre un instantané toutes les 12 heures et trace 35 mesures sur une semaine, un mois, un an ou tout l'historique
+• Export des données en CSV
+
+APPLICATION WEAR OS
+• Lune, soleil, aurore, ISS et plus, adaptés aux écrans ronds
+• Tuile de phase lunaire avec anneau d'illumination
+• Complication de cadran : illumination, jours avant la pleine Lune ou nom de la phase
+• Fonctionne seule ; le téléphone lui envoie votre position et vos unités
+
+AUSSI
+• Distances en UA, kilomètres ou miles
+• Mode nuit rouge foncé qui préserve la vision nocturne
+• Disponible en anglais, espagnol, allemand, français et portugais
+• Couleurs Material You
+• Envoi facultatif vers une horloge LED Awtrix de votre réseau domestique
+
+Pas de compte, pas de publicité, pas de suivi. Vous saisissez vous-même votre position, elle ne quitte jamais vos appareils.
