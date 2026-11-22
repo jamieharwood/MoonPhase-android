@@ -191,6 +191,10 @@ A black-and-white, mission-control style digital watch face, in the `watchface` 
   ISS altitude and the next sunrise/sunset from the Orbitly watch app. When that app isn't
   installed they fall back to battery, date, steps and sunrise/sunset. Tap and hold the watch face
   → *Customise* to change any of them.
+- Free and Pro: the face itself is free, and shows the time, date and Moon for everyone. The
+  Orbitly complications are part of Orbitly Pro: until Pro is unlocked in the phone app they send
+  `PRO` and the face hides those slots (other watch faces show them as *PRO / LOCKED*). System
+  complications chosen in *Customise* always show.
 - Always-on mode dims everything and hides the seconds arc.
 
 It uses Google's **Watch Face Format** (required for new watch faces on Play since January 2026),
