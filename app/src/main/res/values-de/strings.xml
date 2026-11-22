@@ -167,4 +167,29 @@
     <string name="widget_in_space">%1$d im All</string>
     <string name="widget_moon_away">🌙 %1$s km entfernt</string>
     <string name="widget_calendar_title">📅 Himmelskalender</string>
+
+    <!-- Orbitly Pro -->
+    <string name="menu_pro">Orbitly Pro…</string>
+    <string name="pro_intro">Ein einmaliger Kauf schaltet frei:</string>
+    <string name="pro_owned">Pro ist freigeschaltet. Danke, dass du Orbitly unterstützt!</string>
+    <string name="pro_feat_widgets">Startbildschirm-Widgets</string>
+    <string name="pro_feat_calendar">Kalender für Meteorströme und Finsternisse</string>
+    <string name="pro_feat_watch">Komplikationen und Kachel auf der Uhr</string>
+    <string name="pro_feat_night">Nachtmodus (rotes Licht)</string>
+    <string name="pro_feat_history">Verlaufsdiagramme und CSV-Export</string>
+    <string name="pro_buy">Für %1$s kaufen</string>
+    <string name="pro_buy_noprice">Kaufen</string>
+    <string name="pro_restore">Kauf wiederherstellen</string>
+    <string name="pro_pending">Deine Zahlung steht noch aus. Pro wird freigeschaltet, sobald sie abgeschlossen ist.</string>
+    <string name="pro_unavailable">Google Play ist gerade nicht verfügbar, daher kann Pro nicht gekauft werden.</string>
+    <string name="pro_part_of">Teil von Orbitly Pro</string>
+    <string name="pro_unlock">Freischalten</string>
+    <string name="pro_calendar_teaser">Alle Meteorstrom-Maxima und Finsternisse des kommenden Jahres, mit der jeweiligen Mondhelligkeit.</string>
+    <string name="pro_history_teaser">Diagramme zu Mond, Planeten und Live-Daten im Zeitverlauf, mit CSV-Export. Messwerte werden weiter gespeichert und sind nach dem Freischalten da.</string>
+    <string name="pro_msg_unlocked">Orbitly Pro freigeschaltet. Danke!</string>
+    <string name="pro_msg_restored">Orbitly Pro wiederhergestellt</string>
+    <string name="pro_msg_not_found">Kein Orbitly-Pro-Kauf für dieses Google-Konto gefunden</string>
+    <string name="pro_msg_error">Google Play konnte den Vorgang nicht abschließen. Bitte versuche es erneut.</string>
+    <string name="close">Schließen</string>
+    <string name="widget_locked">Zum Freischalten tippen</string>
 </resources>

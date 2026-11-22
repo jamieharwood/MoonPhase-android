@@ -50,12 +50,19 @@ abstract class AstroComplicationService : SuspendingComplicationDataSourceServic
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
         val settings = WearSettings.load(this)
+        if (!settings.pro) return build(request.complicationType, locked())
         var s = Astro.compute(latitude = settings.latitude, longitude = settings.longitude)
         if (needsLive) {
             withTimeoutOrNull(20_000) { LiveFetcher.fetch() }?.let { s = s.copy(live = it) }
         }
         return build(request.complicationType, value(s, settings))
     }
+
+    /** Shown until Orbitly Pro is unlocked in the phone app; tapping opens the watch app. */
+    private fun locked() = AstroValue(
+        getString(R.string.pro_short), getString(R.string.pro_short_title), getString(R.string.pro_comp_desc),
+        Triple(0f, 0f, 1f),
+    )
 
     override fun getPreviewData(type: ComplicationType): ComplicationData? {
         val s = Astro.compute(ZonedDateTime.parse("2026-11-21T22:10:00Z"))

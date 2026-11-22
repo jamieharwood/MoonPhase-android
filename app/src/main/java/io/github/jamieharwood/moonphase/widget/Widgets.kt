@@ -2,6 +2,9 @@ package io.github.jamieharwood.moonphase.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
@@ -13,6 +16,8 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.LocalSize
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -42,6 +47,7 @@ import io.github.jamieharwood.moonphase.Loc
 import io.github.jamieharwood.moonphase.R
 import io.github.jamieharwood.moonphase.MainActivity
 import io.github.jamieharwood.moonphase.Snapshot
+import io.github.jamieharwood.moonphase.data.Pro
 import io.github.jamieharwood.moonphase.SkyEvents
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -60,13 +66,33 @@ private fun fullMoonText(ctx: Context, s: Snapshot): String = when (val d = s.da
     else -> ctx.getString(R.string.widget_full_in, d)
 }
 
+private val SHOW_PRO = ActionParameters.Key<Boolean>(MainActivity.EXTRA_SHOW_PRO)
+
 @Composable
-private fun WidgetFrame(content: @Composable () -> Unit) {
+private fun WidgetFrame(locked: Boolean = false, content: @Composable () -> Unit) {
     Box(
         GlanceModifier.fillMaxSize().background(NIGHT).cornerRadius(20.dp).padding(10.dp)
-            .clickable(actionStartActivity<MainActivity>()),
+            .clickable(actionStartActivity<MainActivity>(actionParametersOf(SHOW_PRO to locked))),
         contentAlignment = Alignment.Center,
     ) { content() }
+}
+
+/** Shown instead of the widget's content until Orbitly Pro is unlocked; tapping opens the Pro dialog. */
+@Composable
+private fun LockedContent(s: Snapshot?) {
+    val ctx = LocalContext.current
+    val size = LocalSize.current
+    WidgetFrame(locked = true) {
+        Column(GlanceModifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically) {
+            if (s != null && size.height >= 110.dp) {
+                MoonImage(s, min(size.width.value - 20, size.height.value - 20 - 44).toInt().coerceIn(32, 96))
+                Spacer(GlanceModifier.height(4.dp))
+            }
+            Line("🔒 " + ctx.getString(R.string.pro_name), 13.sp, WHITE, bold = true, center = true)
+            Line(ctx.getString(R.string.widget_locked), 11.sp, MOON, center = true)
+        }
+    }
 }
 
 @Composable
@@ -98,7 +124,7 @@ class MoonWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val s = WidgetData.snapshot(context)
-        provideContent { MoonContent(s) }
+        provideContent { if (proState(context)) MoonContent(s) else LockedContent(s) }
     }
 
     @Composable
@@ -132,7 +158,7 @@ class SkyWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val s = WidgetData.snapshot(context)
-        provideContent { SkyContent(s) }
+        provideContent { if (proState(context)) SkyContent(s) else LockedContent(s) }
     }
 
     @Composable
@@ -176,7 +202,7 @@ class SkyEventsWidget : GlanceAppWidget() {
     override val sizeMode = SizeMode.Exact
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        provideContent { EventsContent() }
+        provideContent { if (proState(context)) EventsContent() else LockedContent(null) }
     }
 
     @Composable
@@ -208,4 +234,15 @@ class MoonWidgetReceiver : GlanceAppWidgetReceiver() {
 
 class SkyWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = SkyWidget()
+}
+
+/**
+ * Pro flag as Compose state. A widget session outlives a single update, so reading the flag once
+ * in provideGlance would keep showing the old state after Pro is bought or locked again.
+ */
+@Composable
+private fun proState(context: Context): Boolean {
+    val flow = remember { Pro.ownedFlow(context) }
+    val pro by flow.collectAsState(initial = Pro.isPro(context))
+    return pro
 }

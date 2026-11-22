@@ -89,4 +89,13 @@
         <item quantity="one">%1$d Mensch im All</item>
         <item quantity="other">%1$d Menschen im All</item>
     </plurals>
+
+    <!-- Orbitly Pro -->
+    <string name="pro_short_title">GESPERRT</string>
+    <string name="pro_comp_desc">Orbitly Pro in der Handy-App freischalten</string>
+    <string name="pro_tile_label">Gesperrt</string>
+    <string name="pro_tile_text">In der Handy-App freischalten</string>
+    <string name="pro_card_title">🔒 Orbitly Pro</string>
+    <string name="pro_card_value">In der Handy-App freischalten</string>
+    <string name="pro_card_detail">Komplikationen und Kachel gehören zu Orbitly Pro</string>
 </resources>

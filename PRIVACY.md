@@ -1,6 +1,6 @@
 # Orbitly privacy policy
 
-*Last updated: 21 November 2026*
+*Last updated: 22 November 2026*
 
 Orbitly (the Android phone app and the Wear OS watch app, package
 `io.github.jamieharwood.moonphase`) is an open-source project. This policy explains what
@@ -37,6 +37,14 @@ you enter, which is normally a device on your own home network.
 The phone app sends your location and unit choice to the Orbitly watch app using Google Play
 services' Wearable Data Layer, so the watch can calculate sunrise and sunset for the same place.
 This data goes only to your own paired watch.
+
+## Orbitly Pro purchase
+
+Orbitly Pro is a one-time in-app purchase made through Google Play. Payment is handled entirely
+by Google Play under [Google's privacy policy](https://policies.google.com/privacy); the app never
+sees your payment details. The app asks Google Play whether this Google account owns Orbitly Pro
+and stores only an "unlocked" flag on your phone, and sends that flag to your own paired watch
+so its complications and Tile unlock too. Nothing about the purchase is sent anywhere else.
 
 ## Notifications
 

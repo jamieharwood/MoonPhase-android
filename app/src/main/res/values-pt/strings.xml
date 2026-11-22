@@ -167,4 +167,29 @@
     <string name="widget_in_space">%1$d no espaço</string>
     <string name="widget_moon_away">🌙 a %1$s km</string>
     <string name="widget_calendar_title">📅 Calendário do céu</string>
+
+    <!-- Orbitly Pro -->
+    <string name="menu_pro">Orbitly Pro…</string>
+    <string name="pro_intro">Uma compra única que desbloqueia:</string>
+    <string name="pro_owned">O Pro está desbloqueado. Obrigado por apoiar o Orbitly!</string>
+    <string name="pro_feat_widgets">Widgets da tela inicial</string>
+    <string name="pro_feat_calendar">Calendário de chuvas de meteoros e eclipses</string>
+    <string name="pro_feat_watch">Complicações e Bloco no relógio</string>
+    <string name="pro_feat_night">Modo noturno (luz vermelha)</string>
+    <string name="pro_feat_history">Gráficos de histórico e exportação CSV</string>
+    <string name="pro_buy">Comprar por %1$s</string>
+    <string name="pro_buy_noprice">Comprar</string>
+    <string name="pro_restore">Restaurar compra</string>
+    <string name="pro_pending">Seu pagamento está pendente. O Pro será desbloqueado assim que for concluído.</string>
+    <string name="pro_unavailable">O Google Play não está disponível agora, então não é possível comprar o Pro.</string>
+    <string name="pro_part_of">Parte do Orbitly Pro</string>
+    <string name="pro_unlock">Desbloquear</string>
+    <string name="pro_calendar_teaser">Todos os picos de chuvas de meteoros e eclipses do próximo ano, com o brilho da Lua.</string>
+    <string name="pro_history_teaser">Gráficos da Lua, dos planetas e dos dados ao vivo ao longo do tempo, com exportação CSV. Os dados continuam sendo salvos e estarão lá quando você desbloquear.</string>
+    <string name="pro_msg_unlocked">Orbitly Pro desbloqueado. Obrigado!</string>
+    <string name="pro_msg_restored">Orbitly Pro restaurado</string>
+    <string name="pro_msg_not_found">Nenhuma compra do Orbitly Pro encontrada nesta conta do Google</string>
+    <string name="pro_msg_error">O Google Play não conseguiu concluir a operação. Tente novamente.</string>
+    <string name="close">Fechar</string>
+    <string name="widget_locked">Toque para desbloquear</string>
 </resources>

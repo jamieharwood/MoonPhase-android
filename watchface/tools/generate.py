@@ -4,7 +4,7 @@ Run from the repo root:   python3 watchface/tools/generate.py
 
 Writes:
   watchface/src/main/res/raw/watchface.xml          the watch face definition
-  watchface/src/main/res/drawable-nodpi/moon_NN.png 29 moon images, one per [MOON_PHASE_POSITION]
+  watchface/src/main/res/drawable-nodpi/moon_NN.png 29 moon images, one per day of moon age
   watchface/src/main/res/drawable-nodpi/dial.png    minute/hour tick ring
   watchface/src/main/res/drawable-nodpi/preview.png picker preview (also the app icon)
 
@@ -35,7 +35,19 @@ FAINT = "#FF2A2D31"
 WEAR_PKG = "io.github.jamieharwood.moonphase"
 WEAR_CLS = "io.github.jamieharwood.moonphase.wear"
 
-PHASE_NAMES = [  # [MOON_PHASE_TYPE] 0..7
+# Moon age in days, computed exactly like the phone app (Astro.MoonPhase: mean synodic month from a
+# known new moon, JD 2451550.1). The platform's [MOON_PHASE_POSITION] runs up to ~2 days behind,
+# so the face showed a different moon from the app and widgets. 10962.6 = 2451550.1 - 2440587.5
+# (the Unix epoch as a Julian date).
+APP_SYNODIC = 29.530588853
+MOON_AGE = f"(([UTC_TIMESTAMP] / 86400000 - 10962.6) % {APP_SYNODIC})"
+MOON_DAY = f"round({MOON_AGE})"  # nearest of the 29 images; 29 and 30 wrap to new moon
+MOON_FRAC = f"({MOON_AGE} / {APP_SYNODIC})"
+# Phase-name bands, the same as Astro.MoonPhase.index: (PHASE_NAMES index, lower, upper)
+PHASE_BANDS = [(1, 0.03, 0.22), (2, 0.22, 0.28), (3, 0.28, 0.47), (4, 0.47, 0.53),
+               (5, 0.53, 0.72), (6, 0.72, 0.78), (7, 0.78, 0.97)]  # anything else is new moon (0)
+
+PHASE_NAMES = [  # 0..7, new moon first
     "NEW MOON", "WAXING CRESCENT", "FIRST QUARTER", "WAXING GIBBOUS",
     "FULL MOON", "WANING GIBBOUS", "LAST QUARTER", "WANING CRESCENT",
 ]
@@ -178,12 +190,15 @@ def moon_group():
     def img(pos):
         return (f'<PartImage name="moon{pos}" x="{x}" y="{y}" width="{s}" height="{s}">'
                 f'<Image resource="moon_{pos:02d}"/></PartImage>')
-    cond = condition("moon", lambda v: f"[MOON_PHASE_POSITION] < {v + 1}",
-                     [(v, img(v)) for v in range(29)], img(0))
-    names = condition("phase", lambda v: f"[MOON_PHASE_TYPE] == {v}",
-                      [(v, part_text(f"phase{v}", 75, 146, 300, 24, font(19, GREY, spacing=0.12, inner=n)))
-                       for v, n in enumerate(PHASE_NAMES)],
-                      part_text("phaseDefault", 75, 146, 300, 24, font(19, GREY, spacing=0.12, inner="MOON")))
+    def day_expr(v):
+        return f"{MOON_DAY} == 0 || {MOON_DAY} >= 29" if v == 0 else f"{MOON_DAY} == {v}"
+    cond = condition("moon", day_expr, [(v, img(v)) for v in range(29)], img(0))
+    def phase_text(v, n):
+        return part_text(f"phase{v}", 75, 146, 300, 24, font(19, GREY, spacing=0.12, inner=n))
+    bands = {v: (lo, hi) for v, lo, hi in PHASE_BANDS}
+    names = condition("phase", lambda v: f"{MOON_FRAC} >= {bands[v][0]} && {MOON_FRAC} < {bands[v][1]}",
+                      [(v, phase_text(v, PHASE_NAMES[v])) for v in bands],
+                      phase_text(0, PHASE_NAMES[0]))
     return (f'<Group name="moon" x="0" y="0" width="{SIZE}" height="{SIZE}">'
             f'{ambient_alpha(150)}{cond}{names}</Group>')
 

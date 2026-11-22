@@ -93,4 +93,15 @@
         <item quantity="one">%1$d person in space</item>
         <item quantity="other">%1$d people in space</item>
     </plurals>
+
+    <!-- Orbitly Pro -->
+    <string name="pro_name" translatable="false">Orbitly Pro</string>
+    <string name="pro_short" translatable="false">PRO</string>
+    <string name="pro_short_title">LOCKED</string>
+    <string name="pro_comp_desc">Unlock Orbitly Pro in the phone app</string>
+    <string name="pro_tile_label">Locked</string>
+    <string name="pro_tile_text">Unlock in the phone app</string>
+    <string name="pro_card_title">🔒 Orbitly Pro</string>
+    <string name="pro_card_value">Unlock in the phone app</string>
+    <string name="pro_card_detail">Watch complications and the Tile are part of Orbitly Pro</string>
 </resources>

@@ -53,11 +53,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.text.KeyboardOptions
 import io.github.jamieharwood.moonphase.data.Alerts
 import io.github.jamieharwood.moonphase.data.METRICS
+import io.github.jamieharwood.moonphase.data.Pro
 import io.github.jamieharwood.moonphase.data.RefreshWorker
 import io.github.jamieharwood.moonphase.data.Units
 import io.github.jamieharwood.moonphase.ui.Dashboard
 import io.github.jamieharwood.moonphase.ui.LocalNightMode
 import io.github.jamieharwood.moonphase.ui.NightColorScheme
+import io.github.jamieharwood.moonphase.ui.ProDialog
 import io.github.jamieharwood.moonphase.ui.SettingsScreen
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -70,10 +72,25 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         Alerts.ensureChannel(this)
         RefreshWorker.schedule(this)
+        Pro.init(this)
+        if (intent?.getBooleanExtra(EXTRA_SHOW_PRO, false) == true) showPro.value = true
         setContent {
             val night by vm.state.collectAsState()
-            MoonPhaseTheme(night.settings.nightMode) { App(vm) }
+            val pro by Pro.state.collectAsState()
+            MoonPhaseTheme(night.settings.nightMode && pro.owned) { App(vm, showPro) }
         }
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        if (intent.getBooleanExtra(EXTRA_SHOW_PRO, false)) showPro.value = true
+    }
+
+    /** Opens the Orbitly Pro dialog; widgets that are locked set it when tapped. */
+    private val showPro = mutableStateOf(false)
+
+    companion object {
+        const val EXTRA_SHOW_PRO = "show_pro"
     }
 }
 
@@ -94,8 +111,11 @@ fun MoonPhaseTheme(night: Boolean = false, content: @Composable () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(vm: MainViewModel) {
+fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<Boolean>) {
     val state by vm.state.collectAsState()
+    val pro by Pro.state.collectAsState()
+    var showPro by showProState
+    val activity = LocalContext.current as android.app.Activity
     val snackbar = remember { SnackbarHostState() }
     var showSettings by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
@@ -104,6 +124,23 @@ fun App(vm: MainViewModel) {
     var populate by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { vm.messages.collect { snackbar.showSnackbar(it) } }
+    LaunchedEffect(Unit) {
+        Pro.events.collect { e ->
+            val msg = when (e) {
+                Pro.Event.UNLOCKED -> R.string.pro_msg_unlocked
+                Pro.Event.RESTORED -> R.string.pro_msg_restored
+                Pro.Event.NOT_FOUND -> R.string.pro_msg_not_found
+                Pro.Event.PENDING -> R.string.pro_pending
+                Pro.Event.UNAVAILABLE -> R.string.pro_unavailable
+                Pro.Event.ERROR -> R.string.pro_msg_error
+            }
+            if (e == Pro.Event.UNLOCKED || e == Pro.Event.RESTORED) showPro = false
+            snackbar.showSnackbar(activity.getString(msg))
+        }
+    }
+    /** Runs [action] if Pro is unlocked, otherwise offers Pro. */
+    fun proOnly(action: () -> Unit) { if (pro.owned) action() else showPro = true }
+    fun lock(label: String) = if (pro.owned) label else "🔒 $label"
 
     val notifPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
     LaunchedEffect(state.settings.notifications) {
@@ -114,7 +151,7 @@ fun App(vm: MainViewModel) {
     val csv = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
         uri?.let(vm::exportCsv)
     }
-    val exportCsv = { csv.launch("moonphase-${METRICS[state.metricIndex].key}.csv") }
+    val exportCsv = { proOnly { csv.launch("moonphase-${METRICS[state.metricIndex].key}.csv") } }
 
     BackHandler(showSettings) { showSettings = false }
 
@@ -159,12 +196,16 @@ fun App(vm: MainViewModel) {
                             IconButton(onClick = { menu = true }) { Icon(Icons.Default.MoreVert, stringResource(R.string.cd_menu)) }
                             DropdownMenu(menu, { menu = false }) {
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(if (state.settings.nightMode) R.string.menu_night_on else R.string.menu_night_off)) },
-                                    onClick = { menu = false; vm.updateSettings { it.copy(nightMode = !it.nightMode) } },
+                                    text = { Text(if (pro.owned) "${stringResource(R.string.pro_name)} ✓" else stringResource(R.string.menu_pro)) },
+                                    onClick = { menu = false; showPro = true },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(lock(stringResource(if (state.settings.nightMode && pro.owned) R.string.menu_night_on else R.string.menu_night_off))) },
+                                    onClick = { menu = false; proOnly { vm.updateSettings { it.copy(nightMode = !it.nightMode) } } },
                                 )
                                 DropdownMenuItem(text = { Text(stringResource(R.string.menu_settings)) }, onClick = { menu = false; showSettings = true })
-                                DropdownMenuItem(text = { Text(stringResource(R.string.menu_populate)) }, onClick = { menu = false; populate = true })
-                                DropdownMenuItem(text = { Text(stringResource(R.string.menu_export_csv)) }, onClick = { menu = false; exportCsv() })
+                                DropdownMenuItem(text = { Text(lock(stringResource(R.string.menu_populate))) }, onClick = { menu = false; proOnly { populate = true } })
+                                DropdownMenuItem(text = { Text(lock(stringResource(R.string.menu_export_csv))) }, onClick = { menu = false; exportCsv() })
                                 DropdownMenuItem(text = { Text(stringResource(R.string.menu_reset_history)) }, onClick = { menu = false; confirmReset = true })
                             }
                         }
@@ -183,11 +224,22 @@ fun App(vm: MainViewModel) {
                     onMetric = vm::selectMetric,
                     onRange = vm::selectRange,
                     onExport = exportCsv,
+                    pro = pro.owned,
+                    onUnlock = { showPro = true },
                 )
             }
         }
     }
 
+    if (showPro) {
+        ProDialog(
+            pro,
+            onBuy = { Pro.buy(activity) },
+            onRestore = Pro::restore,
+            onDebugToggle = { Pro.setDebugOverride(!pro.owned) },
+            onDismiss = { showPro = false },
+        )
+    }
     if (confirmReset) {
         AlertDialog(
             onDismissRequest = { confirmReset = false },

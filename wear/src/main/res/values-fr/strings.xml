@@ -89,4 +89,13 @@
         <item quantity="one">%1$d personne dans l\'espace</item>
         <item quantity="other">%1$d personnes dans l\'espace</item>
     </plurals>
+
+    <!-- Orbitly Pro -->
+    <string name="pro_short_title">VERROU</string>
+    <string name="pro_comp_desc">Débloquez Orbitly Pro dans l’app du téléphone</string>
+    <string name="pro_tile_label">Verrouillé</string>
+    <string name="pro_tile_text">À débloquer dans l’app du téléphone</string>
+    <string name="pro_card_title">🔒 Orbitly Pro</string>
+    <string name="pro_card_value">À débloquer dans l’app du téléphone</string>
+    <string name="pro_card_detail">Les complications et la Vignette font partie d’Orbitly Pro</string>
 </resources>

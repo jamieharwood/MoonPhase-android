@@ -167,4 +167,30 @@
     <string name="widget_in_space">%1$d in space</string>
     <string name="widget_moon_away">🌙 %1$s km away</string>
     <string name="widget_calendar_title">📅 Sky calendar</string>
+
+    <!-- Orbitly Pro -->
+    <string name="pro_name" translatable="false">Orbitly Pro</string>
+    <string name="menu_pro">Orbitly Pro…</string>
+    <string name="pro_intro">A one-time purchase that unlocks:</string>
+    <string name="pro_owned">Pro is unlocked. Thanks for supporting Orbitly!</string>
+    <string name="pro_feat_widgets">Home-screen widgets</string>
+    <string name="pro_feat_calendar">Meteor shower and eclipse calendar</string>
+    <string name="pro_feat_watch">Watch complications and Tile</string>
+    <string name="pro_feat_night">Night mode (red light)</string>
+    <string name="pro_feat_history">History charts and CSV export</string>
+    <string name="pro_buy">Buy for %1$s</string>
+    <string name="pro_buy_noprice">Buy</string>
+    <string name="pro_restore">Restore purchase</string>
+    <string name="pro_pending">Your payment is pending. Pro unlocks as soon as it completes.</string>
+    <string name="pro_unavailable">Google Play isn\'t available right now, so Pro can\'t be bought.</string>
+    <string name="pro_part_of">Part of Orbitly Pro</string>
+    <string name="pro_unlock">Unlock</string>
+    <string name="pro_calendar_teaser">Every meteor shower peak and eclipse for the year ahead, with how bright the Moon will be.</string>
+    <string name="pro_history_teaser">Charts of the Moon, planets and live data over time, with CSV export. Snapshots are still saved, so they\'re there when you unlock.</string>
+    <string name="pro_msg_unlocked">Orbitly Pro unlocked. Thank you!</string>
+    <string name="pro_msg_restored">Orbitly Pro restored</string>
+    <string name="pro_msg_not_found">No Orbitly Pro purchase found on this Google account</string>
+    <string name="pro_msg_error">Google Play couldn\'t complete that. Please try again.</string>
+    <string name="close">Close</string>
+    <string name="widget_locked">Tap to unlock</string>
 </resources>

@@ -5,7 +5,7 @@ import android.util.Log
 import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
 
-/** Sends location and units to the paired watch app over the Wear OS Data Layer. */
+/** Sends location, units and the Orbitly Pro unlock to the paired watch app over the Wear OS Data Layer. */
 object WearSync {
     const val PATH = "/moonphase/settings"
 
@@ -15,6 +15,7 @@ object WearSync {
                 dataMap.putDouble("latitude", s.latitude)
                 dataMap.putDouble("longitude", s.longitude)
                 dataMap.putString("units", s.units.name)
+                dataMap.putBoolean("pro", Pro.isPro(ctx))
             }.asPutDataRequest().setUrgent()
             Wearable.getDataClient(ctx).putDataItem(req)
                 .addOnFailureListener { Log.d("WearSync", "no watch / Wear API unavailable: $it") }

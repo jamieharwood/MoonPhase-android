@@ -89,4 +89,13 @@
         <item quantity="one">%1$d pessoa no espaço</item>
         <item quantity="other">%1$d pessoas no espaço</item>
     </plurals>
+
+    <!-- Orbitly Pro -->
+    <string name="pro_short_title">BLOQ.</string>
+    <string name="pro_comp_desc">Desbloqueie o Orbitly Pro no app do celular</string>
+    <string name="pro_tile_label">Bloqueado</string>
+    <string name="pro_tile_text">Desbloqueie no app do celular</string>
+    <string name="pro_card_title">🔒 Orbitly Pro</string>
+    <string name="pro_card_value">Desbloqueie no app do celular</string>
+    <string name="pro_card_detail">As complicações e o Bloco fazem parte do Orbitly Pro</string>
 </resources>

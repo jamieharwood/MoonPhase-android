@@ -47,7 +47,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true // BuildConfig.DEBUG enables the Pro test switch
+    }
     testOptions { unitTests.isReturnDefaultValues = true }
 }
 
@@ -71,6 +74,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
     implementation("androidx.glance:glance-appwidget:1.1.1") // home-screen widgets
+    implementation("com.android.billingclient:billing-ktx:8.3.0") // Orbitly Pro one-time unlock
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     testImplementation("junit:junit:4.13.2")

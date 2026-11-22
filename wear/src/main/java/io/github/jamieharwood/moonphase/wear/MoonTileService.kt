@@ -26,6 +26,7 @@ class MoonTileService : TileService() {
         val device = requestParams.deviceConfiguration
         val moonColor = argb(0xFFE8CD78.toInt())
         val d = s.daysUntilFullMoon
+        val pro = settings.pro
 
         val openApp = ModifiersBuilders.Clickable.Builder()
             .setId("open")
@@ -43,22 +44,25 @@ class MoonTileService : TileService() {
             .setResponsiveContentInsetEnabled(true)
             .setEdgeContent(
                 CircularProgressIndicator.Builder()
-                    .setProgress(s.moonIlluminationPercent / 100f)
+                    .setProgress(if (pro) s.moonIlluminationPercent / 100f else 0f)
                     .setCircularProgressIndicatorColors(ProgressIndicatorColors(moonColor, argb(0x33FFFFFF)))
                     .build(),
             )
             .setPrimaryLabelTextContent(
-                Text.Builder(this, getString(R.string.lit_percent, s.moonIlluminationPercent))
+                Text.Builder(this, if (pro) getString(R.string.lit_percent, s.moonIlluminationPercent) else getString(R.string.pro_tile_label))
                     .setTypography(Typography.TYPOGRAPHY_CAPTION1).setColor(moonColor).build(),
             )
             .setContent(
-                Text.Builder(this, Loc.phaseName(this, s.moonPhaseName))
+                Text.Builder(this, if (pro) Loc.phaseName(this, s.moonPhaseName) else getString(R.string.pro_name))
                     .setTypography(Typography.TYPOGRAPHY_TITLE2).setColor(argb(0xFFFFFFFF.toInt()))
                     .setMaxLines(2).build(),
             )
             .setSecondaryLabelTextContent(
-                Text.Builder(this, if (d == 0) getString(R.string.full_moon_tonight)
-                    else getString(R.string.full_moon_when, Loc.daysText(this, d.toLong())))
+                Text.Builder(this, when {
+                    !pro -> getString(R.string.pro_tile_text)
+                    d == 0 -> getString(R.string.full_moon_tonight)
+                    else -> getString(R.string.full_moon_when, Loc.daysText(this, d.toLong()))
+                })
                     .setTypography(Typography.TYPOGRAPHY_CAPTION1).setColor(argb(0xFFBBBBBB.toInt())).build(),
             )
             .build()
