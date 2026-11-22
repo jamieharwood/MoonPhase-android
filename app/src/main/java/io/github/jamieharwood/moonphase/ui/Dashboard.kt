@@ -155,8 +155,8 @@ private fun MoonCard(s: Snapshot, u: Units, ascii: Boolean, onToggle: () -> Unit
         }
         val zone = java.time.ZoneId.systemDefault()
         Row(Modifier.fillMaxWidth().padding(top = 8.dp)) {
-            Stat(Astro.formatMoonEvent(s.moonrise, s.timestamp, zone), "Next Moonrise")
-            Stat(Astro.formatMoonEvent(s.moonset, s.timestamp, zone), "Next Moonset")
+            Stat(Astro.formatMoonEvent(s.moonrise, s.timestamp, zone), stringResource(R.string.stat_moonrise))
+            Stat(Astro.formatMoonEvent(s.moonset, s.timestamp, zone), stringResource(R.string.stat_moonset))
         }
     }
 }

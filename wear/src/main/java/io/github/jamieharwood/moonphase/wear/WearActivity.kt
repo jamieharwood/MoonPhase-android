@@ -184,9 +184,9 @@ private fun SunCard(s: Snapshot, settings: WearSettings) = InfoCard(
 private fun MoonTimesCard(s: Snapshot) {
     val zone = java.time.ZoneId.systemDefault()
     InfoCard(
-        "🌙 Moonrise / set",
+        stringResource(R.string.card_moon_times),
         "${Astro.formatMoonEvent(s.moonrise, s.timestamp, zone)} – ${Astro.formatMoonEvent(s.moonset, s.timestamp, zone)}",
-        "Next rise and set, local time",
+        stringResource(R.string.moon_times_detail),
     )
 }
 

@@ -37,6 +37,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import io.github.jamieharwood.moonphase.Astro
 import io.github.jamieharwood.moonphase.Loc
 import io.github.jamieharwood.moonphase.R
 import io.github.jamieharwood.moonphase.MainActivity

@@ -53,6 +53,8 @@
     <string name="stat_full_moon_in">Vollmond in</string>
     <string name="stat_tonight">Heute Nacht</string>
     <string name="stat_distance">Entfernung</string>
+    <string name="stat_moonrise">Nächster Mondaufgang</string>
+    <string name="stat_moonset">Nächster Monduntergang</string>
     <string name="card_solar">☀️ Sonnensystem</string>
     <string name="col_planet">Planet</string>
     <string name="col_from_sun">Von der Sonne</string>

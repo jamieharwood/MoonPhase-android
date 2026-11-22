@@ -53,6 +53,8 @@
     <string name="stat_full_moon_in">Luna llena en</string>
     <string name="stat_tonight">Esta noche</string>
     <string name="stat_distance">Distancia</string>
+    <string name="stat_moonrise">Próxima salida de la Luna</string>
+    <string name="stat_moonset">Próxima puesta de la Luna</string>
     <string name="card_solar">☀️ Sistema solar</string>
     <string name="col_planet">Planeta</string>
     <string name="col_from_sun">Del Sol</string>
