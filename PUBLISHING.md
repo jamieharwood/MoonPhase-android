@@ -160,7 +160,9 @@ app that contains code. Create a second app in Play Console, *Orbitly Mission wa
    Wear OS testing track. The closed-testing rule for new personal accounts applies to this app too.
 3. Listing: screenshots in `watchface/store/` (active and always-on), and
    `watchface/src/main/res/drawable-nodpi/preview.png` as a starting point for the icon.
-   Mention in the description that the astronomy complications come from the free Orbitly app.
+   Make it **free**. Say in the description that the time, date and Moon are free, and that the
+   five astronomy complications need the Orbitly app with Orbitly Pro (without Pro those slots
+   stay empty).
 4. Content rating, data safety ("no data collected") and privacy policy as for the main app.
 5. Don't use the SpaceX name or logo in the listing: Play rejects listings that use
    another company's trademarks without permission.

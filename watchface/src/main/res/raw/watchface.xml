@@ -333,14 +333,35 @@
 <BoundingOval x="0" y="0" width="70" height="70"/>
 <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="RANGED_VALUE" primaryProvider="io.github.jamieharwood.moonphase/io.github.jamieharwood.moonphase.wear.IlluminationComplicationService" primaryProviderType="RANGED_VALUE"/>
 <Complication type="SHORT_TEXT">
+<Group name="slot0s" x="0" y="0" width="70" height="70">
+<Condition>
+<Expressions>
+<Expression name="locked0s"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked0s">
+<Group name="hidden0s" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring0" x="0" y="0" width="70" height="70"><Arc centerX="35.0" centerY="35.0" width="66" height="66" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartText name="value0s" x="4" y="13" width="62" height="28"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_semibold" size="22" color="#FFFFFFFF"><Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template></Font></Text>
 </PartText>
 <PartText name="title0s" x="6" y="41" width="58" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 <Complication type="RANGED_VALUE">
+<Group name="slot0r" x="0" y="0" width="70" height="70">
+<Condition>
+<Expressions>
+<Expression name="locked0r"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked0r">
+<Group name="hidden0r" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring0" x="0" y="0" width="70" height="70"><Arc centerX="35.0" centerY="35.0" width="66" height="66" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartDraw name="progress0" x="0" y="0" width="70" height="70">
@@ -350,20 +371,44 @@
 </PartText>
 <PartText name="title0r" x="6" y="41" width="58" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 </ComplicationSlot>
 <ComplicationSlot slotId="1" name="right" displayName="@string/slot_right" supportedTypes="SHORT_TEXT RANGED_VALUE" x="352" y="192" width="70" height="70" isCustomizable="TRUE">
 <BoundingOval x="0" y="0" width="70" height="70"/>
 <DefaultProviderPolicy defaultSystemProvider="DATE" defaultSystemProviderType="SHORT_TEXT" primaryProvider="io.github.jamieharwood.moonphase/io.github.jamieharwood.moonphase.wear.FullMoonComplicationService" primaryProviderType="RANGED_VALUE"/>
 <Complication type="SHORT_TEXT">
+<Group name="slot1s" x="0" y="0" width="70" height="70">
+<Condition>
+<Expressions>
+<Expression name="locked1s"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked1s">
+<Group name="hidden1s" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring1" x="0" y="0" width="70" height="70"><Arc centerX="35.0" centerY="35.0" width="66" height="66" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartText name="value1s" x="4" y="13" width="62" height="28"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_semibold" size="22" color="#FFFFFFFF"><Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template></Font></Text>
 </PartText>
 <PartText name="title1s" x="6" y="41" width="58" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 <Complication type="RANGED_VALUE">
+<Group name="slot1r" x="0" y="0" width="70" height="70">
+<Condition>
+<Expressions>
+<Expression name="locked1r"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked1r">
+<Group name="hidden1r" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring1" x="0" y="0" width="70" height="70"><Arc centerX="35.0" centerY="35.0" width="66" height="66" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartDraw name="progress1" x="0" y="0" width="70" height="70">
@@ -373,20 +418,44 @@
 </PartText>
 <PartText name="title1r" x="6" y="41" width="58" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 </ComplicationSlot>
 <ComplicationSlot slotId="2" name="bottomLeft" displayName="@string/slot_bottom_left" supportedTypes="SHORT_TEXT RANGED_VALUE" x="116" y="338" width="66" height="66" isCustomizable="TRUE">
 <BoundingOval x="0" y="0" width="66" height="66"/>
 <DefaultProviderPolicy defaultSystemProvider="STEP_COUNT" defaultSystemProviderType="SHORT_TEXT" primaryProvider="io.github.jamieharwood.moonphase/io.github.jamieharwood.moonphase.wear.AuroraComplicationService" primaryProviderType="RANGED_VALUE"/>
 <Complication type="SHORT_TEXT">
+<Group name="slot2s" x="0" y="0" width="66" height="66">
+<Condition>
+<Expressions>
+<Expression name="locked2s"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked2s">
+<Group name="hidden2s" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring2" x="0" y="0" width="66" height="66"><Arc centerX="33.0" centerY="33.0" width="62" height="62" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartText name="value2s" x="4" y="12" width="58" height="26"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_semibold" size="21" color="#FFFFFFFF"><Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template></Font></Text>
 </PartText>
 <PartText name="title2s" x="6" y="38" width="54" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 <Complication type="RANGED_VALUE">
+<Group name="slot2r" x="0" y="0" width="66" height="66">
+<Condition>
+<Expressions>
+<Expression name="locked2r"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked2r">
+<Group name="hidden2r" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring2" x="0" y="0" width="66" height="66"><Arc centerX="33.0" centerY="33.0" width="62" height="62" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartDraw name="progress2" x="0" y="0" width="66" height="66">
@@ -396,20 +465,44 @@
 </PartText>
 <PartText name="title2r" x="6" y="38" width="54" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 </ComplicationSlot>
 <ComplicationSlot slotId="3" name="bottom" displayName="@string/slot_bottom" supportedTypes="SHORT_TEXT RANGED_VALUE" x="192" y="352" width="66" height="66" isCustomizable="TRUE">
 <BoundingOval x="0" y="0" width="66" height="66"/>
 <DefaultProviderPolicy defaultSystemProvider="SUNRISE_SUNSET" defaultSystemProviderType="SHORT_TEXT" primaryProvider="io.github.jamieharwood.moonphase/io.github.jamieharwood.moonphase.wear.IssComplicationService" primaryProviderType="SHORT_TEXT"/>
 <Complication type="SHORT_TEXT">
+<Group name="slot3s" x="0" y="0" width="66" height="66">
+<Condition>
+<Expressions>
+<Expression name="locked3s"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked3s">
+<Group name="hidden3s" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring3" x="0" y="0" width="66" height="66"><Arc centerX="33.0" centerY="33.0" width="62" height="62" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartText name="value3s" x="4" y="12" width="58" height="26"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_semibold" size="21" color="#FFFFFFFF"><Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template></Font></Text>
 </PartText>
 <PartText name="title3s" x="6" y="38" width="54" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 <Complication type="RANGED_VALUE">
+<Group name="slot3r" x="0" y="0" width="66" height="66">
+<Condition>
+<Expressions>
+<Expression name="locked3r"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked3r">
+<Group name="hidden3r" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring3" x="0" y="0" width="66" height="66"><Arc centerX="33.0" centerY="33.0" width="62" height="62" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartDraw name="progress3" x="0" y="0" width="66" height="66">
@@ -419,20 +512,44 @@
 </PartText>
 <PartText name="title3r" x="6" y="38" width="54" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 </ComplicationSlot>
 <ComplicationSlot slotId="4" name="bottomRight" displayName="@string/slot_bottom_right" supportedTypes="SHORT_TEXT RANGED_VALUE" x="268" y="338" width="66" height="66" isCustomizable="TRUE">
 <BoundingOval x="0" y="0" width="66" height="66"/>
 <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="SHORT_TEXT" primaryProvider="io.github.jamieharwood.moonphase/io.github.jamieharwood.moonphase.wear.SunComplicationService" primaryProviderType="SHORT_TEXT"/>
 <Complication type="SHORT_TEXT">
+<Group name="slot4s" x="0" y="0" width="66" height="66">
+<Condition>
+<Expressions>
+<Expression name="locked4s"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked4s">
+<Group name="hidden4s" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring4" x="0" y="0" width="66" height="66"><Arc centerX="33.0" centerY="33.0" width="62" height="62" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartText name="value4s" x="4" y="12" width="58" height="26"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_semibold" size="21" color="#FFFFFFFF"><Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template></Font></Text>
 </PartText>
 <PartText name="title4s" x="6" y="38" width="54" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 <Complication type="RANGED_VALUE">
+<Group name="slot4r" x="0" y="0" width="66" height="66">
+<Condition>
+<Expressions>
+<Expression name="locked4r"><![CDATA[[COMPLICATION.TEXT] == "PRO"]]></Expression>
+</Expressions>
+<Compare expression="locked4r">
+<Group name="hidden4r" x="0" y="0" width="1" height="1"/>
+</Compare>
+<Default>
 <PartDraw name="ring4" x="0" y="0" width="66" height="66"><Arc centerX="33.0" centerY="33.0" width="62" height="62" startAngle="0" endAngle="360" direction="CLOCKWISE"><Stroke color="#FF2A2D31" thickness="2" cap="BUTT"/></Arc>
 </PartDraw>
 <PartDraw name="progress4" x="0" y="0" width="66" height="66">
@@ -442,6 +559,9 @@
 </PartText>
 <PartText name="title4r" x="6" y="38" width="54" height="15"><Text align="CENTER" ellipsis="TRUE"><Font family="barlow_medium" size="11" color="#FF9AA0A6" letterSpacing="0.08"><Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template></Font></Text>
 </PartText>
+</Default>
+</Condition>
+</Group>
 </Complication>
 </ComplicationSlot>
 </Scene></WatchFace>

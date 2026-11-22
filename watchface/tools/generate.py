@@ -55,6 +55,7 @@ DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]  # [DAY_OF_WEEK] 1..7
 MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
 MOON_BOX = (175, 40, 100)
+LOCKED_TEXT = "PRO"  # wear R.string.pro_short, sent by the astronomy complications until Pro is unlocked
 UTC_H = "floor([UTC_TIMESTAMP] / 3600000) % 24"
 UTC_M = "floor([UTC_TIMESTAMP] / 60000) % 60"  # x, y, size
 
@@ -260,8 +261,17 @@ def complication_slot(slot):
                                inner=template("%s", "[COMPLICATION.TITLE]")))
         return value + title
 
-    short = f'<Complication type="SHORT_TEXT">{ring}{texts("s")}</Complication>'
-    ranged = f'<Complication type="RANGED_VALUE">{ring}{progress}{texts("r")}</Complication>'
+    def unless_locked(kind, body):
+        # Orbitly's complications send the text "PRO" (never translated) until Pro is unlocked.
+        # The free face hides those slots entirely, leaving just the clock and the moon.
+        return (f'<Group name="slot{sid}{kind}" x="0" y="0" width="{s}" height="{s}"><Condition><Expressions>'
+                f'<Expression name="locked{sid}{kind}"><![CDATA[[COMPLICATION.TEXT] == "{LOCKED_TEXT}"]]></Expression>'
+                f'</Expressions><Compare expression="locked{sid}{kind}">'
+                f'<Group name="hidden{sid}{kind}" x="0" y="0" width="1" height="1"/></Compare>'
+                f'<Default>{body}</Default></Condition></Group>')
+
+    short = f'<Complication type="SHORT_TEXT">{unless_locked("s", ring + texts("s"))}</Complication>'
+    ranged = f'<Complication type="RANGED_VALUE">{unless_locked("r", ring + progress + texts("r"))}</Complication>'
     return (f'<ComplicationSlot slotId="{sid}" name="{name}" displayName="@string/{label}" '
             f'supportedTypes="SHORT_TEXT RANGED_VALUE" x="{x}" y="{y}" width="{s}" height="{s}" isCustomizable="TRUE">'
             f'<BoundingOval x="0" y="0" width="{s}" height="{s}"/>'
