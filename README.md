@@ -1,11 +1,11 @@
-# MoonPhase for Android
+# Orbitly for Android
 
 A native Android app (Kotlin + Jetpack Compose, Material 3) ported from the
 [MoonPhase](https://github.com/jamieharwood/MoonPhase) Spring Boot dashboard and its
 [Ubuntu desktop port](https://github.com/jamieharwood/MoonPhase-uBuntu).
 It shows the same astronomy data, computed on the device, and includes a **Wear OS watch app**
 (Samsung Galaxy Watch 4 or newer, or any Wear OS 3+ watch) with a Tile and astronomy complications,
-and the **MoonPhase Mission watch face**.
+and the **Orbitly Mission watch face**.
 
 ## Features
 
@@ -29,7 +29,7 @@ Other features:
   It saves history (at most one snapshot per 12-hour UTC window, as in the original),
   sends notifications for aurora storms (Kp ≥ 5) and the full moon tonight or tomorrow, and pushes to Awtrix if enabled.
 - **Settings**: location, history on/off and retention, notifications, Awtrix clock push.
-- **Home-screen widgets**: long-press the home screen → *Widgets* → *MoonPhase*:
+- **Home-screen widgets**: long-press the home screen → *Widgets* → *Orbitly*:
   - **Moon phase** (2×2): tonight's Moon, phase name, illumination and days to full moon.
   - **Sky tonight** (4×2): the Moon with its phase, % lit and age, the next full moon,
     sunrise–sunset in local time, aurora Kp (red during a storm) and, when taller, the ISS
@@ -98,7 +98,7 @@ wear/src/main/java/io/github/jamieharwood/moonphase/wear/  watch app
   MoonComplicationService.kt  moon phase complication
   AstroComplications.kt the other 12 astronomy complications
   WearSettings.kt       settings received from the phone
-watchface/                                                 MoonPhase Mission watch face (Watch Face Format, no code)
+watchface/                                                 Orbitly Mission watch face (Watch Face Format, no code)
   tools/generate.py     writes res/raw/watchface.xml, the 29 moon images, the dial and the preview
   src/main/res/font/    Barlow Condensed (SIL Open Font License, see FONT-LICENSE-OFL.txt)
 core/src/test/…/AstroTest.kt, app/src/test/…/HistoryTest.kt  unit tests
@@ -115,7 +115,7 @@ The `wear` module is a standalone watch app, installed separately from the phone
 - **Tile**: swipe left from the watch face and add *Moon phase*. It shows the phase, an
   illumination ring and the days to full moon. Tap it to open the app.
 - **Complications**: long-press your watch face → *Customise* → choose a complication slot →
-  *MoonPhase*, then pick one of:
+  *Orbitly*, then pick one of:
 
   | Complication | Shows | Ring |
   |---|---|---|
@@ -166,7 +166,7 @@ The watch fetches live data over its own Wi-Fi/LTE, or through the phone over Bl
 The phone and watch APKs share the package name `io.github.jamieharwood.moonphase` and must be
 signed with the same key for settings sync to work. Building both on one machine takes care of this.
 
-## 🚀 MoonPhase Mission watch face
+## 🚀 Orbitly Mission watch face
 
 ![Watch face, active and always-on](watchface/store/screenshot-active.png)
 
@@ -176,7 +176,7 @@ A black-and-white, mission-control style digital watch face, in the `watchface` 
   the date, and a UTC readout.
 - The Moon as it looks tonight (29 images, one per day of the cycle) and the phase name.
 - Five complication slots. By default they show Moon illumination, days to full moon, aurora Kp,
-  ISS altitude and the next sunrise/sunset from the MoonPhase watch app. When that app isn't
+  ISS altitude and the next sunrise/sunset from the Orbitly watch app. When that app isn't
   installed they fall back to battery, date, steps and sunrise/sunset. Tap and hold the watch face
   → *Customise* to change any of them.
 - Always-on mode dims everything and hides the seconds arc.

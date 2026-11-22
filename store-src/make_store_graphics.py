@@ -79,7 +79,7 @@ def feature():
     img.paste(glow.filter(ImageFilter.GaussianBlur(60)), (0, 0), glow.filter(ImageFilter.GaussianBlur(60)))
     paste_centred(img, crescent(320), 250, 250)
     d = ImageDraw.Draw(img)
-    d.text((480, 160), "MoonPhase", font=ImageFont.truetype(BOLD, 76), fill=(255, 255, 255))
+    d.text((480, 160), "Orbitly", font=ImageFont.truetype(BOLD, 76), fill=(255, 255, 255))
     sub = ImageFont.truetype(REG, 30)
     d.text((484, 270), "Moon, Sun, aurora and ISS", font=sub, fill=(201, 211, 230))
     d.text((484, 312), "on your phone and watch", font=sub, fill=(201, 211, 230))

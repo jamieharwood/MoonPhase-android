@@ -1,4 +1,4 @@
-# Publishing MoonPhase on Google Play
+# Publishing Orbitly on Google Play
 
 The phone app and the watch app are one Play listing: both use the package name
 `io.github.jamieharwood.moonphase`. You upload two app bundles (`.aab`) to the same app,
@@ -41,7 +41,7 @@ Upload these:
 
 ## 3. Set up the app in Play Console
 
-1. **Create app**: name *MoonPhase*, App, Free, accept the declarations.
+1. **Create app**: name *Orbitly*, App, Free, accept the declarations.
 2. **App content** (Policy → App content):
    - **Privacy policy URL**: `https://github.com/jamieharwood/MoonPhase-android/blob/main/PRIVACY.md`
    - **Ads**: No ads.
@@ -106,7 +106,7 @@ Organisation accounts can skip this and go straight to production, but internal 
 ## The watch face (a separate Play app)
 
 Google Play requires a Watch Face Format watch face to be its **own app**, separate from the
-app that contains code. Create a second app in Play Console, *MoonPhase Mission watch face*:
+app that contains code. Create a second app in Play Console, *Orbitly Mission watch face*:
 
 1. Build: `./gradlew :watchface:bundleRelease` →
    `watchface/build/outputs/bundle/release/watchface-release.aab` (signed with the same upload key).
@@ -114,7 +114,7 @@ app that contains code. Create a second app in Play Console, *MoonPhase Mission 
    Wear OS testing track. The closed-testing rule for new personal accounts applies to this app too.
 3. Listing: screenshots in `watchface/store/` (active and always-on), and
    `watchface/src/main/res/drawable-nodpi/preview.png` as a starting point for the icon.
-   Mention in the description that the astronomy complications come from the free MoonPhase app.
+   Mention in the description that the astronomy complications come from the free Orbitly app.
 4. Content rating, data safety ("no data collected") and privacy policy as for the main app.
 5. Don't use the SpaceX name or logo in the listing: Play rejects listings that use
    another company's trademarks without permission.
