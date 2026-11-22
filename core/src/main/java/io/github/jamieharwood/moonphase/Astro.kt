@@ -8,6 +8,8 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
 import kotlin.math.acos
+import kotlin.math.asin
+import kotlin.math.atan2
 import kotlin.math.cbrt
 import kotlin.math.cos
 import kotlin.math.floor
@@ -209,6 +211,98 @@ object Astro {
         return formatHour(noon - half) to formatHour(noon + half)
     }
 
+    // ── Moonrise / moonset ───────────────────────────────────────────────────
+
+    /** Low-precision lunar position (Schlyter's method, ~0.3°): RA/Dec in degrees and distance in Earth radii. */
+    private fun moonEquatorial(d2000: Double): Triple<Double, Double, Double> {
+        val d = d2000 + 1.5 // days since 1999-12-31.0
+        val n = 125.1228 - 0.0529538083 * d
+        val m = normalizeAngle(115.3654 + 13.0649929509 * d)
+        val w = 318.0634 + 0.1643573223 * d
+        val ms = normalizeAngle(356.0470 + 0.9856002585 * d)
+        val ls = ms + 282.9404 + 4.70935e-5 * d
+        val lm = m + w + n
+        val dd = lm - ls
+        val f = lm - n
+        val e = 0.0549
+        val mr = toRad(m)
+        var ea = mr + e * sin(mr) * (1.0 + e * cos(mr))
+        ea -= (ea - e * sin(ea) - mr) / (1.0 - e * cos(ea))
+        val xv = 60.2666 * (cos(ea) - e)
+        val yv = 60.2666 * sqrt(1.0 - e * e) * sin(ea)
+        val v = atan2(yv, xv)
+        val r = sqrt(xv * xv + yv * yv)
+        val nr = toRad(n)
+        val vw = v + toRad(w)
+        val inc = toRad(5.1454)
+        val xh = r * (cos(nr) * cos(vw) - sin(nr) * sin(vw) * cos(inc))
+        val yh = r * (sin(nr) * cos(vw) + cos(nr) * sin(vw) * cos(inc))
+        val zh = r * sin(vw) * sin(inc)
+        fun s(x: Double) = sin(toRad(x))
+        val lon = Math.toDegrees(atan2(yh, xh)) +
+            -1.274 * s(m - 2 * dd) + 0.658 * s(2 * dd) - 0.186 * s(ms) - 0.059 * s(2 * m - 2 * dd) -
+            0.057 * s(m - 2 * dd + ms) + 0.053 * s(m + 2 * dd) + 0.046 * s(2 * dd - ms) +
+            0.041 * s(m - ms) - 0.035 * s(dd) - 0.031 * s(m + ms) - 0.015 * s(2 * f - 2 * dd) + 0.011 * s(m - 4 * dd)
+        val lat = Math.toDegrees(atan2(zh, sqrt(xh * xh + yh * yh))) +
+            -0.173 * s(f - 2 * dd) - 0.055 * s(m - f - 2 * dd) - 0.046 * s(m + f - 2 * dd) +
+            0.033 * s(f + 2 * dd) + 0.017 * s(2 * m + f)
+        val dist = r - 0.58 * cos(toRad(m - 2 * dd)) - 0.46 * cos(toRad(2 * dd))
+        val ecl = toRad(23.4393 - 3.563e-7 * d)
+        val lr = toRad(lon)
+        val br = toRad(lat)
+        val x = cos(lr) * cos(br)
+        val y = sin(lr) * cos(br) * cos(ecl) - sin(br) * sin(ecl)
+        val z = sin(lr) * cos(br) * sin(ecl) + sin(br) * cos(ecl)
+        return Triple(normalizeAngle(Math.toDegrees(atan2(y, x))), Math.toDegrees(asin(z)), dist)
+    }
+
+    /** Moon's altitude above the rising/setting threshold (degrees) at [zdt]; crosses zero at moonrise/moonset. */
+    private fun moonAltitudeAboveHorizon(zdt: ZonedDateTime, latitude: Double, longitude: Double): Double {
+        val d2000 = daysSinceJ2000(zdt)
+        val (ra, dec, dist) = moonEquatorial(d2000)
+        val ha = toRad(280.46061837 + 360.98564736629 * d2000 + longitude - ra)
+        val la = toRad(latitude)
+        val de = toRad(dec)
+        val alt = Math.toDegrees(asin(sin(la) * sin(de) + cos(la) * cos(de) * cos(ha)))
+        val parallax = Math.toDegrees(asin(1.0 / dist))
+        return alt - (0.7275 * parallax - 0.5667)
+    }
+
+    /** The next moonrise and moonset after [from] (within 30 hours), or null when there is none, e.g. near the poles. */
+    fun nextMoonRiseSet(from: ZonedDateTime, latitude: Double, longitude: Double): Pair<ZonedDateTime?, ZonedDateTime?> {
+        val start = from.withZoneSameInstant(ZoneOffset.UTC)
+        fun alt(t: ZonedDateTime) = moonAltitudeAboveHorizon(t, latitude, longitude)
+        var rise: ZonedDateTime? = null
+        var set: ZonedDateTime? = null
+        var t0 = start
+        var a0 = alt(t0)
+        for (i in 1..180) {
+            val t1 = start.plusMinutes(10L * i)
+            val a1 = alt(t1)
+            if ((a0 < 0) != (a1 < 0)) {
+                var lo = t0
+                var hi = t1
+                repeat(20) {
+                    val mid = lo.plusSeconds(Duration.between(lo, hi).seconds / 2)
+                    if ((alt(mid) < 0) == (a0 < 0)) lo = mid else hi = mid
+                }
+                if (a0 < 0) { if (rise == null) rise = hi } else if (set == null) set = hi
+                if (rise != null && set != null) break
+            }
+            t0 = t1
+            a0 = a1
+        }
+        return rise to set
+    }
+
+    /** "HH:mm" in [zone], with " +1" when the event falls on the next local day; "—" when [t] is null. */
+    fun formatMoonEvent(t: ZonedDateTime?, now: ZonedDateTime, zone: java.time.ZoneId): String {
+        if (t == null) return "—"
+        val local = t.withZoneSameInstant(zone)
+        val days = ChronoUnit.DAYS.between(now.withZoneSameInstant(zone).toLocalDate(), local.toLocalDate())
+        return "%02d:%02d".format(local.hour, local.minute) + if (days > 0) " +$days" else ""
+    }
+
     // ── Light time ───────────────────────────────────────────────────────────
 
     fun lightSeconds(au: Double) = au * KM_PER_AU / C_KM_S
@@ -266,6 +360,7 @@ object Astro {
             "Pluto" to PLUTO.heliocentricAu(t),
         )
         val (sunrise, sunset) = sunriseSunsetUtc(today, lat, lon)
+        val (moonrise, moonset) = nextMoonRiseSet(t, lat, lon)
         val speed = earthSpeedKmS(sun)
         return Snapshot(
             timestamp = t,
@@ -301,6 +396,8 @@ object Astro {
             daysUntilWinterSolstice = daysUntil(today, 12, 21),
             daysUntilPerihelion = daysUntil(today, 1, 3),
             daysUntilAphelion = daysUntil(today, 7, 4),
+            moonrise = moonrise,
+            moonset = moonset,
         )
     }
 
@@ -347,6 +444,8 @@ data class Snapshot(
     val daysUntilWinterSolstice: Long,
     val daysUntilPerihelion: Long,
     val daysUntilAphelion: Long,
+    val moonrise: ZonedDateTime? = null,
+    val moonset: ZonedDateTime? = null,
     val live: LiveData = LiveData(),
 ) {
     /** Numeric metrics stored in history (same keys as the original app / MongoDB schema). */

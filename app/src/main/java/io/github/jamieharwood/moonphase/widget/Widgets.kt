@@ -153,7 +153,8 @@ class SkyWidget : GlanceAppWidget() {
                     Line("🌌 $kp", color = if (l.kp >= 5) STORM else MUTED)
                     if (tall) {
                         Line("🛰️ $iss")
-                        Line("🌙 %,.0f km away".format(s.moonDistanceKm))
+                        val zone = java.time.ZoneId.systemDefault()
+                        Line("🌙 ↑ ${Astro.formatMoonEvent(s.moonrise, s.timestamp, zone)} · ↓ ${Astro.formatMoonEvent(s.moonset, s.timestamp, zone)}")
                     }
                 }
             }

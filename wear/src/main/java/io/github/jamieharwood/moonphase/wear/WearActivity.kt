@@ -103,6 +103,7 @@ fun WearApp() {
                 InfoCard("🌕 Full moon", if (d == 0) "Tonight" else "In $d day${if (d == 1) "" else "s"}")
             }
             item { SunCard(snapshot, settings) }
+            item { MoonTimesCard(snapshot) }
             item {
                 val kp = snapshot.live.kp
                 InfoCard("🌌 Aurora", if (kp < 0) "—" else "Kp %.1f · %s".format(kp, Astro.kpActivity(kp)),
@@ -172,6 +173,16 @@ private fun SunCard(s: Snapshot, settings: WearSettings) = InfoCard(
     "${s.sunriseTime} – ${s.sunsetTime}",
     "%.1f h daylight\n%.2f°, %.2f°".format(s.daylightHours, settings.latitude, settings.longitude),
 )
+
+@Composable
+private fun MoonTimesCard(s: Snapshot) {
+    val zone = java.time.ZoneId.systemDefault()
+    InfoCard(
+        "🌙 Moonrise / set",
+        "${Astro.formatMoonEvent(s.moonrise, s.timestamp, zone)} – ${Astro.formatMoonEvent(s.moonset, s.timestamp, zone)}",
+        "Next rise and set, local time",
+    )
+}
 
 @Composable
 private fun EventsCard(s: Snapshot) {

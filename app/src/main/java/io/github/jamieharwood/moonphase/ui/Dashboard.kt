@@ -143,6 +143,11 @@ private fun MoonCard(s: Snapshot, u: Units, ascii: Boolean, onToggle: () -> Unit
             Stat(if (s.daysUntilFullMoon == 0) "Tonight" else "${s.daysUntilFullMoon} d", "Full Moon In")
             Stat(distKm(s.moonDistanceKm, u), "Distance")
         }
+        val zone = java.time.ZoneId.systemDefault()
+        Row(Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            Stat(Astro.formatMoonEvent(s.moonrise, s.timestamp, zone), "Next Moonrise")
+            Stat(Astro.formatMoonEvent(s.moonset, s.timestamp, zone), "Next Moonset")
+        }
     }
 }
 

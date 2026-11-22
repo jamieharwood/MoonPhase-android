@@ -11,7 +11,7 @@ and the **Orbitly Mission watch face**.
 
 | Card | Contents |
 |---|---|
-| 🌙 **Moon Phase** | Phase name, an animated moon with a live terminator and twinkling stars (or the original ASCII art), illumination %, age, days to full moon, Earth–Moon distance |
+| 🌙 **Moon Phase** | Phase name, an animated moon with a live terminator and twinkling stars (or the original ASCII art), illumination %, age, days to full moon, Earth–Moon distance, next moonrise and moonset (local time) |
 | ☀️ **Solar System** | Mercury → Pluto distance from the Sun with light travel time, plus Earth→Mars/Jupiter/Saturn |
 | 🚀 **Deep Space Probes** | Hubble, James Webb, Voyager 1 & 2, New Horizons, light time to the Voyagers |
 | 🌍 **Earth** | Orbital speed, daylight hours, sunrise/sunset (UTC), axial tilt, NOAA aurora Kp index (shown in red during a storm) |
