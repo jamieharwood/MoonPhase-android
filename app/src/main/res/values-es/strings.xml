@@ -167,4 +167,29 @@
     <string name="widget_in_space">%1$d en el espacio</string>
     <string name="widget_moon_away">🌙 a %1$s km</string>
     <string name="widget_calendar_title">📅 Calendario del cielo</string>
+
+    <!-- Orbitly Pro -->
+    <string name="menu_pro">Orbitly Pro…</string>
+    <string name="pro_intro">Una compra única que desbloquea:</string>
+    <string name="pro_owned">Pro está desbloqueado. ¡Gracias por apoyar Orbitly!</string>
+    <string name="pro_feat_widgets">Widgets de pantalla de inicio</string>
+    <string name="pro_feat_calendar">Calendario de lluvias de meteoros y eclipses</string>
+    <string name="pro_feat_watch">Complicaciones y Tarjeta en el reloj</string>
+    <string name="pro_feat_night">Modo nocturno (luz roja)</string>
+    <string name="pro_feat_history">Gráficos del historial y exportación CSV</string>
+    <string name="pro_buy">Comprar por %1$s</string>
+    <string name="pro_buy_noprice">Comprar</string>
+    <string name="pro_restore">Restaurar compra</string>
+    <string name="pro_pending">Tu pago está pendiente. Pro se desbloqueará en cuanto se complete.</string>
+    <string name="pro_unavailable">Google Play no está disponible ahora, así que no se puede comprar Pro.</string>
+    <string name="pro_part_of">Incluido en Orbitly Pro</string>
+    <string name="pro_unlock">Desbloquear</string>
+    <string name="pro_calendar_teaser">Todos los máximos de lluvias de meteoros y eclipses del próximo año, con el brillo de la Luna.</string>
+    <string name="pro_history_teaser">Gráficos de la Luna, los planetas y los datos en vivo a lo largo del tiempo, con exportación CSV. Los datos se siguen guardando y estarán ahí al desbloquear.</string>
+    <string name="pro_msg_unlocked">Orbitly Pro desbloqueado. ¡Gracias!</string>
+    <string name="pro_msg_restored">Orbitly Pro restaurado</string>
+    <string name="pro_msg_not_found">No se encontró ninguna compra de Orbitly Pro en esta cuenta de Google</string>
+    <string name="pro_msg_error">Google Play no pudo completar la operación. Inténtalo de nuevo.</string>
+    <string name="close">Cerrar</string>
+    <string name="widget_locked">Toca para desbloquear</string>
 </resources>

@@ -167,4 +167,29 @@
     <string name="widget_in_space">%1$d dans l\'espace</string>
     <string name="widget_moon_away">🌙 à %1$s km</string>
     <string name="widget_calendar_title">📅 Calendrier du ciel</string>
+
+    <!-- Orbitly Pro -->
+    <string name="menu_pro">Orbitly Pro…</string>
+    <string name="pro_intro">Un achat unique qui débloque :</string>
+    <string name="pro_owned">Pro est débloqué. Merci de soutenir Orbitly !</string>
+    <string name="pro_feat_widgets">Widgets pour l’écran d’accueil</string>
+    <string name="pro_feat_calendar">Calendrier des pluies d’étoiles filantes et des éclipses</string>
+    <string name="pro_feat_watch">Complications et Vignette sur la montre</string>
+    <string name="pro_feat_night">Mode nuit (lumière rouge)</string>
+    <string name="pro_feat_history">Graphiques d’historique et export CSV</string>
+    <string name="pro_buy">Acheter pour %1$s</string>
+    <string name="pro_buy_noprice">Acheter</string>
+    <string name="pro_restore">Restaurer l’achat</string>
+    <string name="pro_pending">Votre paiement est en attente. Pro sera débloqué dès qu’il sera finalisé.</string>
+    <string name="pro_unavailable">Google Play n’est pas disponible pour le moment, Pro ne peut donc pas être acheté.</string>
+    <string name="pro_part_of">Inclus dans Orbitly Pro</string>
+    <string name="pro_unlock">Débloquer</string>
+    <string name="pro_calendar_teaser">Tous les pics d’étoiles filantes et les éclipses de l’année à venir, avec la luminosité de la Lune.</string>
+    <string name="pro_history_teaser">Graphiques de la Lune, des planètes et des données en direct dans le temps, avec export CSV. Les mesures continuent d’être enregistrées et seront là une fois débloqué.</string>
+    <string name="pro_msg_unlocked">Orbitly Pro débloqué. Merci !</string>
+    <string name="pro_msg_restored">Orbitly Pro restauré</string>
+    <string name="pro_msg_not_found">Aucun achat Orbitly Pro trouvé pour ce compte Google</string>
+    <string name="pro_msg_error">Google Play n’a pas pu terminer l’opération. Veuillez réessayer.</string>
+    <string name="close">Fermer</string>
+    <string name="widget_locked">Touchez pour débloquer</string>
 </resources>

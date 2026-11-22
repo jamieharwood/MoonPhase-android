@@ -79,6 +79,52 @@ Upload these:
   is not shown.
 - Can users request deletion? Not applicable (nothing collected); uninstalling removes all data.
 
+### Orbitly Pro (in-app product)
+
+The app is free with a one-time **Orbitly Pro** unlock (£2.99). The code expects an in-app
+product with the ID **`orbitly_pro`**.
+
+1. **Payments profile**: Play Console → Settings → Payments profile. Create or link one (it asks
+   for your bank account for payouts, and Google collects and pays UK/EU VAT for you). Products
+   can't be created until this is done.
+2. **Upload a bundle first**: the Monetise → Products → In-app products page unlocks only after
+   a build that includes Play Billing (any `app-release.aab` from this branch on) has been uploaded
+   to a testing track.
+3. **Create the product**: Monetise with Play → Products → In-app products → Create product.
+   - Product ID: `orbitly_pro` (this can never be changed or reused)
+   - Name: *Orbitly Pro*
+   - Description: *Widgets, sky calendar, watch complications and Tile, night mode and history charts.*
+   - Price: **£2.99**, then *Update exchange rates* to fill in the other countries.
+   - Activate it.
+4. **Licence testers**: Settings → License testing → add your own Google account and your
+   testers. They see "Test card, always approves" at checkout and are never charged, which is how
+   you check the purchase and *Restore purchase* before release.
+5. **Store listing**: the description already has an *ORBITLY PRO* section; Play adds the
+   "In-app purchases" label to the listing automatically.
+
+How it works in the app:
+
+- The purchase is a non-consumable one-time product. The app acknowledges it straight away
+  (Play refunds unacknowledged purchases after three days) and re-checks it with Play every time
+  the app starts, so refunds lock Pro again.
+- Free: dashboard (Moon, Sun, planets, probes, Earth, events, satellites, people in space), basic
+  watch app and the basic Moon complication, aurora notifications.
+- Pro: the three home-screen widgets, the meteor/eclipse calendar, the 12 astronomy complications
+  and the Tile on the watch, night mode, history charts, populate and CSV export. History
+  snapshots keep being recorded without Pro, so the charts are full when someone unlocks.
+- The watch learns about Pro from the phone over the Data Layer. People who use the watch app
+  without the Android phone app can't unlock Pro.
+- **Debug builds** have a *Debug: unlock Pro without Play* button in the Pro dialog, because
+  sideloaded builds can't reach Play Billing. Release builds don't show it.
+
+### Data safety and Pro
+
+The app doesn't collect purchase data itself: it asks Play whether the account owns the product
+and stores an "unlocked" flag on the device. Payment information is handled by Google Play.
+Keep answering **No** to "Does your app collect or share any of the required user data types?",
+but read Play's current help text for "Purchase history" when you fill the form in, as Google
+changes that wording from time to time.
+
 ## 4. Testing before production
 
 **New personal developer accounts** must run a **closed test with at least 12 testers who stay

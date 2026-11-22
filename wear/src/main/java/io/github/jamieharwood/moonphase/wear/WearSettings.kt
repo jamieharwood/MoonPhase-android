@@ -1,6 +1,9 @@
 package io.github.jamieharwood.moonphase.wear
 
+import android.content.ComponentName
 import android.content.Context
+import androidx.wear.tiles.TileService
+import androidx.wear.watchface.complications.datasource.ComplicationDataSourceUpdateRequester
 import com.google.android.gms.wearable.DataMap
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.Wearable
@@ -9,12 +12,16 @@ import com.google.android.gms.wearable.DataEventBuffer
 import io.github.jamieharwood.moonphase.Astro
 import kotlinx.coroutines.tasks.await
 
-/** Location and units on the watch; set from the phone app via the Data Layer. */
+/**
+ * Location, units and the Orbitly Pro unlock on the watch; set from the phone app via the
+ * Data Layer. Pro is bought in the phone app; the watch only mirrors it.
+ */
 data class WearSettings(
     val latitude: Double = Astro.DEFAULT_LATITUDE,
     val longitude: Double = Astro.DEFAULT_LONGITUDE,
     val units: String = "AU",
     val fromPhone: Boolean = false,
+    val pro: Boolean = false,
 ) {
     companion object {
         const val PATH = "/moonphase/settings"
@@ -28,16 +35,39 @@ data class WearSettings(
                 Astro.validLon(p.getFloat("longitude", 0f).toDouble()),
                 p.getString("units", "AU") ?: "AU",
                 fromPhone = true,
+                pro = p.getBoolean("pro", false),
             )
         }
 
         fun store(ctx: Context, map: DataMap) {
-            ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+            val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            val wasPro = p.getBoolean("pro", false)
+            val pro = map.getBoolean("pro", false)
+            p.edit()
                 .putFloat("latitude", map.getDouble("latitude", Astro.DEFAULT_LATITUDE).toFloat())
                 .putFloat("longitude", map.getDouble("longitude", Astro.DEFAULT_LONGITUDE).toFloat())
                 .putString("units", map.getString("units", "AU"))
-                .apply()
+                .putBoolean("pro", pro)
+                .commit()
+            if (pro != wasPro) refreshSurfaces(ctx)
         }
+
+        /** Redraw the Pro complications and the Tile after Pro is unlocked or locked. */
+        private fun refreshSurfaces(ctx: Context) {
+            PRO_COMPLICATIONS.forEach {
+                ComplicationDataSourceUpdateRequester.create(ctx, ComponentName(ctx, it)).requestUpdateAll()
+            }
+            TileService.getUpdater(ctx).requestUpdate(MoonTileService::class.java)
+        }
+
+        private val PRO_COMPLICATIONS = listOf(
+            IlluminationComplicationService::class.java, FullMoonComplicationService::class.java,
+            MoonAgeComplicationService::class.java, MoonDistanceComplicationService::class.java,
+            SunComplicationService::class.java, DaylightComplicationService::class.java,
+            SolsticeComplicationService::class.java, EarthSpeedComplicationService::class.java,
+            VoyagerComplicationService::class.java, AuroraComplicationService::class.java,
+            IssComplicationService::class.java, CrewComplicationService::class.java,
+        )
 
         /** Pull the latest settings the phone published (covers installs after the last change). */
         suspend fun syncFromDataLayer(ctx: Context) {

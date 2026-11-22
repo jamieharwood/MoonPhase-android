@@ -106,6 +106,10 @@ fun WearApp() {
                 InfoCard(stringResource(R.string.card_full_moon),
                     if (d == 0) stringResource(R.string.tonight) else Loc.daysText(ctx, d.toLong()))
             }
+            if (!settings.pro) item {
+                InfoCard(stringResource(R.string.pro_card_title), stringResource(R.string.pro_card_value),
+                    stringResource(R.string.pro_card_detail))
+            }
             item { SunCard(snapshot, settings) }
             item { MoonTimesCard(snapshot) }
             item {

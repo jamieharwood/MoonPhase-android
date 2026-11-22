@@ -47,6 +47,14 @@ Other features:
 
 Requires Android 8.0 (API 26) or later.
 
+### Orbitly Pro
+
+The app is free; a one-time £2.99 in-app purchase (`orbitly_pro`) unlocks the home-screen widgets,
+the meteor and eclipse calendar, the watch complications and Tile, night mode and the history
+charts with CSV export. See [PUBLISHING.md](PUBLISHING.md#orbitly-pro-in-app-product) for the Play
+Console setup and [`data/Pro.kt`](app/src/main/java/io/github/jamieharwood/moonphase/data/Pro.kt)
+for the billing code. Debug builds have a switch in the Pro dialog to unlock it without Play.
+
 ## Build and install
 
 You need the Android SDK (platform 36, build-tools 36), from Android Studio or the

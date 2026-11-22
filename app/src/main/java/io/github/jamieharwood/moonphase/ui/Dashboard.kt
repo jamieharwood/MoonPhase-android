@@ -68,6 +68,8 @@ fun Dashboard(
     onMetric: (Int) -> Unit,
     onRange: (Int) -> Unit,
     onExport: () -> Unit,
+    pro: Boolean,
+    onUnlock: () -> Unit,
 ) {
     val s = state.snapshot
     val u = state.settings.units
@@ -87,11 +89,17 @@ fun Dashboard(
         item { ProbesCard(s, u) }
         item { EarthCard(s) }
         item { EventsCard(s) }
-        item { SkyCalendarCard(s) }
+        item {
+            if (pro) SkyCalendarCard(s)
+            else LockedCard(stringResource(R.string.card_sky_calendar), stringResource(R.string.pro_calendar_teaser), onUnlock)
+        }
         item { LeoCard(s, u, state.refreshing) }
         item { PeopleCard(s, state.refreshing) }
         if (state.settings.historyEnabled) {
-            item(span = StaggeredGridItemSpan.FullLine) { HistoryCard(state, onMetric, onRange, onExport) }
+            item(span = StaggeredGridItemSpan.FullLine) {
+                if (pro) HistoryCard(state, onMetric, onRange, onExport)
+                else LockedCard(stringResource(R.string.card_history), stringResource(R.string.pro_history_teaser), onUnlock)
+            }
         }
     }
 }
