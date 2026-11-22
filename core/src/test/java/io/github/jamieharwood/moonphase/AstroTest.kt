@@ -4,6 +4,7 @@ import io.github.jamieharwood.moonphase.data.LiveFetcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.Duration
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -24,6 +25,25 @@ class AstroTest {
         val new = Astro.MoonPhase.at(utc(2024, 4, 8, 18, 21))
         assertEquals("New Moon", new.name)
         assertTrue(new.illuminationPercent <= 2)
+    }
+
+    @Test fun moonRiseSetMatchesReference() {
+        // Reference times from the PyEphem library; allow a few minutes for the low-precision model.
+        fun check(from: ZonedDateTime, lat: Double, lon: Double, rise: ZonedDateTime, set: ZonedDateTime) {
+            val (r, s) = Astro.nextMoonRiseSet(from, lat, lon)
+            assertTrue("rise $r vs $rise", Math.abs(Duration.between(rise, r!!).toMinutes()) <= 6)
+            assertTrue("set $s vs $set", Math.abs(Duration.between(set, s!!).toMinutes()) <= 6)
+        }
+        check(utc(2026, 11, 21, 9, 30), 51.4769, 0.0, utc(2026, 11, 21, 14, 3), utc(2026, 11, 22, 4, 42))
+        check(utc(2025, 6, 10, 12, 0), 40.7, -74.0, utc(2025, 6, 11, 0, 26), utc(2025, 6, 11, 9, 7))
+        check(utc(2024, 4, 23, 0, 0), -33.87, 151.2, utc(2024, 4, 23, 6, 53), utc(2024, 4, 23, 20, 22))
+    }
+
+    @Test fun moonEventFormatting() {
+        val now = utc(2026, 11, 21, 20, 0)
+        assertEquals("—", Astro.formatMoonEvent(null, now, ZoneOffset.UTC))
+        assertEquals("21:05", Astro.formatMoonEvent(utc(2026, 11, 21, 21, 5), now, ZoneOffset.UTC))
+        assertEquals("04:42 +1", Astro.formatMoonEvent(utc(2026, 11, 22, 4, 42), now, ZoneOffset.UTC))
     }
 
     @Test fun allEightPhasesInAMonth() {

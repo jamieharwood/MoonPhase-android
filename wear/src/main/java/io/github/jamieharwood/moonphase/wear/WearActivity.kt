@@ -107,6 +107,7 @@ fun WearApp() {
                     if (d == 0) stringResource(R.string.tonight) else Loc.daysText(ctx, d.toLong()))
             }
             item { SunCard(snapshot, settings) }
+            item { MoonTimesCard(snapshot) }
             item {
                 val kp = snapshot.live.kp
                 InfoCard(stringResource(R.string.card_aurora),
@@ -178,6 +179,16 @@ private fun SunCard(s: Snapshot, settings: WearSettings) = InfoCard(
     "${s.sunriseTime} – ${s.sunsetTime}",
     stringResource(R.string.daylight_detail, s.daylightHours) + "\n%.2f°, %.2f°".format(settings.latitude, settings.longitude),
 )
+
+@Composable
+private fun MoonTimesCard(s: Snapshot) {
+    val zone = java.time.ZoneId.systemDefault()
+    InfoCard(
+        stringResource(R.string.card_moon_times),
+        "${Astro.formatMoonEvent(s.moonrise, s.timestamp, zone)} – ${Astro.formatMoonEvent(s.moonset, s.timestamp, zone)}",
+        stringResource(R.string.moon_times_detail),
+    )
+}
 
 @Composable
 private fun EventsCard(s: Snapshot) {

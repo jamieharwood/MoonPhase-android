@@ -53,6 +53,8 @@
     <string name="stat_full_moon_in">Pleine Lune dans</string>
     <string name="stat_tonight">Ce soir</string>
     <string name="stat_distance">Distance</string>
+    <string name="stat_moonrise">Prochain lever de Lune</string>
+    <string name="stat_moonset">Prochain coucher de Lune</string>
     <string name="card_solar">☀️ Système solaire</string>
     <string name="col_planet">Planète</string>
     <string name="col_from_sun">Du Soleil</string>

@@ -53,6 +53,8 @@
     <string name="stat_full_moon_in">Full Moon In</string>
     <string name="stat_tonight">Tonight</string>
     <string name="stat_distance">Distance</string>
+    <string name="stat_moonrise">Next Moonrise</string>
+    <string name="stat_moonset">Next Moonset</string>
     <string name="card_solar">☀️ Solar System</string>
     <string name="col_planet">Planet</string>
     <string name="col_from_sun">From Sun</string>

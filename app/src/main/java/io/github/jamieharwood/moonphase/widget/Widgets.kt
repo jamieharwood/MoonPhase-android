@@ -37,6 +37,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import io.github.jamieharwood.moonphase.Astro
 import io.github.jamieharwood.moonphase.Loc
 import io.github.jamieharwood.moonphase.R
 import io.github.jamieharwood.moonphase.MainActivity
@@ -160,6 +161,8 @@ class SkyWidget : GlanceAppWidget() {
                     Line("🌌 $kp", color = if (l.kp >= 5) STORM else MUTED)
                     if (tall) {
                         Line("🛰️ $iss")
+                        val zone = java.time.ZoneId.systemDefault()
+                        Line("🌙 ↑ ${Astro.formatMoonEvent(s.moonrise, s.timestamp, zone)} · ↓ ${Astro.formatMoonEvent(s.moonset, s.timestamp, zone)}")
                         Line(ctx.getString(R.string.widget_moon_away, "%,.0f".format(s.moonDistanceKm)))
                     }
                 }

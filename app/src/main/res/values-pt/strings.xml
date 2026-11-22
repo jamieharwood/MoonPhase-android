@@ -53,6 +53,8 @@
     <string name="stat_full_moon_in">Lua cheia em</string>
     <string name="stat_tonight">Hoje à noite</string>
     <string name="stat_distance">Distância</string>
+    <string name="stat_moonrise">Próximo nascer da Lua</string>
+    <string name="stat_moonset">Próximo pôr da Lua</string>
     <string name="card_solar">☀️ Sistema Solar</string>
     <string name="col_planet">Planeta</string>
     <string name="col_from_sun">Do Sol</string>

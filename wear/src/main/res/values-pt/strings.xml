@@ -25,6 +25,8 @@
     <string name="tonight">Hoje à noite</string>
     <string name="card_sun">🌅 Sol (UTC)</string>
     <string name="daylight_detail">%1$.1f h de luz do dia</string>
+    <string name="card_moon_times">🌙 Nascer / pôr da Lua</string>
+    <string name="moon_times_detail">Próximo nascer e pôr, hora local</string>
     <string name="card_aurora">🌌 Aurora</string>
     <string name="card_iss">🛰️ ISS</string>
     <string name="iss_km_up">%1$,.0f km de altitude</string>

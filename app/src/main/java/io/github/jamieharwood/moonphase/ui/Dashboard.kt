@@ -153,6 +153,11 @@ private fun MoonCard(s: Snapshot, u: Units, ascii: Boolean, onToggle: () -> Unit
             )
             Stat(distKm(s.moonDistanceKm, u), stringResource(R.string.stat_distance))
         }
+        val zone = java.time.ZoneId.systemDefault()
+        Row(Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            Stat(Astro.formatMoonEvent(s.moonrise, s.timestamp, zone), stringResource(R.string.stat_moonrise))
+            Stat(Astro.formatMoonEvent(s.moonset, s.timestamp, zone), stringResource(R.string.stat_moonset))
+        }
     }
 }
 
