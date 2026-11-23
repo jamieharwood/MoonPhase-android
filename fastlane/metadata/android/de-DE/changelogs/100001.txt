@@ -1,1 +1,1 @@
-Neu: Kalender für Meteorströme und Finsternisse, Himmelskalender-Widget, dunkelroter Nachtmodus sowie Übersetzungen in Spanisch, Deutsch, Französisch und Portugiesisch.
+Erste Version von Orbitly: Mondphase, Sonnenauf- und -untergang, Polarlicht-Warnungen, die ISS, Menschen im All, Planeten und Raumsonden. Mit Wear-OS-App samt Kachel und Komplikationen, Startbildschirm-Widgets, Kalender für Meteorströme und Finsternisse sowie dunkelrotem Nachtmodus. Widgets, Kalender, Uhr-Komplikationen, Nachtmodus und Verlaufsdiagramme gehören zu Orbitly Pro, einem einmaligen Kauf.
