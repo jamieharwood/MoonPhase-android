@@ -1,0 +1,16 @@
+Orbitly Mission is a clean, mission-control style digital watch face for Wear OS, built around tonight's Moon.
+
+FREE
+• Large digital time, the date and UTC time
+• The Moon drawn in its real phase, with the phase name, updated through the month
+• A minimal always-on mode that saves battery
+
+WITH ORBITLY PRO
+Install the free Orbitly app on your phone and watch and unlock Orbitly Pro (a one-time purchase in the phone app) to fill the five complication slots with live astronomy:
+• Moon illumination and days to the next full moon
+• Aurora Kp index
+• ISS altitude
+• Sunrise and sunset for your location
+Without Pro those slots stay empty, so the free face stays clean.
+
+Made with Watch Face Format for Wear OS 5 and newer (Galaxy Watch4 and later, Pixel Watch and others). No ads, no tracking, no data collected.
