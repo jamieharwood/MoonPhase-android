@@ -1,1 +1,1 @@
-Novedades: calendario de lluvias de meteoros y eclipses, widget de calendario del cielo, modo nocturno rojo y traducciones a español, alemán, francés y portugués.
+Primera versión de Orbitly: fase lunar, salida y puesta del sol, alertas de auroras, la ISS, personas en el espacio, planetas y sondas. Incluye app para Wear OS con tarjeta y complicaciones, widgets para la pantalla de inicio, calendario de lluvias de meteoros y eclipses, y modo nocturno rojo. Widgets, calendario, complicaciones, modo nocturno y gráficos de historial forman parte de Orbitly Pro, un pago único.

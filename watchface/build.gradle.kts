@@ -34,7 +34,10 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false // no code to shrink
+            // Play rejects watch faces that contain any dex. AGP still compiles the R classes,
+            // so let R8 strip them: with nothing to keep, the bundle ships without classes.dex.
+            isMinifyEnabled = true
+            isShrinkResources = false // the watch face XML references resources by name
             signingConfig = signingConfigs.findByName("upload") ?: signingConfigs.getByName("debug")
         }
     }

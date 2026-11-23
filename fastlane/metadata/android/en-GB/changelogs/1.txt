@@ -1,1 +1,1 @@
-First release: Moon phase, sun, aurora, ISS and space data on your phone, with a Wear OS app, Tile and complication.
+First release of Orbitly: Moon phase, sunrise and sunset, aurora alerts, the ISS, people in space, planets and probes. Includes a Wear OS app with a Tile and complications, home-screen widgets, a meteor shower and eclipse calendar, and a dark red night mode. Widgets, the calendar, watch complications, night mode and history charts are part of Orbitly Pro, a one-time unlock.
