@@ -23,7 +23,7 @@ android {
         applicationId = "io.github.jamieharwood.moonphase"
         minSdk = 30
         targetSdk = 35
-        versionCode = 100001
+        versionCode = 100002
         versionName = "1.0.0-wear"
     }
     signingConfigs {
