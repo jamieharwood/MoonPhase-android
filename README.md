@@ -198,7 +198,7 @@ A black-and-white, mission-control style digital watch face, in the `watchface` 
 - Always-on mode dims everything and hides the seconds arc.
 
 It uses Google's **Watch Face Format** (required for new watch faces on Play since January 2026),
-so it has no code and needs Wear OS 4 or later. It is a separate app
+so it has no code and needs Wear OS 5 or later (format version 2). It is a separate app
 (`io.github.jamieharwood.moonphase.watchface`), as Play requires. To change the design, edit
 `watchface/tools/generate.py` and run `python3 watchface/tools/generate.py` (needs Pillow).
 
