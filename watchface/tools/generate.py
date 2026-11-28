@@ -22,6 +22,11 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "src", "main", "res")
 RAW = os.path.join(ROOT, "raw")
 DRAW = os.path.join(ROOT, "drawable-nodpi")
 FONT_DIR = os.path.join(ROOT, "font")
+# Every text on the face uses Barlow Condensed Medium. The Galaxy Watch's WFF runtime drew no
+# digits from barlow_semibold.ttf (the clock showed only its colon and complications only "%"),
+# although the file is complete; the medium cut renders everything. The picker preview uses the
+# same font; barlow_semibold.ttf remains only for the store graphics' title text.
+TEXT_FONT = "barlow_medium"
 
 SIZE = 450
 C = SIZE / 2
@@ -143,7 +148,7 @@ def preview_image() -> Image.Image:
     img = Image.new("RGB", (SIZE, SIZE), (0, 0, 0))
     img.paste(dial_image(), (0, 0), dial_image())
     d = ImageDraw.Draw(img)
-    semi = lambda sz: ImageFont.truetype(os.path.join(FONT_DIR, "barlow_semibold.ttf"), sz)
+    semi = lambda sz: ImageFont.truetype(os.path.join(FONT_DIR, f"{TEXT_FONT}.ttf"), sz)  # as on the watch
     med = lambda sz: ImageFont.truetype(os.path.join(FONT_DIR, "barlow_medium.ttf"), sz)
     # seconds arc (at :40)
     d.arc([7, 7, SIZE - 7, SIZE - 7], -90, -90 + 240, fill=(255, 255, 255), width=2)
@@ -174,7 +179,7 @@ def preview_image() -> Image.Image:
 
 # ---------------------------------------------------------------- XML helpers
 
-def font(size, color=WHITE, family="barlow_medium", spacing=None, inner=""):
+def font(size, color=WHITE, family=TEXT_FONT, spacing=None, inner=""):
     ls = f' letterSpacing="{spacing}"' if spacing is not None else ""
     return f'<Font family="{family}" size="{size}" color="{color}"{ls}>{inner}</Font>'
 
@@ -223,7 +228,7 @@ def moon_group():
 def clock_group():
     time = ('<DigitalClock x="85" y="160" width="280" height="122">'
             '<TimeText x="0" y="0" width="280" height="122" format="hh:mm" hourFormat="SYNC_TO_DEVICE" align="CENTER">'
-            f'<Font family="barlow_semibold" size="112" color="{WHITE}" letterSpacing="0.02"/>'
+            f'<Font family="{TEXT_FONT}" size="112" color="{WHITE}" letterSpacing="0.02"/>'
             '</TimeText></DigitalClock>')
     weekday = condition("dow", lambda v: f"[DAY_OF_WEEK] == {v}",
                         [(i + 1, part_text(f"dow{i}", 95, 288, 127, 28, font(22, WHITE, spacing=0.1, inner=d), "END"))
@@ -270,7 +275,7 @@ def complication_slot(slot):
 
     def texts(sid_suffix):
         value = part_text(f"value{sid}{sid_suffix}", 4, round(s * 0.18), s - 8, round(s * 0.40),
-                          font(round(s * 0.32), WHITE, "barlow_semibold",
+                          font(round(s * 0.32), WHITE, TEXT_FONT,
                                inner=template("%s", "[COMPLICATION.TEXT]")))
         title = part_text(f"title{sid}{sid_suffix}", 6, round(s * 0.58), s - 12, round(s * 0.22),
                           font(round(s * 0.16), GREY, spacing=0.08,
