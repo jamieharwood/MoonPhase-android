@@ -1,0 +1,1 @@
+Genauere Mondphase sowie Planeten- und Sondenpositionen, passend zur Handy-App und zu JPL Horizons. Sonnenauf- und -untergang liegen jetzt nur wenige Minuten neben den Almanachzeiten.

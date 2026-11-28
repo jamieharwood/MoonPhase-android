@@ -1,8 +1,8 @@
-O Orbitly mostra a Lua desta noite e o que acontece no céu acima de você, no celular e no relógio Wear OS. Todos os cálculos astronômicos são feitos no seu dispositivo; dados ao vivo trazem a previsão de auroras e o que está em órbita.
+O Orbitly mostra a Lua desta noite e o que acontece no céu acima de você, no celular e no relógio Wear OS. Todos os cálculos astronômicos são feitos no seu dispositivo; dados ao vivo trazem a previsão de auroras e o que está em órbita. As posições dos planetas, da Lua e das sondas são conferidas com o JPL Horizons.
 
 LUA
 • Nome da fase, iluminação e idade, com uma Lua desenhada e seu terminador
-• Dias até a próxima lua cheia e distância atual Terra–Lua
+• Datas exatas da próxima lua nova e cheia, e distância atual Terra–Lua
 
 TERRA E SOL
 • Nascer e pôr do sol e horas de luz para a sua localização
@@ -22,7 +22,7 @@ ESPAÇO
 • Altitudes da ISS, Tiangong e Hubble com dados orbitais ao vivo
 • Quantidade de satélites Starlink e Kuiper e total de objetos rastreados
 • Quem está no espaço agora, por nave
-• Distâncias até os planetas com tempo-luz, e até Voyager 1 e 2, New Horizons, Hubble e James Webb
+• Distâncias até os planetas com tempo-luz, e a que distância da Terra estão Voyager 1 e 2, New Horizons e James Webb
 
 HISTÓRICO
 • Guarda um registro a cada 12 horas e mostra 35 métricas por uma semana, um mês, um ano ou todo o período
@@ -38,7 +38,7 @@ TAMBÉM
 • Distâncias em UA, quilômetros ou milhas
 • Modo noturno vermelho-escuro que protege a visão noturna
 • Disponível em inglês, espanhol, alemão, francês e português
-• Cores Material You
+• Dez temas de cores ou cores Material You
 • Envio opcional para um relógio LED Awtrix da sua rede doméstica
 
 ORBITLY PRO (compra única)

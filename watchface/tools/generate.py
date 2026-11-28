@@ -22,6 +22,11 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "src", "main", "res")
 RAW = os.path.join(ROOT, "raw")
 DRAW = os.path.join(ROOT, "drawable-nodpi")
 FONT_DIR = os.path.join(ROOT, "font")
+# Every text on the face uses Barlow Condensed Medium. The Galaxy Watch's WFF runtime drew no
+# digits from barlow_semibold.ttf (the clock showed only its colon and complications only "%"),
+# although the file is complete; the medium cut renders everything. The picker preview uses the
+# same font; barlow_semibold.ttf remains only for the store graphics' title text.
+TEXT_FONT = "barlow_medium"
 
 SIZE = 450
 C = SIZE / 2
@@ -35,14 +40,30 @@ FAINT = "#FF2A2D31"
 WEAR_PKG = "io.github.jamieharwood.moonphase"
 WEAR_CLS = "io.github.jamieharwood.moonphase.wear"
 
-# Moon age in days, computed exactly like the phone app (Astro.MoonPhase: mean synodic month from a
-# known new moon, JD 2451550.1). The platform's [MOON_PHASE_POSITION] runs up to ~2 days behind,
-# so the face showed a different moon from the app and widgets. 10962.6 = 2451550.1 - 2440587.5
-# (the Unix epoch as a Julian date).
+# Moon phase computed on the watch, to match the phone app's true phase (Astro.MoonPhase: the
+# Moon − Sun ecliptic longitude). The platform's [MOON_PHASE_POSITION] runs up to ~2 days behind,
+# and a mean 29.53-day cycle drifts up to ~10° (most of a day) from the true phase, so the face
+# showed a different moon from the app and widgets. This is the mean elongation D plus the
+# largest periodic terms (Meeus, "Astronomical Algorithms", ch. 48): within 0.4° of the app's
+# ephemeris for 2026–2030, i.e. under an hour at a phase boundary.
+# 10957.5 = 2451545.0 (J2000) - 2440587.5 (the Unix epoch as a Julian date).
 APP_SYNODIC = 29.530588853
-MOON_AGE = f"(([UTC_TIMESTAMP] / 86400000 - 10962.6) % {APP_SYNODIC})"
+_DEG = 0.017453292519943295
+_T = "(([UTC_TIMESTAMP] / 86400000 - 10957.5) / 36525)"
+_D = f"(297.8501921 + 445267.1114034 * {_T})"     # Moon's mean elongation
+_M = f"(357.5291092 + 35999.0502909 * {_T})"      # Sun's mean anomaly
+_MP = f"(134.9633964 + 477198.8675055 * {_T})"    # Moon's mean anomaly
+
+
+def _s(deg_expr: str) -> str:
+    return f"sin({_DEG} * {deg_expr})"
+
+
+ELONGATION = (f"({_D} + 6.289 * {_s(_MP)} - 2.100 * {_s(_M)} + 1.274 * {_s(f'(2 * {_D} - {_MP})')}"
+              f" + 0.658 * {_s(f'(2 * {_D})')} + 0.214 * {_s(f'(2 * {_MP})')} - 0.110 * {_s(_D)})")
+MOON_FRAC = f"(((({ELONGATION} % 360) + 360) % 360) / 360)"  # 0 new, 0.5 full, as Astro.MoonPhase.fraction
+MOON_AGE = f"({MOON_FRAC} * {APP_SYNODIC})"  # the image for that phase (images are drawn by phase)
 MOON_DAY = f"round({MOON_AGE})"  # nearest of the 29 images; 29 and 30 wrap to new moon
-MOON_FRAC = f"({MOON_AGE} / {APP_SYNODIC})"
 # Phase-name bands, the same as Astro.MoonPhase.index: (PHASE_NAMES index, lower, upper)
 PHASE_BANDS = [(1, 0.03, 0.22), (2, 0.22, 0.28), (3, 0.28, 0.47), (4, 0.47, 0.53),
                (5, 0.53, 0.72), (6, 0.72, 0.78), (7, 0.78, 0.97)]  # anything else is new moon (0)
@@ -127,7 +148,7 @@ def preview_image() -> Image.Image:
     img = Image.new("RGB", (SIZE, SIZE), (0, 0, 0))
     img.paste(dial_image(), (0, 0), dial_image())
     d = ImageDraw.Draw(img)
-    semi = lambda sz: ImageFont.truetype(os.path.join(FONT_DIR, "barlow_semibold.ttf"), sz)
+    semi = lambda sz: ImageFont.truetype(os.path.join(FONT_DIR, f"{TEXT_FONT}.ttf"), sz)  # as on the watch
     med = lambda sz: ImageFont.truetype(os.path.join(FONT_DIR, "barlow_medium.ttf"), sz)
     # seconds arc (at :40)
     d.arc([7, 7, SIZE - 7, SIZE - 7], -90, -90 + 240, fill=(255, 255, 255), width=2)
@@ -158,7 +179,7 @@ def preview_image() -> Image.Image:
 
 # ---------------------------------------------------------------- XML helpers
 
-def font(size, color=WHITE, family="barlow_medium", spacing=None, inner=""):
+def font(size, color=WHITE, family=TEXT_FONT, spacing=None, inner=""):
     ls = f' letterSpacing="{spacing}"' if spacing is not None else ""
     return f'<Font family="{family}" size="{size}" color="{color}"{ls}>{inner}</Font>'
 
@@ -207,7 +228,7 @@ def moon_group():
 def clock_group():
     time = ('<DigitalClock x="85" y="160" width="280" height="122">'
             '<TimeText x="0" y="0" width="280" height="122" format="hh:mm" hourFormat="SYNC_TO_DEVICE" align="CENTER">'
-            f'<Font family="barlow_semibold" size="112" color="{WHITE}" letterSpacing="0.02"/>'
+            f'<Font family="{TEXT_FONT}" size="112" color="{WHITE}" letterSpacing="0.02"/>'
             '</TimeText></DigitalClock>')
     weekday = condition("dow", lambda v: f"[DAY_OF_WEEK] == {v}",
                         [(i + 1, part_text(f"dow{i}", 95, 288, 127, 28, font(22, WHITE, spacing=0.1, inner=d), "END"))
@@ -254,7 +275,7 @@ def complication_slot(slot):
 
     def texts(sid_suffix):
         value = part_text(f"value{sid}{sid_suffix}", 4, round(s * 0.18), s - 8, round(s * 0.40),
-                          font(round(s * 0.32), WHITE, "barlow_semibold",
+                          font(round(s * 0.32), WHITE, TEXT_FONT,
                                inner=template("%s", "[COMPLICATION.TEXT]")))
         title = part_text(f"title{sid}{sid_suffix}", 6, round(s * 0.58), s - 12, round(s * 0.22),
                           font(round(s * 0.16), GREY, spacing=0.08,

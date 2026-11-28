@@ -19,8 +19,8 @@ android {
         applicationId = "io.github.jamieharwood.moonphase.watchface"
         minSdk = 34 // WFF version 2 = Wear OS 5 (needed for letterSpacing; Galaxy Watch4 and newer have it)
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.0.2"
     }
 
     signingConfigs {

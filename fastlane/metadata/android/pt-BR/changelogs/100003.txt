@@ -1,0 +1,1 @@
+Fase da Lua e posições de planetas e sondas mais precisas, iguais às do app do celular e do JPL Horizons. O nascer e o pôr do sol agora ficam a poucos minutos dos almanaques.

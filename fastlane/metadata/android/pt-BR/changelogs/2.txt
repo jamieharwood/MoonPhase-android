@@ -1,0 +1,1 @@
+Mais precisa e com visual novo. As posições de planetas, Lua e sondas agora batem com o JPL Horizons, a próxima lua nova e cheia mostram a data exata, o nascer e o pôr do sol ficam a poucos minutos dos almanaques, e a distância do James Webb é ao vivo. Novo cartão da Lua, novos cartões Perto da Terra e Espaço profundo, e dez temas de cores (menu → Tema).

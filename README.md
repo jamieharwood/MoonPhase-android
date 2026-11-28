@@ -11,21 +11,23 @@ and the **Orbitly Mission watch face**.
 
 | Card | Contents |
 |---|---|
-| 🌙 **Moon Phase** | Phase name, an animated moon with a live terminator and twinkling stars (or the original ASCII art), illumination %, age, days to full moon, Earth–Moon distance, next moonrise and moonset (local time) |
-| ☀️ **Solar System** | Mercury → Pluto distance from the Sun with light travel time, plus Earth→Mars/Jupiter/Saturn |
-| 🚀 **Deep Space Probes** | Hubble, James Webb, Voyager 1 & 2, New Horizons, light time to the Voyagers |
+| 🌙 **Moon Phase** | Illumination %, phase name, an animated moon with a live terminator and twinkling stars (or the original ASCII art), progress through the lunar cycle with a phase strip, the exact dates of the next new and full moon, Earth–Moon distance, next moonrise and moonset (local time) |
+| ☀️ **Solar System** | Mercury → Pluto distance from the Sun with light travel time |
 | 🌍 **Earth** | Orbital speed, daylight hours, sunrise/sunset (UTC), axial tilt, NOAA aurora Kp index (shown in red during a storm) |
-| 📅 **Upcoming Events** | Full moon, solstices, perihelion and aphelion, sorted by days remaining |
+| 🛰️ **Near Earth** | ISS / Tiangong / Hubble altitudes from live TLEs, Starlink and Kuiper counts, total objects in orbit, people on each spacecraft (★ = aboard the ISS) |
+| 🚀 **Deep Space** | James Webb (live from JPL Horizons), Voyager 1 & 2 and New Horizons, as distances from Earth |
+| 📅 **Upcoming Events** | Solstices, perihelion and aphelion, sorted by days remaining |
 | 🌠 **Meteor Showers & Eclipses** | Next meteor shower peaks (with Moon interference) and solar/lunar eclipses to 2030 |
-| 🛰️ **LEO** | ISS / Tiangong / Hubble altitudes from live TLEs, Starlink and Kuiper counts, total objects in orbit, ISS crew |
-| 👨‍🚀 **People in Space** | Number of people on each spacecraft (★ = docked to ISS) |
 | 📊 **Historical Data** | Chart of any of the 35 stored metrics over 7 days to all time, CSV export, *Populate past* backfill, reset |
 
 Other features:
 
-- **Units**: AU, km or miles (the toolbar button).
+- **Units**: AU, km or miles (the toolbar button) for Solar System and Deep Space distances.
+  Near-Earth values (the Moon, orbit altitudes, James Webb) are always in km or miles, never AU.
+- **Themes** (menu → *Theme*): Material You, or one of the web dashboard's ten palettes (Classic,
+  Light, Monochrome, Mission Blue, Sky, Neon, Daylight, Indigo, Copper, Gold). Night mode overrides them.
 - **Refresh**: pull down on the dashboard or tap ⟳. Calculated values update every minute.
-  Live feeds are cached (Kp for 15 minutes, LEO and crew for 6 hours).
+  Live feeds are cached (Kp for 15 minutes, James Webb for 1 hour, LEO and crew for 6 hours).
 - **Background refresh**: a WorkManager job runs about every 6 hours when online.
   It saves history (at most one snapshot per 12-hour UTC window, as in the original),
   sends notifications for aurora storms (Kp ≥ 5) and the full moon tonight or tomorrow, and pushes to Awtrix if enabled.
@@ -46,6 +48,25 @@ Other features:
 - Phones and tablets: cards reflow into columns on wide screens. Uses Material You colours on Android 12 and later.
 
 Requires Android 8.0 (API 26) or later.
+
+### Accuracy
+
+The calculations in `core/Astro.kt` are the same as the MoonPhase web app's and are checked against
+[JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) by `EphemerisAccuracyTest`, using the same
+reference values:
+
+| Quantity | Method | Typical error vs Horizons |
+|---|---|---|
+| Planet distances (Sun and Earth) | JPL Keplerian element tables, full 3-D Kepler solution | ≤ 0.2 % |
+| Moon distance | Lunar orbit plus principal perturbations | ≤ ~600 km |
+| Moon illumination / phase | True Sun–Moon elongation | < 0.1 %; new/full moon within minutes |
+| Voyager 1 & 2, New Horizons | Two-body motion from Horizons state vectors (2026) | ≤ 0.02 AU, 2020–2035 |
+| James Webb | Fetched live from Horizons (its L2 halo orbit can't be modelled offline) | exact; "—" when offline |
+| Sunrise, sunset, day length | NOAA solar position with standard refraction | ≈ 1–2 min |
+
+The Mission watch face can't run the full ephemeris, so it uses the mean lunar elongation plus
+its six largest periodic terms (Meeus, *Astronomical Algorithms*, ch. 48): within 0.4° of the app,
+so its moon and phase name match the app except within about an hour of a phase boundary.
 
 ### Orbitly Pro
 
@@ -90,7 +111,7 @@ Or copy the APK to the phone and open it (allow *Install unknown apps* for your 
 ```
 core/src/main/java/io/github/jamieharwood/moonphase/      shared by phone and watch
   Astro.kt              deterministic calculations (ported from MoonPhaseModule/*.java)
-  data/LiveFetcher.kt   NOAA Kp, TLE API, people-in-space feeds (cached; TLE requests one at a time)
+  data/LiveFetcher.kt   NOAA Kp, JPL Horizons (JWST), TLE API, people-in-space feeds (cached; TLE requests one at a time)
 app/src/main/java/io/github/jamieharwood/moonphase/       phone app
   MainActivity.kt       Compose activity, toolbar, dialogs, theme
   MainViewModel.kt      state, refresh, history, CSV export

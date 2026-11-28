@@ -1,8 +1,8 @@
-Orbitly affiche la Lune de ce soir et ce qui se passe dans le ciel au-dessus de vous, sur votre téléphone et votre montre Wear OS. Tous les calculs astronomiques sont faits sur votre appareil ; les données en direct ajoutent les prévisions d'aurores et ce qui est en orbite.
+Orbitly affiche la Lune de ce soir et ce qui se passe dans le ciel au-dessus de vous, sur votre téléphone et votre montre Wear OS. Tous les calculs astronomiques sont faits sur votre appareil ; les données en direct ajoutent les prévisions d'aurores et ce qui est en orbite. Les positions des planètes, de la Lune et des sondes sont vérifiées avec JPL Horizons.
 
 LUNE
 • Nom de la phase, illumination et âge, avec une Lune dessinée et son terminateur
-• Jours avant la prochaine pleine Lune et distance Terre–Lune actuelle
+• Dates exactes de la prochaine nouvelle et pleine Lune, et distance Terre–Lune actuelle
 
 TERRE ET SOLEIL
 • Lever, coucher du soleil et durée du jour selon votre position
@@ -22,7 +22,7 @@ ESPACE
 • Altitudes de l'ISS, de Tiangong et de Hubble à partir de données orbitales en direct
 • Nombre de satellites Starlink et Kuiper et total des objets suivis
 • Qui est dans l'espace en ce moment, par vaisseau
-• Distances aux planètes avec temps-lumière, et à Voyager 1 et 2, New Horizons, Hubble et James Webb
+• Distances aux planètes avec temps-lumière, et distance de Voyager 1 et 2, New Horizons et James Webb à la Terre
 
 HISTORIQUE
 • Enregistre un instantané toutes les 12 heures et trace 35 mesures sur une semaine, un mois, un an ou tout l'historique
@@ -38,7 +38,7 @@ AUSSI
 • Distances en UA, kilomètres ou miles
 • Mode nuit rouge foncé qui préserve la vision nocturne
 • Disponible en anglais, espagnol, allemand, français et portugais
-• Couleurs Material You
+• Dix thèmes de couleur ou couleurs Material You
 • Envoi facultatif vers une horloge LED Awtrix de votre réseau domestique
 
 ORBITLY PRO (achat unique)

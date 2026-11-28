@@ -1,6 +1,6 @@
 # Orbitly privacy policy
 
-*Last updated: 22 November 2026*
+*Last updated: 28 November 2026*
 
 Orbitly (the Android phone app and the Wear OS watch app, package
 `io.github.jamieharwood.moonphase`) is an open-source project. This policy explains what
@@ -12,7 +12,7 @@ and it has no accounts, ads or analytics.**
 - **Location.** You can type a latitude and longitude into Settings so sunrise and sunset are
   calculated for where you are. The app does not use your device's location service. These
   numbers are stored only on your phone and, if you have the watch app, on your watch.
-- **Settings and history.** Your settings (units, notifications, history options, Awtrix address)
+- **Settings and history.** Your settings (units, colour theme, notifications, history options, Awtrix address)
   and the astronomy snapshots used for the history chart are stored in the app's private storage
   on your device. Uninstalling the app deletes them.
 - **CSV export.** If you export history, the file is saved to the location you choose.
@@ -28,6 +28,7 @@ service you connect to.
 | Aurora Kp index | NOAA Space Weather Prediction Center (`services.swpc.noaa.gov`) |
 | Satellite orbits and counts | TLE API (`tle.ivanstanojevic.me`) |
 | People in space | `corquaid.github.io` (GitHub Pages) |
+| James Webb Space Telescope's distance | JPL Horizons (`ssd.jpl.nasa.gov`) |
 
 If you turn on the **Awtrix** option, the app sends astronomy values to the Awtrix clock address
 you enter, which is normally a device on your own home network.
