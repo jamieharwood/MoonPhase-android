@@ -46,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,6 +59,9 @@ import io.github.jamieharwood.moonphase.data.RefreshWorker
 import io.github.jamieharwood.moonphase.data.Units
 import io.github.jamieharwood.moonphase.ui.Dashboard
 import io.github.jamieharwood.moonphase.ui.LocalNightMode
+import io.github.jamieharwood.moonphase.ui.LocalPalette
+import io.github.jamieharwood.moonphase.ui.ThemeDialog
+import io.github.jamieharwood.moonphase.ui.Themes
 import io.github.jamieharwood.moonphase.ui.NightColorScheme
 import io.github.jamieharwood.moonphase.ui.ProDialog
 import io.github.jamieharwood.moonphase.ui.SettingsScreen
@@ -77,7 +81,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val night by vm.state.collectAsState()
             val pro by Pro.state.collectAsState()
-            MoonPhaseTheme(night.settings.nightMode && pro.owned) { App(vm, showPro) }
+            MoonPhaseTheme(night.settings.nightMode && pro.owned, night.settings.theme) { App(vm, showPro) }
         }
     }
 
@@ -95,17 +99,31 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MoonPhaseTheme(night: Boolean = false, content: @Composable () -> Unit) {
+fun MoonPhaseTheme(night: Boolean = false, theme: String = Themes.SYSTEM, content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
     val ctx = LocalContext.current
+    // Night mode (red light) always wins: it protects dark-adapted eyes.
+    val palette = if (night) null else Themes.get(theme)
     val scheme = when {
         night -> NightColorScheme
+        palette != null -> Themes.colorScheme(palette)
         Build.VERSION.SDK_INT >= 31 -> if (dark) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
         dark -> darkColorScheme(primary = Color(0xFFE8CD78), secondary = Color(0xFF9DB7E8))
         else -> lightColorScheme(primary = Color(0xFF1B4F8F), secondary = Color(0xFF8A6D1E))
     }
-    CompositionLocalProvider(LocalNightMode provides night) {
-        MaterialTheme(colorScheme = scheme, content = content)
+    val typography = palette?.let(Themes::typography) ?: androidx.compose.material3.Typography()
+    // Status-bar icons must stay readable over a coloured header (e.g. Mission Blue's blue bar).
+    val view = androidx.compose.ui.platform.LocalView.current
+    if (!view.isInEditMode) {
+        val lightIcons = palette?.let { it.headerBg.luminance() > 0.5f } ?: (!dark && !night)
+        androidx.compose.runtime.SideEffect {
+            (view.context as? android.app.Activity)?.window?.let { w ->
+                androidx.core.view.WindowCompat.getInsetsController(w, view).isAppearanceLightStatusBars = lightIcons
+            }
+        }
+    }
+    CompositionLocalProvider(LocalNightMode provides night, LocalPalette provides palette) {
+        MaterialTheme(colorScheme = scheme, typography = typography, content = content)
     }
 }
 
@@ -122,6 +140,8 @@ fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<B
     var unitsMenu by remember { mutableStateOf(false) }
     var confirmReset by remember { mutableStateOf(false) }
     var populate by remember { mutableStateOf(false) }
+    var themePicker by remember { mutableStateOf(false) }
+    val palette = LocalPalette.current
 
     LaunchedEffect(Unit) { vm.messages.collect { snackbar.showSnackbar(it) } }
     LaunchedEffect(Unit) {
@@ -158,7 +178,14 @@ fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<B
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
+          androidx.compose.foundation.layout.Column {
             TopAppBar(
+                colors = palette?.let {
+                    androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                        containerColor = it.headerBg, titleContentColor = it.headerFg,
+                        actionIconContentColor = it.headerFg, navigationIconContentColor = it.headerFg,
+                    )
+                } ?: androidx.compose.material3.TopAppBarDefaults.topAppBarColors(),
                 title = {
                     // Never wrap the title: on narrow phones the actions take most of the bar.
                     Text(if (showSettings) stringResource(R.string.title_settings) else stringResource(R.string.app_name), maxLines = 1, softWrap = false)
@@ -181,7 +208,10 @@ fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<B
                             textAlign = TextAlign.Center,
                         )
                         Box {
-                            TextButton(onClick = { unitsMenu = true }) { Text(state.settings.units.name.lowercase()) }
+                            TextButton(
+                                onClick = { unitsMenu = true },
+                                colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = androidx.compose.material3.LocalContentColor.current),
+                            ) { Text(state.settings.units.name.lowercase()) }
                             DropdownMenu(unitsMenu, { unitsMenu = false }) {
                                 Units.entries.forEach { u ->
                                     DropdownMenuItem(text = { Text(u.name) }, onClick = {
@@ -203,6 +233,7 @@ fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<B
                                     text = { Text(lock(stringResource(if (state.settings.nightMode && pro.owned) R.string.menu_night_on else R.string.menu_night_off))) },
                                     onClick = { menu = false; proOnly { vm.updateSettings { it.copy(nightMode = !it.nightMode) } } },
                                 )
+                                DropdownMenuItem(text = { Text(stringResource(R.string.menu_theme)) }, onClick = { menu = false; themePicker = true })
                                 DropdownMenuItem(text = { Text(stringResource(R.string.menu_settings)) }, onClick = { menu = false; showSettings = true })
                                 DropdownMenuItem(text = { Text(lock(stringResource(R.string.menu_populate))) }, onClick = { menu = false; proOnly { populate = true } })
                                 DropdownMenuItem(text = { Text(lock(stringResource(R.string.menu_export_csv))) }, onClick = { menu = false; exportCsv() })
@@ -212,6 +243,8 @@ fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<B
                     }
                 },
             )
+            palette?.let { androidx.compose.material3.HorizontalDivider(thickness = it.ruleWidth, color = it.rule) }
+          }
         },
     ) { padding ->
         if (showSettings) {
@@ -231,6 +264,14 @@ fun App(vm: MainViewModel, showProState: androidx.compose.runtime.MutableState<B
         }
     }
 
+    if (themePicker) {
+        ThemeDialog(
+            selected = state.settings.theme,
+            nightModeOn = state.settings.nightMode && pro.owned,
+            onSelect = { key -> vm.updateSettings { it.copy(theme = key) } },
+            onDismiss = { themePicker = false },
+        )
+    }
     if (showPro) {
         ProDialog(
             pro,

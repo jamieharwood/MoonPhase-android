@@ -20,20 +20,20 @@ val METRICS = listOf(
     Metric("moonDistanceKm", "Moon Distance (km)", "Moon"),
     Metric("daysUntilFullMoon", "Days Until Full Moon", "Moon"),
     Metric("daylightHours", "Daylight Hours", "Moon"),
-    Metric("sunDistanceAu", "Sun Distance (AU)", "Solar System"),
-    Metric("mercuryDistanceAu", "Mercury (AU)", "Solar System"),
-    Metric("venusDistanceAu", "Venus (AU)", "Solar System"),
-    Metric("marsDistanceAu", "Mars (AU)", "Solar System"),
-    Metric("jupiterDistanceAu", "Jupiter (AU)", "Solar System"),
-    Metric("saturnDistanceAu", "Saturn (AU)", "Solar System"),
-    Metric("uranusDistanceAu", "Uranus (AU)", "Solar System"),
-    Metric("neptuneDistanceAu", "Neptune (AU)", "Solar System"),
-    Metric("plutoDistanceAu", "Pluto (AU)", "Solar System"),
-    Metric("voyager1HelioDistanceAu", "Voyager 1 from Sun (AU)", "Solar System"),
-    Metric("voyager2HelioDistanceAu", "Voyager 2 from Sun (AU)", "Solar System"),
-    Metric("voyager1DistanceAu", "Voyager 1 (AU)", "Deep Space Probes"),
-    Metric("voyager2DistanceAu", "Voyager 2 (AU)", "Deep Space Probes"),
-    Metric("newHorizonsDistanceAu", "New Horizons (AU)", "Deep Space Probes"),
+    Metric("sunDistanceAu", "Sun → Earth (AU)", "Solar System"),
+    Metric("mercuryDistanceAu", "Sun → Mercury (AU)", "Solar System"),
+    Metric("venusDistanceAu", "Sun → Venus (AU)", "Solar System"),
+    Metric("marsDistanceAu", "Earth → Mars (AU)", "Solar System"),
+    Metric("jupiterDistanceAu", "Earth → Jupiter (AU)", "Solar System"),
+    Metric("saturnDistanceAu", "Earth → Saturn (AU)", "Solar System"),
+    Metric("uranusDistanceAu", "Sun → Uranus (AU)", "Solar System"),
+    Metric("neptuneDistanceAu", "Sun → Neptune (AU)", "Solar System"),
+    Metric("plutoDistanceAu", "Sun → Pluto (AU)", "Solar System"),
+    Metric("voyager1HelioDistanceAu", "Sun → Voyager 1 (AU)", "Solar System"),
+    Metric("voyager2HelioDistanceAu", "Sun → Voyager 2 (AU)", "Solar System"),
+    Metric("voyager1DistanceAu", "Earth → Voyager 1 (AU)", "Deep Space Probes"),
+    Metric("voyager2DistanceAu", "Earth → Voyager 2 (AU)", "Deep Space Probes"),
+    Metric("newHorizonsDistanceAu", "Earth → New Horizons (AU)", "Deep Space Probes"),
     Metric("earthSpeedKmPerSec", "Orbital Speed (km/s)", "Earth"),
     Metric("earthSpeedKmPerHour", "Orbital Speed (km/h)", "Earth"),
     Metric("earthAxialTiltDegrees", "Axial Tilt (°)", "Earth"),
@@ -129,7 +129,10 @@ class HistoryStore(context: Context) :
             for (h in intArrayOf(0, 12)) {
                 val t = now.minusDays(d.toLong()).withHour(h).withMinute(1).withSecond(0).withNano(0)
                 val s = Astro.compute(t, lat, lon).copy(
-                    live = io.github.jamieharwood.moonphase.LiveData(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0),
+                    live = io.github.jamieharwood.moonphase.LiveData(
+                        kp = 0.0, issAltitudeKm = 0.0, tiangongAltitudeKm = 0.0, hubbleAltitudeKm = 0.0,
+                        starlink = 0, kuiper = 0, totalInOrbit = 0, issCrew = 0, peopleInSpace = 0,
+                    ),
                 )
                 if (save(s, t)) added++
             }

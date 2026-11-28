@@ -1,8 +1,8 @@
-Orbitly shows tonight's Moon and what is happening in the sky above you, on your phone and your Wear OS watch. Everything astronomical is calculated on your device; live feeds add the aurora forecast and what is in orbit.
+Orbitly shows tonight's Moon and what is happening in the sky above you, on your phone and your Wear OS watch. Everything astronomical is calculated on your device; live feeds add the aurora forecast and what is in orbit. Planet, Moon and probe positions are checked against JPL Horizons.
 
 MOON
 • Phase name, illumination and age, drawn as a moon with a live terminator
-• Days to the next full moon and the current Earth–Moon distance
+• The exact dates of the next new and full moon, and the current Earth–Moon distance
 
 EARTH AND SUN
 • Sunrise, sunset and daylight hours for your location
@@ -22,7 +22,7 @@ SPACE
 • ISS, Tiangong and Hubble altitudes from live orbital data
 • Starlink and Kuiper satellite counts and the total number of tracked objects
 • Who is in space right now, by spacecraft
-• Distances to the planets with light travel time, and to Voyager 1 and 2, New Horizons, Hubble and James Webb
+• Distances to the planets with light travel time, and how far Voyager 1 and 2, New Horizons and James Webb are from Earth
 
 HISTORY
 • Keeps a snapshot every 12 hours and charts any of 35 metrics over a week, a month, a year or all time
@@ -38,7 +38,7 @@ ALSO
 • Distances in AU, kilometres or miles
 • Dark red night mode that protects your night vision
 • Available in English, Spanish, German, French and Portuguese
-• Material You colours
+• Ten colour themes, or Material You colours
 • Optional push to an Awtrix LED clock on your home network
 
 ORBITLY PRO (one-time purchase)

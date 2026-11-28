@@ -14,10 +14,15 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 /**
- * Live feeds (port of AuroraKpFetcher / LeoDataFetcher). Every fetch fails soft to -1.
- * Cached in memory: Kp 15 minutes, LEO / crew 6 hours, as in the original app.
+ * Live feeds (port of AuroraKpFetcher / LeoDataFetcher / JamesWebbDistance). Every fetch
+ * fails soft to -1. Cached in memory: Kp 15 minutes, James Webb 1 hour, LEO / crew 6 hours,
+ * as in the original app.
  */
 object LiveFetcher {
     private const val TAG = "LiveFetcher"
@@ -29,22 +34,65 @@ object LiveFetcher {
     private const val CREW_URL =
         "https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json"
 
+    private const val HORIZONS_URL = "https://ssd.jpl.nasa.gov/api/horizons.api"
+
     private const val KP_TTL = 15 * 60 * 1000L
+    private const val JWST_TTL = 60 * 60 * 1000L
     private const val LEO_TTL = 6 * 60 * 60 * 1000L
 
     private val mutex = Mutex()
     private var kpCache: Pair<Double, Long>? = null
+    private var jwstCache: Pair<Double, Long>? = null
     private var leoCache: Pair<LiveData, Long>? = null
 
-    suspend fun clear() = mutex.withLock { kpCache = null; leoCache = null }
+    suspend fun clear() = mutex.withLock { kpCache = null; jwstCache = null; leoCache = null }
 
     suspend fun fetch(): LiveData = mutex.withLock {
         val now = System.currentTimeMillis()
         val kp = kpCache?.takeIf { now - it.second < KP_TTL }?.first
             ?: parseLatestKp(get(KP_URL)).also { kpCache = it to now }
+        // Only successful JWST fetches are cached, so a failure is retried next time.
+        val jwst = jwstCache?.takeIf { now - it.second < JWST_TTL }?.first
+            ?: parseJwstKm(get(jwstUrl(ZonedDateTime.now(ZoneOffset.UTC)), 20_000)).also { if (it > 0) jwstCache = it to now }
         val leo = leoCache?.takeIf { now - it.second < LEO_TTL }?.first
             ?: fetchLeo().also { leoCache = it to now }
-        leo.copy(kp = kp)
+        leo.copy(kp = kp, jwstKm = jwst)
+    }
+
+    /** JPL Horizons observer query: James Webb (target -170) range from Earth's centre. */
+    fun jwstUrl(now: ZonedDateTime): String {
+        val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        val params = linkedMapOf(
+            "format" to "json",
+            "COMMAND" to "'-170'",
+            "OBJ_DATA" to "'NO'",
+            "MAKE_EPHEM" to "'YES'",
+            "EPHEM_TYPE" to "'OBSERVER'",
+            "CENTER" to "'500@399'",
+            "START_TIME" to "'${now.format(fmt)}'",
+            "STOP_TIME" to "'${now.plusMinutes(1).format(fmt)}'",
+            "STEP_SIZE" to "'1m'",
+            "QUANTITIES" to "'20'",
+            "CSV_FORMAT" to "'YES'",
+        )
+        return HORIZONS_URL + "?" + params.entries.joinToString("&") { (k, v) -> k + "=" + URLEncoder.encode(v, "UTF-8") }
+    }
+
+    /**
+     * Observer range (delta, AU) from a Horizons JSON response, in km; -1 if missing.
+     * The ephemeris row looks like ` 2026-Nov-27 23:28, , ,  0.01136300827198,  0.0069837,`.
+     */
+    fun parseJwstKm(json: String?): Double = try {
+        val result = JSONObject(json ?: return -1.0).optString("result", "")
+        val soe = result.indexOf("\$\$SOE")
+        val eoe = result.indexOf("\$\$EOE")
+        if (soe < 0 || eoe < soe) -1.0 else {
+            val row = result.substring(soe + 5, eoe).trim().lines().first()
+            val deltaAu = row.split(",")[3].trim().toDouble()
+            if (deltaAu > 0) deltaAu * Astro.KM_PER_AU else -1.0
+        }
+    } catch (e: Exception) {
+        -1.0
     }
 
     private suspend fun fetchLeo(): LiveData = coroutineScope {

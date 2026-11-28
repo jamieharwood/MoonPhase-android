@@ -1,0 +1,1 @@
+More accurate, with a fresh look. Planet, Moon and probe positions now match JPL Horizons, the next new and full moon show their exact dates, sunrise and sunset are within a couple of minutes of almanac times, and James Webb's distance is live. Redesigned Moon card, new Near Earth and Deep Space cards, and ten colour themes (menu → Theme).

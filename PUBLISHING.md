@@ -72,7 +72,7 @@ Upload these:
 - Does your app collect or share any of the required user data types? **No.**
   - The location is typed in by the user and stays on their devices; the phone → watch sync
     uses the Wearable Data Layer between the user's own devices.
-  - The live feeds (NOAA, TLE API, people-in-space JSON) are downloads that send no user data.
+  - The live feeds (NOAA, JPL Horizons, TLE API, people-in-space JSON) are downloads that send no user data.
   - Awtrix push goes to a user-entered device on their own network.
 - Is all data encrypted in transit? The live feeds use HTTPS. The optional Awtrix push uses plain
   HTTP on the local network, so answer per what Play asks; with "no data collected" this section

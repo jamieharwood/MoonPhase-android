@@ -1,8 +1,8 @@
-Orbitly zeigt den heutigen Mond und was am Himmel über dir passiert – auf deinem Handy und deiner Wear-OS-Uhr. Alle astronomischen Berechnungen laufen auf deinem Gerät; Live-Daten liefern die Polarlicht-Vorhersage und das, was im Orbit ist.
+Orbitly zeigt den heutigen Mond und was am Himmel über dir passiert – auf deinem Handy und deiner Wear-OS-Uhr. Alle astronomischen Berechnungen laufen auf deinem Gerät; Live-Daten liefern die Polarlicht-Vorhersage und das, was im Orbit ist. Planeten-, Mond- und Sondenpositionen werden mit JPL Horizons abgeglichen.
 
 MOND
 • Phasenname, Beleuchtung und Alter, als Mond mit Schattengrenze dargestellt
-• Tage bis zum nächsten Vollmond und aktuelle Entfernung Erde–Mond
+• Genaue Daten des nächsten Neu- und Vollmonds und aktuelle Entfernung Erde–Mond
 
 ERDE UND SONNE
 • Sonnenaufgang, Sonnenuntergang und Tageslänge für deinen Standort
@@ -22,7 +22,7 @@ WELTRAUM
 • Höhen von ISS, Tiangong und Hubble aus Live-Bahndaten
 • Anzahl der Starlink- und Kuiper-Satelliten und aller verfolgten Objekte
 • Wer gerade im All ist, nach Raumfahrzeug
-• Entfernungen zu den Planeten mit Lichtlaufzeit sowie zu Voyager 1 und 2, New Horizons, Hubble und James Webb
+• Entfernungen zu den Planeten mit Lichtlaufzeit und wie weit Voyager 1 und 2, New Horizons und James Webb von der Erde entfernt sind
 
 VERLAUF
 • Speichert alle 12 Stunden einen Schnappschuss und zeigt 35 Messwerte über eine Woche, einen Monat, ein Jahr oder die gesamte Zeit
@@ -38,7 +38,7 @@ AUSSERDEM
 • Entfernungen in AE, Kilometern oder Meilen
 • Dunkelroter Nachtmodus, der das Nachtsehen schützt
 • Verfügbar auf Englisch, Spanisch, Deutsch, Französisch und Portugiesisch
-• Material-You-Farben
+• Zehn Farbdesigns oder Material-You-Farben
 • Optionale Übertragung an eine Awtrix-LED-Uhr in deinem Heimnetz
 
 ORBITLY PRO (einmaliger Kauf)

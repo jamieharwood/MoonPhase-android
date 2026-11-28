@@ -1,0 +1,1 @@
+More accurate Moon phase, planet and probe positions, matching the phone app and JPL Horizons. Sunrise and sunset are now within a couple of minutes of almanac times.

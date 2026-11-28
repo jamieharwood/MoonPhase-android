@@ -1,0 +1,1 @@
+Fase lunar y posiciones de planetas y sondas más precisas, iguales que en la app del móvil y JPL Horizons. El amanecer y el atardecer quedan ahora a un par de minutos de los almanaques.
